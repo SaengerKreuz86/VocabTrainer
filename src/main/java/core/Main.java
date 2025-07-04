@@ -50,6 +50,11 @@ public class Main {
         }
     }
 
+    /**
+     * Process of questioning the user with vocabulary.
+     * @param vocabularies List from which the questions will be drawn.
+     * @param limiter Max amount of questions
+     */
     private static void questionnaire(Map<List<String>, List<String>> vocabularies, int limiter) throws IOException {
         int correct = 0;
         int loopCounter = 0;
@@ -85,6 +90,10 @@ public class Main {
         System.out.printf("You got %s out of %s right! %n%n", correct, limiter);
     }
 
+    /**
+     * Reads a line from the console input and formats it into lowercase
+     * @return lowercase String
+     */
     private static String formattedRead() throws IOException {
         return reader.readLine().toLowerCase();
     }
@@ -112,6 +121,11 @@ public class Main {
         }
     }
 
+    /**
+     * Randomly selects a Vocabulary from the given Map.
+     * @param vocab Map of Vocabulary
+     * @return Vocabulary
+     */
     private static Vocabulary randomSelectVocabularyFrom(Map<List<String>, List<String>> vocab){
         int selector = rand.nextInt(vocab.size()-1);
         for (Map.Entry<List<String>, List<String>> entry: vocab.entrySet()){
@@ -123,6 +137,11 @@ public class Main {
         throw new IllegalStateException();
     }
 
+    /**
+     * Selects the vocabulary of a lesson.
+     * @param x current read string on which the lesson will be evaluated
+     * @return null if the user wants to exit. Otherwise, the user is recursively trapped until he makes a valid input. In this case the corresponding vocabulary is returned.
+     */
     private static Map<List<String>, List<String>> selectLesson(String x) throws IOException {
         if (x.equals("$exit")){
             return null;
@@ -179,8 +198,8 @@ public class Main {
         vocabularies.put(List.of("nimotsu"          ), List.of("baggage", "parcel", "paket"));
         vocabularies.put(List.of("okane"            ), List.of("money", "geld"));
         vocabularies.put(List.of("kippu"            ), List.of("ticket", "fahrkarte"));
-        vocabularies.put(List.of("otoosan"          ), List.of("someone else's father", "vater eines anderen"));
-        vocabularies.put(List.of("okaasan"          ), List.of("someone else's mother", "mutter eines anderen"));
+        vocabularies.put(List.of("otoosan"          ), List.of("someone else's father", "vater einer anderen"));
+        vocabularies.put(List.of("okaasan"          ), List.of("someone else's mother", "mutter einer anderen"));
         vocabularies.put(List.of("itadakimasu"      ), List.of("thank you (before eat/drink)", "mahlzeit! (aber höflicher)"));
         vocabularies.put(List.of("ryoko"            ), List.of("trip", "tour", "reise"));
         vocabularies.put(List.of("miyage", "omiyage"   ), List.of("souvenir", "present", "mitbringsel"));
@@ -229,6 +248,25 @@ public class Main {
     }
     private static void getL9(Map<List<String>, List<String>> vocabularies){
         // Japanese , English
+        vocabularies.put(List.of("wakarimasu"), List.of("understand", "verstehen"));
+        vocabularies.put(List.of("suki", "suki na"), List.of("like", "mögen"));
+        vocabularies.put(List.of("kirai", "kirai na"), List.of("dislike", "nicht mögen"));
+        vocabularies.put(List.of("joozu", "joozu na"), List.of("good at", "gut in etwas sein"));
+        vocabularies.put(List.of("heta", "heta na"), List.of("bad at", "schlecht in etwas sein"));
+        vocabularies.put(List.of("ryori"), List.of("cooking", "cooked food", "kochen", "gekochtes essen"));
+        vocabularies.put(List.of("nomimono"), List.of("drinks", "getränke"));
+        vocabularies.put(List.of("supootsu"), List.of("sport"));
+        vocabularies.put(List.of("yakyuu"), List.of("baseball"));
+        vocabularies.put(List.of("ongaku"), List.of("music"));
+        vocabularies.put(List.of("uta"), List.of("song"));
+        vocabularies.put(List.of("karaoke"), List.of("karaoke"));
+        vocabularies.put(List.of("e"), List.of("picture", "drawing", "bild", "malen"));
+        vocabularies.put(List.of("komakai okane"), List.of("small change", "kleingeld"));
+        vocabularies.put(List.of("chiketto"), List.of("ticket"));
+        vocabularies.put(List.of("goshujin"), List.of("someone else's husband", "ehemann einer anderen"));
+        vocabularies.put(List.of("shujin"), List.of("my husband", "mein ehemann"));
+        vocabularies.put(List.of("okusan"), List.of("someone else's wife", "ehefrau einer anderen"));
+        vocabularies.put(List.of("tsuma"), List.of("my wife", "meine ehefrau"));
     }
     private static void getL10(Map<List<String>, List<String>> vocabularies){
         // Japanese , English
