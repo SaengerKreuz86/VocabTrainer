@@ -17,6 +17,7 @@ public class Main {
             """
                 Select the number of the lesson (-1 < x < 13). \r
                 Lesson 0 represents vocabulary mentioned outside of the general lessons.\r
+                Type '$all' for all lessons. \r
                 Waiting for input ...
             """;
     private static final String PROCEED_TO_QUESTIONNAIRE =
@@ -146,14 +147,25 @@ public class Main {
         if (x.equals("$exit")){
             return null;
         }
+        Map<List<String>, List<String>> vocabularies = new HashMap<>();
+        if (x.equals("$all")){
+            //TODO more
+            getL7(vocabularies);
+            getL8(vocabularies);
+            getL9(vocabularies);
+            getL10(vocabularies);
+            getL11(vocabularies);
+            getL12(vocabularies);
+            return vocabularies;
+        }
         int parsed = -1;
         try {
             parsed = Integer.parseInt(x);
         } catch (NumberFormatException _) {
             System.out.println("Did not read a number!\r\n");
         }
-        Map<List<String>, List<String>> vocabularies = new HashMap<>();
         switch (parsed){
+            //TODO more
             case 7 -> getL7(vocabularies);
             case 8 -> getL8(vocabularies);
             case 9 -> getL9(vocabularies);
@@ -179,7 +191,7 @@ public class Main {
         vocabularies.put(List.of("karimasu"         ), List.of("borrow", "borgen"));
         vocabularies.put(List.of("oshiemasu"        ), List.of("teach", "lehren"));
         vocabularies.put(List.of("naraimasu"        ), List.of("learn", "lernen"));
-        vocabularies.put(List.of("kakemasu (denwa)" ), List.of("make (a phone call)"));
+        vocabularies.put(List.of("kakemasu denwa" ), List.of("make a phone call", "einen anruf machen"));
         vocabularies.put(List.of("te"               ), List.of("hand", "arm"));
         vocabularies.put(List.of("hashi"            ), List.of("chopsticks", "essstäbchen"));
         vocabularies.put(List.of("supuun"           ), List.of("spoon", "löffel"));
@@ -348,6 +360,39 @@ public class Main {
     }
     private static void getL12(Map<List<String>, List<String>> vocabularies){
         // Japanese , English
+        vocabularies.put(List.of("kantan na"), List.of("easy", "einfach"));
+        vocabularies.put(List.of("chikai"), List.of("near", "nah"));
+        vocabularies.put(List.of("tooi"), List.of("far", "weit"));
+        vocabularies.put(List.of("hayai"), List.of("early", "früh", "fast", "schnell"));
+        vocabularies.put(List.of("osoi"), List.of("late", "spät", "langsam", "slow"));
+        vocabularies.put(List.of("ooi"), List.of("many", "much", "viel"));
+        vocabularies.put(List.of("sukunai"), List.of("few", "a little", "wenig"));
+        vocabularies.put(List.of("atatakai"), List.of("warm"));
+        vocabularies.put(List.of("suzushii"), List.of("cool", "kalt"));
+        vocabularies.put(List.of("amai"), List.of("sweet", "süß"));
+        vocabularies.put(List.of("karai"), List.of("spicy", "scharf"));
+        vocabularies.put(List.of("omoi"), List.of("heavy", "schwer"));
+        vocabularies.put(List.of("karui"), List.of("light", "leicht"));
+        vocabularies.put(List.of("kisetsu"), List.of("season", "jahreszeit"));
+        vocabularies.put(List.of("haru"), List.of("spring", "frühling"));
+        vocabularies.put(List.of("natsu"), List.of("summer", "sommer"));
+        vocabularies.put(List.of("aki"), List.of("autumn", " fall", "herbst"));
+        vocabularies.put(List.of("fuyu"), List.of("winter"));
+        vocabularies.put(List.of("tenki"), List.of("weather", "wetter"));
+        vocabularies.put(List.of("ame"), List.of("rain", "regen"));
+        vocabularies.put(List.of("yuki"), List.of("schnee", "snow"));
+        vocabularies.put(List.of("kumori"), List.of("cloudy", "bewölkt"));
+        vocabularies.put(List.of("hoteru"), List.of("hotel"));
+        vocabularies.put(List.of("kuukoo"), List.of("airport", "flughafen"));
+        vocabularies.put(List.of("umi"), List.of("meer", "sea", "ocean"));
+        vocabularies.put(List.of("paateii"), List.of("partey", "feier"));
+        vocabularies.put(List.of("omatsuri", "matsuri"), List.of("festival", "fest"));
+        vocabularies.put(List.of("shiken"), List.of("examination", "examen"));
+        vocabularies.put(List.of("sukiyaki"), List.of("sukiyaki"));
+        vocabularies.put(List.of("sashimi"), List.of("sashimi", "roher fisch zum essen"));
+        vocabularies.put(List.of("osushi", "sushi"), List.of("sushi"));
+        vocabularies.put(List.of("tempura"), List.of("tempura"));
+        vocabularies.put(List.of("momiji"), List.of("maple", "ahorn"));
     }
     private static void getL13(Map<List<String>, List<String>> vocabularies){
         // Japanese , English
