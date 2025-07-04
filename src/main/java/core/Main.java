@@ -246,6 +246,7 @@ public class Main {
         vocabularies.put(List.of("benkyo"), List.of("study", "studieren", "lernen"));
         vocabularies.put(List.of("oshigoto", "shigoto"), List.of("work", "business", "arbeit"));
     }
+
     private static void getL9(Map<List<String>, List<String>> vocabularies){
         // Japanese , English
         vocabularies.put(List.of("wakarimasu"), List.of("understand", "verstehen"));
@@ -267,9 +268,21 @@ public class Main {
         vocabularies.put(List.of("shujin"), List.of("my husband", "mein ehemann"));
         vocabularies.put(List.of("okusan"), List.of("someone else's wife", "ehefrau einer anderen"));
         vocabularies.put(List.of("tsuma"), List.of("my wife", "meine ehefrau"));
+        vocabularies.put(List.of("wakarimasu"), List.of("verstehen", "understand"));
+        vocabularies.put(List.of("arimasu"), List.of("haben", "besitzen", "own"));
+        vocabularies.put(List.of("sukoshi"), List.of("a little", "ein bisschen", "ein wenig"));
+        vocabularies.put(List.of("daitai"), List.of("ungefähr", "aproximately", "ungefähr"));
+        vocabularies.put(List.of("yoku"), List.of("often", "oft", "frequently"));
+        vocabularies.put(List.of("sukoshi"), List.of("a little", "ein bisschen", "ein wenig"));
+        vocabularies.put(List.of("takusan"), List.of("viel", "lots", "plenty"));
+        vocabularies.put(List.of("amari"), List.of("nicht so viel", "not so much"));
+        vocabularies.put(List.of("zenzen"), List.of("gar nicht", "not at all"));
+
     }
+
     private static void getL10(Map<List<String>, List<String>> vocabularies){
         // Japanese , English
+
     }private static void getL11(Map<List<String>, List<String>> vocabularies){
         // Japanese , English
     }private static void getL12(Map<List<String>, List<String>> vocabularies){
