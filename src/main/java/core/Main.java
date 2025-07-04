@@ -324,6 +324,27 @@ public class Main {
     }
     private static void getL11(Map<List<String>, List<String>> vocabularies){
         // Japanese , English
+        vocabularies.put(List.of("imasu kodomoga"), List.of("have a child", "kind haben"));
+        vocabularies.put(List.of("imasu nihonni"), List.of("stay in japan", "in japan bleiben"));
+        vocabularies.put(List.of("kakarimasu okanega"), List.of("take money", "geld nehmen"));
+        vocabularies.put(List.of("kakarimasu jikanga"), List.of("take time", "zeit nehmen", "zeit brauchen"));
+        vocabularies.put(List.of("yasumimasu kaishawo"), List.of("take a day off", "einen tag frei nehmen"));
+        vocabularies.put(List.of("ringo"), List.of("apple", "apfel"));
+        vocabularies.put(List.of("mikan"), List.of("orange"));
+        vocabularies.put(List.of("karei raisu"), List.of("curry and rice", "curry und reis"));
+        vocabularies.put(List.of("kitte"), List.of("postage stamp", "briefmarke"));
+        vocabularies.put(List.of("hagaki"), List.of("post card", "postkarte"));
+        vocabularies.put(List.of("futoo"), List.of("envelope", "briefumschlag"));
+        vocabularies.put(List.of("sokutatsu"), List.of("special delivery", "sonderlieferung"));
+        vocabularies.put(List.of("kakitome"), List.of("registered mail", "einschreiben"));
+        vocabularies.put(List.of("kookuubin"), List.of("airmail", "luftpost"));
+        vocabularies.put(List.of("funabin"), List.of("sea mail", "seepost"));
+        vocabularies.put(List.of("ryooshin"), List.of("parents", "eltern"));
+        vocabularies.put(List.of("kyoodai"), List.of("brothers and sisters", "brüder und schwestern"));
+        vocabularies.put(List.of("oniisan"), List.of("someone else's older brother", "älterer bruder einer anderen"));
+        vocabularies.put(List.of("oneisan"), List.of("someone else's older sister", "ältere schwester einer anderen"));
+        vocabularies.put(List.of("otootosan"), List.of("someone else's younger brother", "jüngerer bruder einer anderen"));
+        vocabularies.put(List.of("imootosan"), List.of("someone else's younger sister", "jüngere schwester einer anderen"));
     }
     private static void getL12(Map<List<String>, List<String>> vocabularies){
         // Japanese , English
