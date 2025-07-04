@@ -7,11 +7,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-public class Controller {
-    private static final String HELLO =
+public class Main {
+    private static final String INTRO =
             """
-                ----Welcome to the VocabTrainer!----\r
-                This trainer bases on the Japanese lessons by Mrs. Watanabe-Bussmann.\r
+                Welcome to the VocabTrainer!\r
+                This trainer bases on the Japanese lessons by Mrs. Watanabe-Bussmann.
+            """;
+    private static final String SELECT_LESSON =
+            """
                 Select the number of the lesson (-1 < x < 13). \r
                 Lesson 0 represents vocabulary mentioned outside of the general lessons.\r
                 Waiting for input ...
@@ -28,10 +31,14 @@ public class Controller {
     private static final Random rand = new Random();
 
     public static void main(String[] args) throws IOException {
+        System.out.println(INTRO + "\n");
         while (true){
-            System.out.println(HELLO);
-            int lesson = Integer.parseInt(formattedRead());
+            System.out.println(SELECT_LESSON + "\n");
+            String lesson = formattedRead();
             Map<List<String>, List<String>> vocabularies = selectLesson(lesson);
+            if (vocabularies == null){
+                return;
+            }
             System.out.printf("Successfully selected lesson %s%n", lesson);
             System.out.printf("The lesson contains %s vocabularies. %n", vocabularies.size());
             System.out.println("Please define how many rounds you want to do. Must be a number.");
@@ -75,7 +82,7 @@ public class Controller {
             System.out.printf("The solution was %s%n \r\n", solution);
             loopCounter++;
         }while (loopCounter < limiter);
-        System.out.printf("You got %s%n out of %s%n right! %n", correct, limiter);
+        System.out.printf("You got %s out of %s right! %n%n", correct, limiter);
     }
 
     private static String formattedRead() throws IOException {
@@ -116,9 +123,18 @@ public class Controller {
         throw new IllegalStateException();
     }
 
-    private static Map<List<String>, List<String>> selectLesson(int x) throws IOException {
+    private static Map<List<String>, List<String>> selectLesson(String x) throws IOException {
+        if (x.equals("$exit")){
+            return null;
+        }
+        int parsed = -1;
+        try {
+            parsed = Integer.parseInt(x);
+        } catch (NumberFormatException _) {
+            System.out.println("Did not read a number!\r\n");
+        }
         Map<List<String>, List<String>> vocabularies = new HashMap<>();
-        switch (x){
+        switch (parsed){
             case 7 -> getL7(vocabularies);
             case 8 -> getL8(vocabularies);
             case 9 -> getL9(vocabularies);
@@ -128,7 +144,7 @@ public class Controller {
             default -> {
                 System.out.println("Invalid value for " + x);
                 System.out.println("Write the number again. It must be larger than -1 and smaller than 13.");
-                return selectLesson(Integer.parseInt(reader.readLine()));
+                return selectLesson(reader.readLine());
             }
         }
         return vocabularies;
