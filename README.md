@@ -1,7 +1,7 @@
 # VocabTrainer
 This trainer will ask you questions about vocabulary. German/English to Japanese
 ## Building the project
-Building is done via maven. The current release can be downloaded and is contained within the target folder.
+Building is done via maven.
 ## Execution
 Open up console and navigate to the folder that contains the .jar file.
 Run as any jar file via 'java -jar VocabTrainer-1.0.jar'. You need to have java installed and set up correctly.
