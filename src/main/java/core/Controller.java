@@ -108,10 +108,10 @@ public class Controller {
     private static Vocabulary randomSelectVocabularyFrom(Map<List<String>, List<String>> vocab){
         int selector = rand.nextInt(vocab.size()-1);
         for (Map.Entry<List<String>, List<String>> entry: vocab.entrySet()){
-            selector--;
             if (selector == 0){
                 return new Vocabulary(entry.getKey(), entry.getValue());
             }
+            selector--;
         }
         throw new IllegalStateException();
     }
@@ -119,9 +119,12 @@ public class Controller {
     private static Map<List<String>, List<String>> selectLesson(int x) throws IOException {
         Map<List<String>, List<String>> vocabularies = new HashMap<>();
         switch (x){
-            case 7 -> {
-                getL7(vocabularies);
-            }
+            case 7 -> getL7(vocabularies);
+            case 8 -> getL8(vocabularies);
+            case 9 -> getL9(vocabularies);
+            case 10 -> getL10(vocabularies);
+            case 11 -> getL11(vocabularies);
+            case 12 -> getL12(vocabularies);
             default -> {
                 System.out.println("Invalid value for " + x);
                 System.out.println("Write the number again. It must be larger than -1 and smaller than 13.");
