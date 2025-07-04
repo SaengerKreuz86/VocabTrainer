@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class Main {
     private static final String INTRO =
@@ -29,14 +30,13 @@ public class Main {
                 You can exit by typing '$exit'. \r
             """;
     private static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-    private static final Random rand = new Random();
 
     public static void main(String[] args) throws IOException {
         System.out.println(INTRO + "\n");
         while (true){
             System.out.println(SELECT_LESSON + "\n");
             String lesson = formattedRead();
-            Map<List<String>, List<String>> vocabularies = selectLesson(lesson);
+            List<Vocabulary> vocabularies = selectLesson(lesson);
             if (vocabularies == null){
                 return;
             }
@@ -56,7 +56,7 @@ public class Main {
      * @param vocabularies List from which the questions will be drawn.
      * @param limiter Max amount of questions
      */
-    private static void questionnaire(Map<List<String>, List<String>> vocabularies, int limiter) throws IOException {
+    private static void questionnaire(List<Vocabulary> vocabularies, int limiter) throws IOException {
         int correct = 0;
         int loopCounter = 0;
         System.out.printf("Playing for %s rounds! %n", limiter);
@@ -67,7 +67,7 @@ public class Main {
         do {
             System.out.println("Next vocabulary:\r");
             vocabulary = randomSelectVocabularyFrom(vocabularies);
-            if (rand.nextInt(2) == 1){
+            if ((int)(Math.random()*2)== 1){
                 System.out.println(vocabulary.getA());
                 solution = vocabulary.getB();
             }else {
@@ -127,15 +127,9 @@ public class Main {
      * @param vocab Map of Vocabulary
      * @return Vocabulary
      */
-    private static Vocabulary randomSelectVocabularyFrom(Map<List<String>, List<String>> vocab){
-        int selector = rand.nextInt(vocab.size()-1);
-        for (Map.Entry<List<String>, List<String>> entry: vocab.entrySet()){
-            if (selector == 0){
-                return new Vocabulary(entry.getKey(), entry.getValue());
-            }
-            selector--;
-        }
-        throw new IllegalStateException();
+    private static Vocabulary randomSelectVocabularyFrom(List<Vocabulary> vocab){
+        int selector = (int)(Math.random()*vocab.size());
+        return vocab.get(selector);
     }
 
     /**
@@ -143,11 +137,11 @@ public class Main {
      * @param x current read string on which the lesson will be evaluated
      * @return null if the user wants to exit. Otherwise, the user is recursively trapped until he makes a valid input. In this case the corresponding vocabulary is returned.
      */
-    private static Map<List<String>, List<String>> selectLesson(String x) throws IOException {
+    private static List<Vocabulary> selectLesson(String x) throws IOException {
         if (x.equals("$exit")){
             return null;
         }
-        Map<List<String>, List<String>> vocabularies = new HashMap<>();
+        List<Vocabulary> vocabularies = new ArrayList<>();
         if (x.equals("$all")){
             //TODO more
             getL7(vocabularies);
@@ -181,223 +175,223 @@ public class Main {
         return vocabularies;
     }
 
-    private static void getL7(Map<List<String>, List<String>> vocabularies){
+    private static void getL7(List<Vocabulary> vocabularies){
         // Japanese , English
-        vocabularies.put(List.of("kirimasu"         ), List.of("cut", "slice", "schneiden"));
-        vocabularies.put(List.of("okurimasu"        ), List.of("send", "senden"));
-        vocabularies.put(List.of("agemasu"          ), List.of("give", "geben"));
-        vocabularies.put(List.of("moraimasu"        ), List.of("receive", "erhalten"));
-        vocabularies.put(List.of("kashimasu"        ), List.of("lend", "ausleihen"));
-        vocabularies.put(List.of("karimasu"         ), List.of("borrow", "borgen"));
-        vocabularies.put(List.of("oshiemasu"        ), List.of("teach", "lehren"));
-        vocabularies.put(List.of("naraimasu"        ), List.of("learn", "lernen"));
-        vocabularies.put(List.of("kakemasu denwa" ), List.of("make a phone call", "einen anruf machen"));
-        vocabularies.put(List.of("te"               ), List.of("hand", "arm"));
-        vocabularies.put(List.of("hashi"            ), List.of("chopsticks", "essstäbchen"));
-        vocabularies.put(List.of("supuun"           ), List.of("spoon", "löffel"));
-        vocabularies.put(List.of("naihu"            ), List.of("knife", "Messer"));
-        vocabularies.put(List.of("fooku"            ), List.of("fork", "gabel"));
-        vocabularies.put(List.of("hasami"           ), List.of("scissors", "schere"));
-        vocabularies.put(List.of("pasokon"          ), List.of("personal computer", "pc"));
-        vocabularies.put(List.of("panchi"           ), List.of("punch", "locher"));
-        vocabularies.put(List.of("hocchikisu"       ), List.of("stapler", "tacker"));
-        vocabularies.put(List.of("seroteipu"        ), List.of("scotch tape", "paket band"));
-        vocabularies.put(List.of("keshigomu"        ), List.of("eraser", "radiergummi"));
-        vocabularies.put(List.of("kami"             ), List.of("paper", "papier"));
-        vocabularies.put(List.of("hana"             ), List.of("flower", "blume"));
-        vocabularies.put(List.of("shatsu"           ), List.of("shirt", "hemd"));
-        vocabularies.put(List.of("purezento"        ), List.of("present", "gift", "geschenk"));
-        vocabularies.put(List.of("nimotsu"          ), List.of("baggage", "parcel", "paket"));
-        vocabularies.put(List.of("okane"            ), List.of("money", "geld"));
-        vocabularies.put(List.of("kippu"            ), List.of("ticket", "fahrkarte"));
-        vocabularies.put(List.of("otoosan"          ), List.of("someone else's father", "vater einer anderen"));
-        vocabularies.put(List.of("okaasan"          ), List.of("someone else's mother", "mutter einer anderen"));
-        vocabularies.put(List.of("itadakimasu"      ), List.of("thank you (before eat/drink)", "mahlzeit! (aber höflicher)"));
-        vocabularies.put(List.of("ryoko"            ), List.of("trip", "tour", "reise"));
-        vocabularies.put(List.of("miyage", "omiyage"   ), List.of("souvenir", "present", "mitbringsel"));
+        vocabularies.add(new Vocabulary(List.of("kirimasu"         ), List.of("cut", "slice", "schneiden")));
+        vocabularies.add(new Vocabulary(List.of("okurimasu"        ), List.of("send", "senden")));
+        vocabularies.add(new Vocabulary(List.of("agemasu"          ), List.of("give", "geben")));
+        vocabularies.add(new Vocabulary(List.of("moraimasu"        ), List.of("receive", "erhalten")));
+        vocabularies.add(new Vocabulary(List.of("kashimasu"        ), List.of("lend", "ausleihen")));
+        vocabularies.add(new Vocabulary(List.of("karimasu"         ), List.of("borrow", "borgen")));
+        vocabularies.add(new Vocabulary(List.of("oshiemasu"        ), List.of("teach", "lehren")));
+        vocabularies.add(new Vocabulary(List.of("naraimasu"        ), List.of("learn", "lernen")));
+        vocabularies.add(new Vocabulary(List.of("kakemasu denwa" ), List.of("make a phone call", "einen anruf machen")));
+        vocabularies.add(new Vocabulary(List.of("te"               ), List.of("hand", "arm")));
+        vocabularies.add(new Vocabulary(List.of("hashi"            ), List.of("chopsticks", "essstäbchen")));
+        vocabularies.add(new Vocabulary(List.of("supuun"           ), List.of("spoon", "löffel")));
+        vocabularies.add(new Vocabulary(List.of("naihu"            ), List.of("knife", "Messer")));
+        vocabularies.add(new Vocabulary(List.of("fooku"            ), List.of("fork", "gabel")));
+        vocabularies.add(new Vocabulary(List.of("hasami"           ), List.of("scissors", "schere")));
+        vocabularies.add(new Vocabulary(List.of("pasokon"          ), List.of("personal computer", "pc")));
+        vocabularies.add(new Vocabulary(List.of("panchi"           ), List.of("punch", "locher")));
+        vocabularies.add(new Vocabulary(List.of("hocchikisu"       ), List.of("stapler", "tacker")));
+        vocabularies.add(new Vocabulary(List.of("seroteipu"        ), List.of("scotch tape", "paket band")));
+        vocabularies.add(new Vocabulary(List.of("keshigomu"        ), List.of("eraser", "radiergummi")));
+        vocabularies.add(new Vocabulary(List.of("kami"             ), List.of("paper", "papier")));
+        vocabularies.add(new Vocabulary(List.of("hana"             ), List.of("flower", "blume")));
+        vocabularies.add(new Vocabulary(List.of("shatsu"           ), List.of("shirt", "hemd")));
+        vocabularies.add(new Vocabulary(List.of("purezento"        ), List.of("present", "gift", "geschenk")));
+        vocabularies.add(new Vocabulary(List.of("nimotsu"          ), List.of("baggage", "parcel", "paket")));
+        vocabularies.add(new Vocabulary(List.of("okane"            ), List.of("money", "geld")));
+        vocabularies.add(new Vocabulary(List.of("kippu"            ), List.of("ticket", "fahrkarte")));
+        vocabularies.add(new Vocabulary(List.of("otoosan"          ), List.of("someone else's father", "vater einer anderen")));
+        vocabularies.add(new Vocabulary(List.of("okaasan"          ), List.of("someone else's mother", "mutter einer anderen")));
+        vocabularies.add(new Vocabulary(List.of("itadakimasu"      ), List.of("thank you (before eat/drink)", "mahlzeit! (aber höflicher)")));
+        vocabularies.add(new Vocabulary(List.of("ryoko"            ), List.of("trip", "tour", "reise")));
+        vocabularies.add(new Vocabulary(List.of("miyage", "omiyage"   ), List.of("souvenir", "present", "mitbringsel")));
     }
 
-    private static void getL8(Map<List<String>, List<String>> vocabularies){
+    private static void getL8(List<Vocabulary> vocabularies){
         // Japanese , English
-        vocabularies.put(List.of("hansamu", "hansamu na"   ), List.of("handsome", "attraktiv", "gut aussehend"));
-        vocabularies.put(List.of("kirei", "kirei na"   ), List.of("beautiful", "schön"));
-        vocabularies.put(List.of("shizuka", "shizuka na"   ), List.of("quiet", "still", "leise"));
-        vocabularies.put(List.of("nigiyaka", "nigiyaka na"   ), List.of("lively", "lebhaft", "rege"));
-        vocabularies.put(List.of("yuumei", "yuumei na"   ), List.of("famous", "berühmt", "bekannt"));
-        vocabularies.put(List.of("shinsetsu", "shinsetsu na"   ), List.of("kind", "freundlich"));
-        vocabularies.put(List.of("genki", "genki na"   ), List.of("healthy", "cheerful", "freundlich", "heiter", "gesund"));
-        vocabularies.put(List.of("hima", "hima na"   ), List.of("free", "free time", "freizeit"));
-        vocabularies.put(List.of("benri", "benri na"   ), List.of("convenient", "praktisch"));
-        vocabularies.put(List.of("suteki", "suteki na"   ), List.of("nice", "wonderful", "wundervoll"));
-        vocabularies.put(List.of("ookii"), List.of("big", "large", "groß"));
-        vocabularies.put(List.of("chiisai"), List.of("small", "little", "klein"));
-        vocabularies.put(List.of("atarashii"), List.of("new", "neu"));
-        vocabularies.put(List.of("furui"), List.of("old (not of age)", "alt"));
-        vocabularies.put(List.of("ii", "iiyoi"), List.of("good", "gut"));
-        vocabularies.put(List.of("warui"), List.of("bad", "schlecht"));
-        vocabularies.put(List.of("atsui"), List.of("hot", "heiß"));
-        vocabularies.put(List.of("samui"), List.of("cold (weather)", "kalt"));
-        vocabularies.put(List.of("tsumetai"), List.of("cold (to the touch)", "kalt"));
-        vocabularies.put(List.of("muzukashii"), List.of("difficult", "schwierig", "schwer"));
-        vocabularies.put(List.of("yasashii"), List.of("easy", "einfach"));
-        vocabularies.put(List.of("takai"), List.of("expensive", "teuer", "tall", "heigh", "hoch", "groß"));
-        vocabularies.put(List.of("yasui"), List.of("cheap", "günstig"));
-        vocabularies.put(List.of("hikui"), List.of("low", "niedrig"));
-        vocabularies.put(List.of("omoshiroi"), List.of("interesting", "interessant"));
-        vocabularies.put(List.of("oishii"), List.of("delicious", "lecker", "tasty"));
-        vocabularies.put(List.of("isogashii"), List.of("busy", "beschäftigt"));
-        vocabularies.put(List.of("tanoshii"), List.of("fun", "spaßig"));
-        vocabularies.put(List.of("shiroi"), List.of("white", "weiß"));
-        vocabularies.put(List.of("kuroi"), List.of("black", "schwarz"));
-        vocabularies.put(List.of("akai"), List.of("red", "rot"));
-        vocabularies.put(List.of("aoi"), List.of("blue", "blau"));
-        vocabularies.put(List.of("sakura"), List.of("cherry", "cherry blossom", "kirsche", "kirschblüte"));
-        vocabularies.put(List.of("yama"), List.of("mountain", "berg"));
-        vocabularies.put(List.of("tabemono"), List.of("food", "essen"));
-        vocabularies.put(List.of("kuruma"), List.of("car", "auto", "automobil"));
-        vocabularies.put(List.of("benkyo"), List.of("study", "studieren", "lernen"));
-        vocabularies.put(List.of("oshigoto", "shigoto"), List.of("work", "business", "arbeit"));
+        vocabularies.add(new Vocabulary(List.of("hansamu", "hansamu na"   ), List.of("handsome", "attraktiv", "gut aussehend")));
+        vocabularies.add(new Vocabulary(List.of("kirei", "kirei na"   ), List.of("beautiful", "schön")));
+        vocabularies.add(new Vocabulary(List.of("shizuka", "shizuka na"   ), List.of("quiet", "still", "leise")));
+        vocabularies.add(new Vocabulary(List.of("nigiyaka", "nigiyaka na"   ), List.of("lively", "lebhaft", "rege")));
+        vocabularies.add(new Vocabulary(List.of("yuumei", "yuumei na"   ), List.of("famous", "berühmt", "bekannt")));
+        vocabularies.add(new Vocabulary(List.of("shinsetsu", "shinsetsu na"   ), List.of("kind", "freundlich")));
+        vocabularies.add(new Vocabulary(List.of("genki", "genki na"   ), List.of("healthy", "cheerful", "freundlich", "heiter", "gesund")));
+        vocabularies.add(new Vocabulary(List.of("hima", "hima na"   ), List.of("free", "free time", "freizeit")));
+        vocabularies.add(new Vocabulary(List.of("benri", "benri na"   ), List.of("convenient", "praktisch")));
+        vocabularies.add(new Vocabulary(List.of("suteki", "suteki na"   ), List.of("nice", "wonderful", "wundervoll")));
+        vocabularies.add(new Vocabulary(List.of("ookii"), List.of("big", "large", "groß")));
+        vocabularies.add(new Vocabulary(List.of("chiisai"), List.of("small", "little", "klein")));
+        vocabularies.add(new Vocabulary(List.of("atarashii"), List.of("new", "neu")));
+        vocabularies.add(new Vocabulary(List.of("furui"), List.of("old (not of age)", "alt")));
+        vocabularies.add(new Vocabulary(List.of("ii", "iiyoi"), List.of("good", "gut")));
+        vocabularies.add(new Vocabulary(List.of("warui"), List.of("bad", "schlecht")));
+        vocabularies.add(new Vocabulary(List.of("atsui"), List.of("hot", "heiß")));
+        vocabularies.add(new Vocabulary(List.of("samui"), List.of("cold (weather)", "kalt")));
+        vocabularies.add(new Vocabulary(List.of("tsumetai"), List.of("cold (to the touch)", "kalt")));
+        vocabularies.add(new Vocabulary(List.of("muzukashii"), List.of("difficult", "schwierig", "schwer")));
+        vocabularies.add(new Vocabulary(List.of("yasashii"), List.of("easy", "einfach")));
+        vocabularies.add(new Vocabulary(List.of("takai"), List.of("expensive", "teuer", "tall", "heigh", "hoch", "groß")));
+        vocabularies.add(new Vocabulary(List.of("yasui"), List.of("cheap", "günstig")));
+        vocabularies.add(new Vocabulary(List.of("hikui"), List.of("low", "niedrig")));
+        vocabularies.add(new Vocabulary(List.of("omoshiroi"), List.of("interesting", "interessant")));
+        vocabularies.add(new Vocabulary(List.of("oishii"), List.of("delicious", "lecker", "tasty")));
+        vocabularies.add(new Vocabulary(List.of("isogashii"), List.of("busy", "beschäftigt")));
+        vocabularies.add(new Vocabulary(List.of("tanoshii"), List.of("fun", "spaßig")));
+        vocabularies.add(new Vocabulary(List.of("shiroi"), List.of("white", "weiß")));
+        vocabularies.add(new Vocabulary(List.of("kuroi"), List.of("black", "schwarz")));
+        vocabularies.add(new Vocabulary(List.of("akai"), List.of("red", "rot")));
+        vocabularies.add(new Vocabulary(List.of("aoi"), List.of("blue", "blau")));
+        vocabularies.add(new Vocabulary(List.of("sakura"), List.of("cherry", "cherry blossom", "kirsche", "kirschblüte")));
+        vocabularies.add(new Vocabulary(List.of("yama"), List.of("mountain", "berg")));
+        vocabularies.add(new Vocabulary(List.of("tabemono"), List.of("food", "essen")));
+        vocabularies.add(new Vocabulary(List.of("kuruma"), List.of("car", "auto", "automobil")));
+        vocabularies.add(new Vocabulary(List.of("benkyo"), List.of("study", "studieren", "lernen")));
+        vocabularies.add(new Vocabulary(List.of("oshigoto", "shigoto"), List.of("work", "business", "arbeit")));
     }
 
-    private static void getL9(Map<List<String>, List<String>> vocabularies){
+    private static void getL9(List<Vocabulary> vocabularies){
         // Japanese , English
-        vocabularies.put(List.of("wakarimasu"), List.of("understand", "verstehen"));
-        vocabularies.put(List.of("suki", "suki na"), List.of("like", "mögen"));
-        vocabularies.put(List.of("kirai", "kirai na"), List.of("dislike", "nicht mögen"));
-        vocabularies.put(List.of("joozu", "joozu na"), List.of("good at", "gut in etwas sein"));
-        vocabularies.put(List.of("heta", "heta na"), List.of("bad at", "schlecht in etwas sein"));
-        vocabularies.put(List.of("ryori"), List.of("cooking", "cooked food", "kochen", "gekochtes essen"));
-        vocabularies.put(List.of("nomimono"), List.of("drinks", "getränke"));
-        vocabularies.put(List.of("supootsu"), List.of("sport"));
-        vocabularies.put(List.of("yakyuu"), List.of("baseball"));
-        vocabularies.put(List.of("ongaku"), List.of("music"));
-        vocabularies.put(List.of("uta"), List.of("song"));
-        vocabularies.put(List.of("karaoke"), List.of("karaoke"));
-        vocabularies.put(List.of("e"), List.of("picture", "drawing", "bild", "malen"));
-        vocabularies.put(List.of("komakai okane"), List.of("small change", "kleingeld"));
-        vocabularies.put(List.of("chiketto"), List.of("ticket"));
-        vocabularies.put(List.of("goshujin"), List.of("someone else's husband", "ehemann einer anderen"));
-        vocabularies.put(List.of("shujin"), List.of("my husband", "mein ehemann"));
-        vocabularies.put(List.of("okusan"), List.of("someone else's wife", "ehefrau einer anderen"));
-        vocabularies.put(List.of("tsuma"), List.of("my wife", "meine ehefrau"));
-        vocabularies.put(List.of("wakarimasu"), List.of("verstehen", "understand"));
-        vocabularies.put(List.of("arimasu"), List.of("haben", "besitzen", "own"));
-        vocabularies.put(List.of("sukoshi"), List.of("a little", "ein bisschen", "ein wenig"));
-        vocabularies.put(List.of("daitai"), List.of("ungefähr", "aproximately", "ungefähr"));
-        vocabularies.put(List.of("yoku"), List.of("often", "oft", "frequently"));
-        vocabularies.put(List.of("sukoshi"), List.of("a little", "ein bisschen", "ein wenig"));
-        vocabularies.put(List.of("takusan"), List.of("viel", "lots", "plenty"));
-        vocabularies.put(List.of("amari"), List.of("nicht so viel", "not so much"));
-        vocabularies.put(List.of("zenzen"), List.of("gar nicht", "not at all"));
+        vocabularies.add(new Vocabulary(List.of("wakarimasu"), List.of("understand", "verstehen")));
+        vocabularies.add(new Vocabulary(List.of("suki", "suki na"), List.of("like", "mögen")));
+        vocabularies.add(new Vocabulary(List.of("kirai", "kirai na"), List.of("dislike", "nicht mögen")));
+        vocabularies.add(new Vocabulary(List.of("joozu", "joozu na"), List.of("good at", "gut in etwas sein")));
+        vocabularies.add(new Vocabulary(List.of("heta", "heta na"), List.of("bad at", "schlecht in etwas sein")));
+        vocabularies.add(new Vocabulary(List.of("ryori"), List.of("cooking", "cooked food", "kochen", "gekochtes essen")));
+        vocabularies.add(new Vocabulary(List.of("nomimono"), List.of("drinks", "getränke")));
+        vocabularies.add(new Vocabulary(List.of("supootsu"), List.of("sport")));
+        vocabularies.add(new Vocabulary(List.of("yakyuu"), List.of("baseball")));
+        vocabularies.add(new Vocabulary(List.of("ongaku"), List.of("music")));
+        vocabularies.add(new Vocabulary(List.of("uta"), List.of("song")));
+        vocabularies.add(new Vocabulary(List.of("karaoke"), List.of("karaoke")));
+        vocabularies.add(new Vocabulary(List.of("e"), List.of("picture", "drawing", "bild", "malen")));
+        vocabularies.add(new Vocabulary(List.of("komakai okane"), List.of("small change", "kleingeld")));
+        vocabularies.add(new Vocabulary(List.of("chiketto"), List.of("ticket")));
+        vocabularies.add(new Vocabulary(List.of("goshujin"), List.of("someone else's husband", "ehemann einer anderen")));
+        vocabularies.add(new Vocabulary(List.of("shujin"), List.of("my husband", "mein ehemann")));
+        vocabularies.add(new Vocabulary(List.of("okusan"), List.of("someone else's wife", "ehefrau einer anderen")));
+        vocabularies.add(new Vocabulary(List.of("tsuma"), List.of("my wife", "meine ehefrau")));
+        vocabularies.add(new Vocabulary(List.of("wakarimasu"), List.of("verstehen", "understand")));
+        vocabularies.add(new Vocabulary(List.of("arimasu"), List.of("haben", "besitzen", "own")));
+        vocabularies.add(new Vocabulary(List.of("sukoshi"), List.of("a little", "ein bisschen", "ein wenig")));
+        vocabularies.add(new Vocabulary(List.of("daitai"), List.of("ungefähr", "aproximately", "ungefähr")));
+        vocabularies.add(new Vocabulary(List.of("yoku"), List.of("often", "oft", "frequently")));
+        vocabularies.add(new Vocabulary(List.of("sukoshi"), List.of("a little", "ein bisschen", "ein wenig")));
+        vocabularies.add(new Vocabulary(List.of("takusan"), List.of("viel", "lots", "plenty")));
+        vocabularies.add(new Vocabulary(List.of("amari"), List.of("nicht so viel", "not so much")));
+        vocabularies.add(new Vocabulary(List.of("zenzen"), List.of("gar nicht", "not at all")));
 
     }
 
-    private static void getL10(Map<List<String>, List<String>> vocabularies){
+    private static void getL10(List<Vocabulary> vocabularies){
         // Japanese , English
-        vocabularies.put(List.of("imasu"), List.of("exist (animate)", "be", "existieren", "sein"));
-        vocabularies.put(List.of("arimasu"), List.of("exist (inanimate)", "existieren", "sein"));
-        vocabularies.put(List.of("iroiro", "iroiro na"), List.of("various", "verschiedene"));
-        vocabularies.put(List.of("otokonohito"), List.of("man", "mann"));
-        vocabularies.put(List.of("onnanohito"), List.of("woman", "frau"));
-        vocabularies.put(List.of("takusan"), List.of("viel", "lots", "plenty"));
-        vocabularies.put(List.of("otokonoko"), List.of("boy", "junge"));
-        vocabularies.put(List.of("onnanonoko"), List.of("girl", "mädchen"));
-        vocabularies.put(List.of("inu"), List.of("dog", "hund"));
-        vocabularies.put(List.of("neko"), List.of("cat", "katze"));
-        vocabularies.put(List.of("ki"), List.of("tree", "wood", "baum", "holz"));
-        vocabularies.put(List.of("denchi"), List.of("battery", "batterie"));
-        vocabularies.put(List.of("hako"), List.of("box"));
-        vocabularies.put(List.of("suicchi"), List.of("switch", "schalter"));
-        vocabularies.put(List.of("reizooko"), List.of("refrigerator", "kühlschrank"));
-        vocabularies.put(List.of("teiburu"), List.of("table", "tisch"));
-        vocabularies.put(List.of("beddo"), List.of("bed", "bett"));
-        vocabularies.put(List.of("otokonoko"), List.of("boy", "junge"));
-        vocabularies.put(List.of("tana"), List.of("shelf", "regal"));
-        vocabularies.put(List.of("doa"), List.of("door", "tür"));
-        vocabularies.put(List.of("mado"), List.of("window", "fenster"));
-        vocabularies.put(List.of("posuto"), List.of("post", "postkasten"));
-        vocabularies.put(List.of("biru"), List.of("building", "gebäude"));
-        vocabularies.put(List.of("kooen"), List.of("park"));
-        vocabularies.put(List.of("kissatan"), List.of("coffee shop", "cafe"));
-        vocabularies.put(List.of("honya"), List.of("book store", "buchladen"));
-        vocabularies.put(List.of("noriba"), List.of("haltestelle für taxi", "haltestelle für zug", "haltestelle für bus",
-                "place to catch taxi", "place to catch train", "place to catch bus"));
-        vocabularies.put(List.of("ue"), List.of("on", "above", "auf", "darüber"));
-        vocabularies.put(List.of("shita"), List.of("under", "below", "darunter", "unter"));
-        vocabularies.put(List.of("mae"), List.of("front", "before", "davor"));
-        vocabularies.put(List.of("ushiro"), List.of("back", "behind", "dahinter", "hinter"));
-        vocabularies.put(List.of("migi"), List.of("right", "rechts"));
-        vocabularies.put(List.of("hidari"), List.of("left", "links"));
-        vocabularies.put(List.of("naka"), List.of("in", "inside", "innen", "in"));
-        vocabularies.put(List.of("soto"), List.of("outside", "draußen", "außen"));
-        vocabularies.put(List.of("tonari"), List.of("next", "daneben"));
-        vocabularies.put(List.of("chikaku"), List.of("near", "nahe", "in der nähe"));
-        vocabularies.put(List.of("aida"), List.of("between", "dazwischen"));
+        vocabularies.add(new Vocabulary(List.of("imasu"), List.of("exist (animate)", "be", "existieren", "sein")));
+        vocabularies.add(new Vocabulary(List.of("arimasu"), List.of("exist (inanimate)", "existieren", "sein")));
+        vocabularies.add(new Vocabulary(List.of("iroiro", "iroiro na"), List.of("various", "verschiedene")));
+        vocabularies.add(new Vocabulary(List.of("otokonohito"), List.of("man", "mann")));
+        vocabularies.add(new Vocabulary(List.of("onnanohito"), List.of("woman", "frau")));
+        vocabularies.add(new Vocabulary(List.of("takusan"), List.of("viel", "lots", "plenty")));
+        vocabularies.add(new Vocabulary(List.of("otokonoko"), List.of("boy", "junge")));
+        vocabularies.add(new Vocabulary(List.of("onnanonoko"), List.of("girl", "mädchen")));
+        vocabularies.add(new Vocabulary(List.of("inu"), List.of("dog", "hund")));
+        vocabularies.add(new Vocabulary(List.of("neko"), List.of("cat", "katze")));
+        vocabularies.add(new Vocabulary(List.of("ki"), List.of("tree", "wood", "baum", "holz")));
+        vocabularies.add(new Vocabulary(List.of("denchi"), List.of("battery", "batterie")));
+        vocabularies.add(new Vocabulary(List.of("hako"), List.of("box")));
+        vocabularies.add(new Vocabulary(List.of("suicchi"), List.of("switch", "schalter")));
+        vocabularies.add(new Vocabulary(List.of("reizooko"), List.of("refrigerator", "kühlschrank")));
+        vocabularies.add(new Vocabulary(List.of("teiburu"), List.of("table", "tisch")));
+        vocabularies.add(new Vocabulary(List.of("beddo"), List.of("bed", "bett")));
+        vocabularies.add(new Vocabulary(List.of("otokonoko"), List.of("boy", "junge")));
+        vocabularies.add(new Vocabulary(List.of("tana"), List.of("shelf", "regal")));
+        vocabularies.add(new Vocabulary(List.of("doa"), List.of("door", "tür")));
+        vocabularies.add(new Vocabulary(List.of("mado"), List.of("window", "fenster")));
+        vocabularies.add(new Vocabulary(List.of("posuto"), List.of("post", "postkasten")));
+        vocabularies.add(new Vocabulary(List.of("biru"), List.of("building", "gebäude")));
+        vocabularies.add(new Vocabulary(List.of("kooen"), List.of("park")));
+        vocabularies.add(new Vocabulary(List.of("kissatan"), List.of("coffee shop", "cafe")));
+        vocabularies.add(new Vocabulary(List.of("honya"), List.of("book store", "buchladen")));
+        vocabularies.add(new Vocabulary(List.of("noriba"), List.of("haltestelle für taxi", "haltestelle für zug", "haltestelle für bus",
+                "place to catch taxi", "place to catch train", "place to catch bus")));
+        vocabularies.add(new Vocabulary(List.of("ue"), List.of("on", "above", "auf", "darüber")));
+        vocabularies.add(new Vocabulary(List.of("shita"), List.of("under", "below", "darunter", "unter")));
+        vocabularies.add(new Vocabulary(List.of("mae"), List.of("front", "before", "davor")));
+        vocabularies.add(new Vocabulary(List.of("ushiro"), List.of("back", "behind", "dahinter", "hinter")));
+        vocabularies.add(new Vocabulary(List.of("migi"), List.of("right", "rechts")));
+        vocabularies.add(new Vocabulary(List.of("hidari"), List.of("left", "links")));
+        vocabularies.add(new Vocabulary(List.of("naka"), List.of("in", "inside", "innen", "in")));
+        vocabularies.add(new Vocabulary(List.of("soto"), List.of("outside", "draußen", "außen")));
+        vocabularies.add(new Vocabulary(List.of("tonari"), List.of("next", "daneben")));
+        vocabularies.add(new Vocabulary(List.of("chikaku"), List.of("near", "nahe", "in der nähe")));
+        vocabularies.add(new Vocabulary(List.of("aida"), List.of("between", "dazwischen")));
     }
-    private static void getL11(Map<List<String>, List<String>> vocabularies){
+    private static void getL11(List<Vocabulary> vocabularies){
         // Japanese , English
-        vocabularies.put(List.of("imasu kodomoga"), List.of("have a child", "kind haben"));
-        vocabularies.put(List.of("imasu nihonni"), List.of("stay in japan", "in japan bleiben"));
-        vocabularies.put(List.of("kakarimasu okanega"), List.of("take money", "geld nehmen"));
-        vocabularies.put(List.of("kakarimasu jikanga"), List.of("take time", "zeit nehmen", "zeit brauchen"));
-        vocabularies.put(List.of("yasumimasu kaishawo"), List.of("take a day off", "einen tag frei nehmen"));
-        vocabularies.put(List.of("ringo"), List.of("apple", "apfel"));
-        vocabularies.put(List.of("mikan"), List.of("orange"));
-        vocabularies.put(List.of("karei raisu"), List.of("curry and rice", "curry und reis"));
-        vocabularies.put(List.of("kitte"), List.of("postage stamp", "briefmarke"));
-        vocabularies.put(List.of("hagaki"), List.of("post card", "postkarte"));
-        vocabularies.put(List.of("futoo"), List.of("envelope", "briefumschlag"));
-        vocabularies.put(List.of("sokutatsu"), List.of("special delivery", "sonderlieferung"));
-        vocabularies.put(List.of("kakitome"), List.of("registered mail", "einschreiben"));
-        vocabularies.put(List.of("kookuubin"), List.of("airmail", "luftpost"));
-        vocabularies.put(List.of("funabin"), List.of("sea mail", "seepost"));
-        vocabularies.put(List.of("ryooshin"), List.of("parents", "eltern"));
-        vocabularies.put(List.of("kyoodai"), List.of("brothers and sisters", "brüder und schwestern"));
-        vocabularies.put(List.of("oniisan"), List.of("someone else's older brother", "älterer bruder einer anderen"));
-        vocabularies.put(List.of("oneisan"), List.of("someone else's older sister", "ältere schwester einer anderen"));
-        vocabularies.put(List.of("otootosan"), List.of("someone else's younger brother", "jüngerer bruder einer anderen"));
-        vocabularies.put(List.of("imootosan"), List.of("someone else's younger sister", "jüngere schwester einer anderen"));
+        vocabularies.add(new Vocabulary(List.of("imasu kodomoga"), List.of("have a child", "kind haben")));
+        vocabularies.add(new Vocabulary(List.of("imasu nihonni"), List.of("stay in japan", "in japan bleiben")));
+        vocabularies.add(new Vocabulary(List.of("kakarimasu okanega"), List.of("take money", "geld nehmen")));
+        vocabularies.add(new Vocabulary(List.of("kakarimasu jikanga"), List.of("take time", "zeit nehmen", "zeit brauchen")));
+        vocabularies.add(new Vocabulary(List.of("yasumimasu kaishawo"), List.of("take a day off", "einen tag frei nehmen")));
+        vocabularies.add(new Vocabulary(List.of("ringo"), List.of("apple", "apfel")));
+        vocabularies.add(new Vocabulary(List.of("mikan"), List.of("orange")));
+        vocabularies.add(new Vocabulary(List.of("karei raisu"), List.of("curry and rice", "curry und reis")));
+        vocabularies.add(new Vocabulary(List.of("kitte"), List.of("postage stamp", "briefmarke")));
+        vocabularies.add(new Vocabulary(List.of("hagaki"), List.of("post card", "postkarte")));
+        vocabularies.add(new Vocabulary(List.of("futoo"), List.of("envelope", "briefumschlag")));
+        vocabularies.add(new Vocabulary(List.of("sokutatsu"), List.of("special delivery", "sonderlieferung")));
+        vocabularies.add(new Vocabulary(List.of("kakitome"), List.of("registered mail", "einschreiben")));
+        vocabularies.add(new Vocabulary(List.of("kookuubin"), List.of("airmail", "luftpost")));
+        vocabularies.add(new Vocabulary(List.of("funabin"), List.of("sea mail", "seepost")));
+        vocabularies.add(new Vocabulary(List.of("ryooshin"), List.of("parents", "eltern")));
+        vocabularies.add(new Vocabulary(List.of("kyoodai"), List.of("brothers and sisters", "brüder und schwestern")));
+        vocabularies.add(new Vocabulary(List.of("oniisan"), List.of("someone else's older brother", "älterer bruder einer anderen")));
+        vocabularies.add(new Vocabulary(List.of("oneisan"), List.of("someone else's older sister", "ältere schwester einer anderen")));
+        vocabularies.add(new Vocabulary(List.of("otootosan"), List.of("someone else's younger brother", "jüngerer bruder einer anderen")));
+        vocabularies.add(new Vocabulary(List.of("imootosan"), List.of("someone else's younger sister", "jüngere schwester einer anderen")));
     }
-    private static void getL12(Map<List<String>, List<String>> vocabularies){
+    private static void getL12(List<Vocabulary> vocabularies){
         // Japanese , English
-        vocabularies.put(List.of("kantan na"), List.of("easy", "einfach"));
-        vocabularies.put(List.of("chikai"), List.of("near", "nah"));
-        vocabularies.put(List.of("tooi"), List.of("far", "weit"));
-        vocabularies.put(List.of("hayai"), List.of("early", "früh", "fast", "schnell"));
-        vocabularies.put(List.of("osoi"), List.of("late", "spät", "langsam", "slow"));
-        vocabularies.put(List.of("ooi"), List.of("many", "much", "viel"));
-        vocabularies.put(List.of("sukunai"), List.of("few", "a little", "wenig"));
-        vocabularies.put(List.of("atatakai"), List.of("warm"));
-        vocabularies.put(List.of("suzushii"), List.of("cool", "kalt"));
-        vocabularies.put(List.of("amai"), List.of("sweet", "süß"));
-        vocabularies.put(List.of("karai"), List.of("spicy", "scharf"));
-        vocabularies.put(List.of("omoi"), List.of("heavy", "schwer"));
-        vocabularies.put(List.of("karui"), List.of("light", "leicht"));
-        vocabularies.put(List.of("kisetsu"), List.of("season", "jahreszeit"));
-        vocabularies.put(List.of("haru"), List.of("spring", "frühling"));
-        vocabularies.put(List.of("natsu"), List.of("summer", "sommer"));
-        vocabularies.put(List.of("aki"), List.of("autumn", " fall", "herbst"));
-        vocabularies.put(List.of("fuyu"), List.of("winter"));
-        vocabularies.put(List.of("tenki"), List.of("weather", "wetter"));
-        vocabularies.put(List.of("ame"), List.of("rain", "regen"));
-        vocabularies.put(List.of("yuki"), List.of("schnee", "snow"));
-        vocabularies.put(List.of("kumori"), List.of("cloudy", "bewölkt"));
-        vocabularies.put(List.of("hoteru"), List.of("hotel"));
-        vocabularies.put(List.of("kuukoo"), List.of("airport", "flughafen"));
-        vocabularies.put(List.of("umi"), List.of("meer", "sea", "ocean"));
-        vocabularies.put(List.of("paateii"), List.of("partey", "feier"));
-        vocabularies.put(List.of("omatsuri", "matsuri"), List.of("festival", "fest"));
-        vocabularies.put(List.of("shiken"), List.of("examination", "examen"));
-        vocabularies.put(List.of("sukiyaki"), List.of("sukiyaki"));
-        vocabularies.put(List.of("sashimi"), List.of("sashimi", "roher fisch zum essen"));
-        vocabularies.put(List.of("osushi", "sushi"), List.of("sushi"));
-        vocabularies.put(List.of("tempura"), List.of("tempura"));
-        vocabularies.put(List.of("momiji"), List.of("maple", "ahorn"));
+        vocabularies.add(new Vocabulary(List.of("kantan na"), List.of("easy", "einfach")));
+        vocabularies.add(new Vocabulary(List.of("chikai"), List.of("near", "nah")));
+        vocabularies.add(new Vocabulary(List.of("tooi"), List.of("far", "weit")));
+        vocabularies.add(new Vocabulary(List.of("hayai"), List.of("early", "früh", "fast", "schnell")));
+        vocabularies.add(new Vocabulary(List.of("osoi"), List.of("late", "spät", "langsam", "slow")));
+        vocabularies.add(new Vocabulary(List.of("ooi"), List.of("many", "much", "viel")));
+        vocabularies.add(new Vocabulary(List.of("sukunai"), List.of("few", "a little", "wenig")));
+        vocabularies.add(new Vocabulary(List.of("atatakai"), List.of("warm")));
+        vocabularies.add(new Vocabulary(List.of("suzushii"), List.of("cool", "kalt")));
+        vocabularies.add(new Vocabulary(List.of("amai"), List.of("sweet", "süß")));
+        vocabularies.add(new Vocabulary(List.of("karai"), List.of("spicy", "scharf")));
+        vocabularies.add(new Vocabulary(List.of("omoi"), List.of("heavy", "schwer")));
+        vocabularies.add(new Vocabulary(List.of("karui"), List.of("light", "leicht")));
+        vocabularies.add(new Vocabulary(List.of("kisetsu"), List.of("season", "jahreszeit")));
+        vocabularies.add(new Vocabulary(List.of("haru"), List.of("spring", "frühling")));
+        vocabularies.add(new Vocabulary(List.of("natsu"), List.of("summer", "sommer")));
+        vocabularies.add(new Vocabulary(List.of("aki"), List.of("autumn", " fall", "herbst")));
+        vocabularies.add(new Vocabulary(List.of("fuyu"), List.of("winter")));
+        vocabularies.add(new Vocabulary(List.of("tenki"), List.of("weather", "wetter")));
+        vocabularies.add(new Vocabulary(List.of("ame"), List.of("rain", "regen")));
+        vocabularies.add(new Vocabulary(List.of("yuki"), List.of("schnee", "snow")));
+        vocabularies.add(new Vocabulary(List.of("kumori"), List.of("cloudy", "bewölkt")));
+        vocabularies.add(new Vocabulary(List.of("hoteru"), List.of("hotel")));
+        vocabularies.add(new Vocabulary(List.of("kuukoo"), List.of("airport", "flughafen")));
+        vocabularies.add(new Vocabulary(List.of("umi"), List.of("meer", "sea", "ocean")));
+        vocabularies.add(new Vocabulary(List.of("paateii"), List.of("partey", "feier")));
+        vocabularies.add(new Vocabulary(List.of("omatsuri", "matsuri"), List.of("festival", "fest")));
+        vocabularies.add(new Vocabulary(List.of("shiken"), List.of("examination", "examen")));
+        vocabularies.add(new Vocabulary(List.of("sukiyaki"), List.of("sukiyaki")));
+        vocabularies.add(new Vocabulary(List.of("sashimi"), List.of("sashimi", "roher fisch zum essen")));
+        vocabularies.add(new Vocabulary(List.of("osushi", "sushi"), List.of("sushi")));
+        vocabularies.add(new Vocabulary(List.of("tempura"), List.of("tempura")));
+        vocabularies.add(new Vocabulary(List.of("momiji"), List.of("maple", "ahorn")));
     }
-    private static void getL13(Map<List<String>, List<String>> vocabularies){
+    private static void getL13(List<Vocabulary> vocabularies){
         // Japanese , English
     }
-    private static void getL14(Map<List<String>, List<String>> vocabularies){
+    private static void getL14(List<Vocabulary> vocabularies){
         // Japanese , English
     }
 
