@@ -282,10 +282,50 @@ public class Main {
 
     private static void getL10(Map<List<String>, List<String>> vocabularies){
         // Japanese , English
-
-    }private static void getL11(Map<List<String>, List<String>> vocabularies){
+        vocabularies.put(List.of("imasu"), List.of("exist (animate)", "be", "existieren", "sein"));
+        vocabularies.put(List.of("arimasu"), List.of("exist (inanimate)", "existieren", "sein"));
+        vocabularies.put(List.of("iroiro", "iroiro na"), List.of("various", "verschiedene"));
+        vocabularies.put(List.of("otokonohito"), List.of("man", "mann"));
+        vocabularies.put(List.of("onnanohito"), List.of("woman", "frau"));
+        vocabularies.put(List.of("takusan"), List.of("viel", "lots", "plenty"));
+        vocabularies.put(List.of("otokonoko"), List.of("boy", "junge"));
+        vocabularies.put(List.of("onnanonoko"), List.of("girl", "mädchen"));
+        vocabularies.put(List.of("inu"), List.of("dog", "hund"));
+        vocabularies.put(List.of("neko"), List.of("cat", "katze"));
+        vocabularies.put(List.of("ki"), List.of("tree", "wood", "baum", "holz"));
+        vocabularies.put(List.of("denchi"), List.of("battery", "batterie"));
+        vocabularies.put(List.of("hako"), List.of("box"));
+        vocabularies.put(List.of("suicchi"), List.of("switch", "schalter"));
+        vocabularies.put(List.of("reizooko"), List.of("refrigerator", "kühlschrank"));
+        vocabularies.put(List.of("teiburu"), List.of("table", "tisch"));
+        vocabularies.put(List.of("beddo"), List.of("bed", "bett"));
+        vocabularies.put(List.of("otokonoko"), List.of("boy", "junge"));
+        vocabularies.put(List.of("tana"), List.of("shelf", "regal"));
+        vocabularies.put(List.of("doa"), List.of("door", "tür"));
+        vocabularies.put(List.of("mado"), List.of("window", "fenster"));
+        vocabularies.put(List.of("posuto"), List.of("post", "postkasten"));
+        vocabularies.put(List.of("biru"), List.of("building", "gebäude"));
+        vocabularies.put(List.of("kooen"), List.of("park"));
+        vocabularies.put(List.of("kissatan"), List.of("coffee shop", "cafe"));
+        vocabularies.put(List.of("honya"), List.of("book store", "buchladen"));
+        vocabularies.put(List.of("noriba"), List.of("haltestelle für taxi", "haltestelle für zug", "haltestelle für bus",
+                "place to catch taxi", "place to catch train", "place to catch bus"));
+        vocabularies.put(List.of("ue"), List.of("on", "above", "auf", "darüber"));
+        vocabularies.put(List.of("shita"), List.of("under", "below", "darunter", "unter"));
+        vocabularies.put(List.of("mae"), List.of("front", "before", "davor"));
+        vocabularies.put(List.of("ushiro"), List.of("back", "behind", "dahinter", "hinter"));
+        vocabularies.put(List.of("migi"), List.of("right", "rechts"));
+        vocabularies.put(List.of("hidari"), List.of("left", "links"));
+        vocabularies.put(List.of("naka"), List.of("in", "inside", "innen", "in"));
+        vocabularies.put(List.of("soto"), List.of("outside", "draußen", "außen"));
+        vocabularies.put(List.of("tonari"), List.of("next", "daneben"));
+        vocabularies.put(List.of("chikaku"), List.of("near", "nahe", "in der nähe"));
+        vocabularies.put(List.of("aida"), List.of("between", "dazwischen"));
+    }
+    private static void getL11(Map<List<String>, List<String>> vocabularies){
         // Japanese , English
-    }private static void getL12(Map<List<String>, List<String>> vocabularies){
+    }
+    private static void getL12(Map<List<String>, List<String>> vocabularies){
         // Japanese , English
     }
     private static void getL13(Map<List<String>, List<String>> vocabularies){
