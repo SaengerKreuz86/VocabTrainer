@@ -102,6 +102,12 @@ public class Main {
         System.out.printf("You got %s out of %s right! %n%n", correct, limiter);
     }
 
+    /**
+     * Matches a given array against a list of strings.
+     * @param solution List of solutions
+     * @param in array of strings that will be checked
+     * @return If all values in the array are represented in the list return true else false
+     */
     private static boolean solutionIsCorrect(List<String> solution, String[] in) {
         for (String s : in) {
             if (!solution.contains(s)) {
