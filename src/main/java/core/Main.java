@@ -11,30 +11,31 @@ public class Main {
     private static final String INTRO =
             """
                 Welcome to the VocabTrainer!\r
-                This trainer bases on the Japanese lessons by Mrs. Watanabe-Bussmann.
+                This trainer bases on the Japanese lessons by Mrs. Watanabe-Bussmann.\r
             """;
     private static final String SELECT_LESSON =
             """
                 Select the number of the lesson (-1 < x < 13). \r
                 Lesson 0 represents vocabulary mentioned outside of the general lessons.\r
                 Every other number will be ignored.\r
-                Type '$help' to display information about possible commands and inputs
-                Waiting for input ...
+                Type '$help' to display information about possible commands and inputs.\r
+                Waiting for input ...\r
             """;
     private static final String SELECT_LESSON_HELP =
             """
                 Type '$all' for all lessons. \r
                 Type '$range' for a range of lessons. '$range 1 7' will yield all vocabularies from lesson 1 to 7.
                 '$range 8' will yield all vocabularies from lesson 8 to the latest lesson.\r
-                Typing ' 1 2 3 8' will yield the vocabularies of the lessons 1, 2, 3, and 8.
-                Waiting for input ...
+                Typing '1 2 3 8' will yield the vocabularies of the lessons 1, 2, 3, and 8.\r
+                Waiting for input ...\r
             """;
     private static final String PROCEED_TO_QUESTIONNAIRE =
             """
                 In the following random vocabularies from the selected lesson will be questioned.\r
                 If it shows a Japanese word you need to answer with the corresponding English or German word.\r
                 Otherwise, answer with the corresponding Japanese word.\r
-                Typing one of the possible solutions is sufficient.\r
+                Typing one of the possible solutions is sufficient. However, you can type multiple.
+                They need to be separated by a comma and a space. 'a, b' is valid 'a b' or 'a,b' are not\r
                 You can exit by typing '$exit'. \r
             """;
     private static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -43,7 +44,7 @@ public class Main {
         System.out.println(INTRO + "\n");
         while (true){
             System.out.println(SELECT_LESSON + "\n");
-            String[] lessons = formattedRead();
+            String[] lessons = formattedRead(" ");
             List<Vocabulary> vocabularies = selectLesson(lessons);
             if (vocabularies == null){
                 return;
@@ -83,7 +84,7 @@ public class Main {
                 solution = vocabulary.getA();
             }
             System.out.println("Waiting for input...\r\n");
-            in = formattedRead();
+            in = formattedRead(", ");
             if (in[0].equals("$exit")){
                 return;
             }
@@ -114,8 +115,7 @@ public class Main {
      * Reads a line from the console input and formats it into lowercase
      * @return lowercase String
      */
-    private static String[] formattedRead() throws IOException {
-        String split = " ";
+    private static String[] formattedRead(String split) throws IOException {
         return reader.readLine().toLowerCase().split(split);
     }
 
@@ -125,7 +125,7 @@ public class Main {
      * @return -1 if exit was read else number of rounds
      */
     private static int getRounds(int pDefault) throws IOException {
-        String str = formattedRead()[0];
+        String str = formattedRead("")[0];
         if (str.isEmpty()){
             return pDefault;
         }else if (str.equals("$exit")){
@@ -155,7 +155,9 @@ public class Main {
     /**
      * Selects the vocabulary of a lesson.
      * @param x current read string on which the lesson will be evaluated
-     * @return null if the user wants to exit. Otherwise, the user is recursively trapped until he makes a valid input. In this case the corresponding vocabulary is returned.
+     * @return null if the user wants to exit.
+     * Otherwise, the user is recursively trapped until he makes a valid input.
+     * In this case the corresponding vocabulary is returned.
      */
     private static List<Vocabulary> selectLesson(String[] x) throws IOException {
         try {
@@ -164,7 +166,7 @@ public class Main {
             System.out.println("Did not read a number!\r\n");
         }
         System.out.println(SELECT_LESSON);
-        return selectLesson(formattedRead());
+        return selectLesson(formattedRead(" "));
     }
 
     /**
@@ -179,7 +181,7 @@ public class Main {
         return switch (x[0]) {
             case "$help" -> {
                 System.out.println(SELECT_LESSON_HELP);
-                yield selectLesson(formattedRead());
+                yield selectLesson(formattedRead(" "));
             }
             case "$exit" -> null;
             case "$all", "" -> LessonSelector.getAll();
@@ -191,7 +193,7 @@ public class Main {
                 }else {
                     System.out.println("The range was not specified.\r\n");
                     System.out.println(SELECT_LESSON);
-                    yield selectLesson(formattedRead());
+                    yield selectLesson(formattedRead(" "));
                 }
             }
             default -> {
