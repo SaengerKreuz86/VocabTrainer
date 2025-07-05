@@ -96,6 +96,16 @@ public class LessonSelector {
         return out;
     }
 
+    /**
+     * Adds a vocabulary to a given List
+     * @param vocabularies List of vocabularies
+     * @param japanese japanese meanings
+     * @param englishGerman english/german meanings
+     */
+    private static void addVoc(List<Vocabulary> vocabularies, List<String> japanese, List<String> englishGerman){
+        vocabularies.add(new Vocabulary(japanese, englishGerman));
+    }
+
     private static List<Vocabulary> getL7(){
         List<Vocabulary> vocabularies = new ArrayList<>();
         // Japanese , English
