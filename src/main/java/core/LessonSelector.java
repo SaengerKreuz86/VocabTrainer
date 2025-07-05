@@ -2,6 +2,7 @@ package core;
 
 import lombok.experimental.UtilityClass;
 import model.Vocabulary;
+import model.VocabularyBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,17 +100,27 @@ public class LessonSelector {
     /**
      * Adds a vocabulary to a given List
      * @param vocabularies List of vocabularies
-     * @param japanese japanese meanings
-     * @param englishGerman english/german meanings
+     * @param jap single japanese meaning
+     * @param meanings translations into english/german of the japanese single one
      */
-    private static void addVoc(List<Vocabulary> vocabularies, List<String> japanese, List<String> englishGerman){
-        vocabularies.add(new Vocabulary(japanese, englishGerman));
+    private static void addSingle(List<Vocabulary> vocabularies, String jap, String... meanings){
+        vocabularies.add(new VocabularyBuilder().buildSingleJapanese(jap, meanings));
+    }
+    /**
+     * Adds a vocabulary to a given List
+     * @param vocabularies List of vocabularies
+     * @param jap1 first meaning of the japanese ones
+     * @param jap2 second meaning of the japanese ones
+     * @param meanings translations into english/german of the japanese words
+     */
+    private static void addDouble(List<Vocabulary> vocabularies, String jap1, String jap2, String... meanings){
+        vocabularies.add(new VocabularyBuilder().buildDoubleJapanese(jap1, jap2, meanings));
     }
 
     private static List<Vocabulary> getL7(){
         List<Vocabulary> vocabularies = new ArrayList<>();
         // Japanese , English
-        vocabularies.add(new Vocabulary(List.of("kirimasu"         ), List.of("cut", "slice", "schneiden")));
+        addSingle(vocabularies, "kirimasu", "cut", "slice", "schneiden");
         vocabularies.add(new Vocabulary(List.of("okurimasu"        ), List.of("send", "senden")));
         vocabularies.add(new Vocabulary(List.of("agemasu"          ), List.of("give", "geben")));
         vocabularies.add(new Vocabulary(List.of("moraimasu"        ), List.of("receive", "erhalten")));
