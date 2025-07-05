@@ -77,11 +77,11 @@ public class Main {
             System.out.println("Next vocabulary:\r");
             vocabulary = randomSelectVocabularyFrom(vocabularies);
             if ((int)(Math.random()*2)== 1){
-                System.out.println(vocabulary.getA());
-                solution = vocabulary.getB();
+                System.out.println(vocabulary.getJapanese());
+                solution = vocabulary.getEnglishGerman();
             }else {
-                System.out.println(vocabulary.getB());
-                solution = vocabulary.getA();
+                System.out.println(vocabulary.getEnglishGerman());
+                solution = vocabulary.getJapanese();
             }
             System.out.println("Waiting for input...\r\n");
             in = formattedRead(", ");
@@ -131,7 +131,7 @@ public class Main {
      * @return -1 if exit was read else number of rounds
      */
     private static int getRounds(int pDefault) throws IOException {
-        String str = formattedRead("")[0];
+        String str = formattedRead(" ")[0];
         if (str.isEmpty()){
             return pDefault;
         }else if (str.equals("$exit")){
