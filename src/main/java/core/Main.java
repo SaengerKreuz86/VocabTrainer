@@ -103,11 +103,11 @@ public class Main {
 
     private static boolean solutionIsCorrect(List<String> solution, String[] in) {
         for (String s : in) {
-            if (solution.contains(s)) {
-                return true;
+            if (!solution.contains(s)) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     /**
