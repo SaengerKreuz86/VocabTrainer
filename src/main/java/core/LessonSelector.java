@@ -88,71 +88,68 @@ public class LessonSelector {
      * @return List of all vocabularies
      */
     public static List<Vocabulary> getVocabulary(List<Integer> queriedLessons){
-        List<Vocabulary> out = new ArrayList<>();
+        List<Vocabulary> vocabularies = new ArrayList<>();
         for (int i : queriedLessons){
             if (lessons.get(i)!= null){
-                out.addAll(lessons.get(i));
+                vocabularies.addAll(lessons.get(i));
             }
         }
-        return out;
+        return vocabularies;
     }
 
     /**
-     * Adds a vocabulary to a given List
-     * @param vocabularies List of vocabularies
+     * returns a vocabulary based on the params
      * @param jap single japanese meaning
      * @param meanings translations into english/german of the japanese single one
      */
-    private static void addSingle(List<Vocabulary> vocabularies, String jap, String... meanings){
-        vocabularies.add(new VocabularyBuilder().buildSingleJapanese(jap, meanings));
+    private static Vocabulary singleJapanese(String jap, String... meanings){
+        return new VocabularyBuilder().buildSingleJapanese(jap, meanings);
     }
     /**
-     * Adds a vocabulary to a given List
-     * @param vocabularies List of vocabularies
+     * returns a vocabulary based on the params
      * @param jap1 first meaning of the japanese ones
      * @param jap2 second meaning of the japanese ones
      * @param meanings translations into english/german of the japanese words
      */
-    private static void addDouble(List<Vocabulary> vocabularies, String jap1, String jap2, String... meanings){
-        vocabularies.add(new VocabularyBuilder().buildDoubleJapanese(jap1, jap2, meanings));
+    private static Vocabulary doubleJapanese(String jap1, String jap2, String... meanings){
+        return new VocabularyBuilder().buildDoubleJapanese(jap1, jap2, meanings);
     }
 
     private static List<Vocabulary> getL7(){
-        List<Vocabulary> vocabularies = new ArrayList<>();
-        // Japanese , English
-        addSingle(vocabularies, "kirimasu", "cut", "slice", "schneiden");
-        vocabularies.add(new Vocabulary(List.of("okurimasu"        ), List.of("send", "senden")));
-        vocabularies.add(new Vocabulary(List.of("agemasu"          ), List.of("give", "geben")));
-        vocabularies.add(new Vocabulary(List.of("moraimasu"        ), List.of("receive", "erhalten")));
-        vocabularies.add(new Vocabulary(List.of("kashimasu"        ), List.of("lend", "ausleihen")));
-        vocabularies.add(new Vocabulary(List.of("karimasu"         ), List.of("borrow", "borgen")));
-        vocabularies.add(new Vocabulary(List.of("oshiemasu"        ), List.of("teach", "lehren")));
-        vocabularies.add(new Vocabulary(List.of("naraimasu"        ), List.of("learn", "lernen")));
-        vocabularies.add(new Vocabulary(List.of("kakemasu denwa"   ), List.of("make a phone call", "einen anruf machen")));
-        vocabularies.add(new Vocabulary(List.of("te"               ), List.of("hand", "arm")));
-        vocabularies.add(new Vocabulary(List.of("hashi"            ), List.of("chopsticks", "essstäbchen")));
-        vocabularies.add(new Vocabulary(List.of("supuun"           ), List.of("spoon", "löffel")));
-        vocabularies.add(new Vocabulary(List.of("naihu"            ), List.of("knife", "Messer")));
-        vocabularies.add(new Vocabulary(List.of("fooku"            ), List.of("fork", "gabel")));
-        vocabularies.add(new Vocabulary(List.of("hasami"           ), List.of("scissors", "schere")));
-        vocabularies.add(new Vocabulary(List.of("pasokon"          ), List.of("personal computer", "pc")));
-        vocabularies.add(new Vocabulary(List.of("panchi"           ), List.of("punch", "locher")));
-        vocabularies.add(new Vocabulary(List.of("hocchikisu"       ), List.of("stapler", "tacker")));
-        vocabularies.add(new Vocabulary(List.of("seroteipu"        ), List.of("scotch tape", "paket band")));
-        vocabularies.add(new Vocabulary(List.of("keshigomu"        ), List.of("eraser", "radiergummi")));
-        vocabularies.add(new Vocabulary(List.of("kami"             ), List.of("paper", "papier")));
-        vocabularies.add(new Vocabulary(List.of("hana"             ), List.of("flower", "blume")));
-        vocabularies.add(new Vocabulary(List.of("shatsu"           ), List.of("shirt", "hemd")));
-        vocabularies.add(new Vocabulary(List.of("purezento"        ), List.of("present", "gift", "geschenk")));
-        vocabularies.add(new Vocabulary(List.of("nimotsu"          ), List.of("baggage", "parcel", "paket")));
-        vocabularies.add(new Vocabulary(List.of("okane"            ), List.of("money", "geld")));
-        vocabularies.add(new Vocabulary(List.of("kippu"            ), List.of("ticket", "fahrkarte")));
-        vocabularies.add(new Vocabulary(List.of("otoosan"          ), List.of("someone else's father", "vater einer anderen")));
-        vocabularies.add(new Vocabulary(List.of("okaasan"          ), List.of("someone else's mother", "mutter einer anderen")));
-        vocabularies.add(new Vocabulary(List.of("itadakimasu"      ), List.of("thank you (before eat/drink)", "mahlzeit! (aber höflicher)")));
-        vocabularies.add(new Vocabulary(List.of("ryoko"            ), List.of("trip", "tour", "reise")));
-        vocabularies.add(new Vocabulary(List.of("miyage", "omiyage"   ), List.of("souvenir", "present", "mitbringsel")));
-        return vocabularies;
+        return List.of(
+                singleJapanese("kirimasu", "cut", "slice", "schneiden"),
+                singleJapanese("okurimasu", "send", "senden"),
+                singleJapanese("agemasu", "give", "geben"),
+                singleJapanese("moraimasu", "receive", "erhalten"),
+                singleJapanese("kashimasu", "lend", "ausleihen"),
+                singleJapanese("karimasu", "borrow", "borgen"),
+                singleJapanese("oshiemasu", "teach", "lehren"),
+                singleJapanese("naraimasu", "learn", "lernen"),
+                singleJapanese("kakemasu denwa", "make a phone call", "einen anruf machen"),
+                singleJapanese("te", "hand", "arm"),
+                singleJapanese("hashi", "chopsticks", "essstäbchen"),
+                singleJapanese("supuun", "spoon", "löffel"),
+                singleJapanese("naihu", "knife", "Messer"),
+                singleJapanese("fooku", "fork", "gabel"),
+                singleJapanese("hasami", "scissors", "schere"),
+                singleJapanese("pasokon", "personal computer", "pc", "computer"),
+                singleJapanese("panchi", "punch", "locher"),
+                singleJapanese("hocchikisu", "stapler", "tacker"),
+                singleJapanese("seroteipu", "scotch tape", "paket band"),
+                singleJapanese("keshigomu", "eraser", "radiergummi"),
+                singleJapanese("kami", "paper", "papier"),
+                singleJapanese("hana", "flower", "blume"),
+                singleJapanese("shatsu", "shirt", "hemd"),
+                singleJapanese("purezento", "present", "gift", "geschenk"),
+                singleJapanese("nimotsu", "baggage", "parcel", "paket"),
+                singleJapanese("okane", "money", "geld"),
+                singleJapanese("kippu", "ticket", "fahrkarte"),
+                singleJapanese("otoosan", "someone else's father", "vater einer anderen person"),
+                singleJapanese("okaasan", "someone else's mother", "mutter einer anderen person"),
+                singleJapanese("itadakimasu", "thank you (before eat/drink)", "guten appetit"),
+                singleJapanese("ryoko", "trip", "tour", "reise"),
+                doubleJapanese("miyage", "omiyage", "souvenir", "present", "mitbringsel")
+        );
     }
 
     private static List<Vocabulary> getL8(){
