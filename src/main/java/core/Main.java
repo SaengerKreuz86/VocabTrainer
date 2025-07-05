@@ -6,7 +6,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class Main {
     private static final String INTRO =
@@ -59,7 +58,7 @@ public class Main {
     private static void questionnaire(List<Vocabulary> vocabularies, int limiter) throws IOException {
         int correct = 0;
         int loopCounter = 0;
-        System.out.printf("Playing for %s rounds! %n", limiter);
+        System.out.printf("Playing for %s rounds! %n%n", limiter);
         System.out.println(PROCEED_TO_QUESTIONNAIRE);
         String in;
         List<String> solution;
@@ -86,6 +85,7 @@ public class Main {
                 System.out.println("Incorrect!");
             }
             System.out.printf("The solution was %s%n \r\n", solution);
+            System.out.println("------------------------------------");
             loopCounter++;
         }while (loopCounter < limiter);
         System.out.printf("You got %s out of %s right! %n%n", correct, limiter);
@@ -142,7 +142,7 @@ public class Main {
             return null;
         }
         List<Vocabulary> vocabularies = new ArrayList<>();
-        if (x.equals("$all")){
+        if (x.equals("$all")||x.isEmpty()){
             //TODO more
             getL7(vocabularies);
             getL8(vocabularies);
