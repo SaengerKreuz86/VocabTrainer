@@ -238,7 +238,7 @@ public class LessonSelector {
         vocabularies.add(new Vocabulary(List.of("mado"), List.of("window", "fenster")));
         vocabularies.add(new Vocabulary(List.of("posuto"), List.of("post", "postkasten")));
         vocabularies.add(new Vocabulary(List.of("biru"), List.of("building", "gebäude")));
-        vocabularies.add(new Vocabulary(List.of("kooen"), List.of("park")));
+        vocabularies.add(new Vocabulary(List.of("kooen"), List.of("park", "parc")));
         vocabularies.add(new Vocabulary(List.of("kissatan"), List.of("coffee shop", "cafe")));
         vocabularies.add(new Vocabulary(List.of("honya"), List.of("book store", "buchladen")));
         vocabularies.add(new Vocabulary(List.of("noriba"), List.of("haltestelle für taxi", "haltestelle für zug", "haltestelle für bus",
