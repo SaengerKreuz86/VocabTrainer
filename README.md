@@ -1,7 +1,7 @@
 # VocabTrainer
 This trainer will ask you questions about vocabulary. German/English to Japanese
 ## Building the project
-Building is done via maven.
+Building is done via maven. You will need Java 24
 ## Execution
 Open up console and navigate to the folder that contains the .jar file.
 Run as any jar file via 'java -jar VocabTrainer-1.0.jar'. You need to have java installed and set up correctly.
@@ -14,5 +14,5 @@ After that you will see:
 - English/German so that you must enter the correct Japanese word
 - Japanese so that you must enter the correct English/German word
 
-For now only one word answers are allowed. Multiple words within one answer will lead to an incorrect evaluation.
+Multiple words within one answer will lead to an incorrect evaluation when not all words are correct.
 At any point you can exit by typing '$exit'.
