@@ -83,6 +83,8 @@ public class Main {
                 System.out.println(vocabulary.getEnglishGerman());
                 solution = vocabulary.getJapanese();
             }
+            // norm the list. Everything is lowercase
+            solution = solution.stream().map(String::toLowerCase).toList();
             System.out.println("Waiting for input...\r\n");
             in = formattedRead(", ");
             if (in[0].equals("$exit")){

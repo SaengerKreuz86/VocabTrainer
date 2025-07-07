@@ -1,8 +1,12 @@
 1,wakarimasu,understand,verstehen
-2,suki,suki na,like,mögen
-3,kirai,kirai na,dislike,nicht mögen
-4,joozu,joozu na,good at,gut in etwas sein
-5,heta,heta na,bad at,schlecht in etwas sein
+2,suki
+2,suki na,like,mögen
+3,kirai
+3,kirai na,dislike,nicht mögen
+4,joozu
+4,joozu na,good at,gut in etwas sein
+5,heta
+5,heta na,bad at,schlecht in etwas sein
 6,ryori,cooking,cooked food,kochen,gekochtes essen
 7,nomimono,drinks,getränke
 8,supootsu,sport
@@ -17,7 +21,6 @@
 17,shujin,my husband,mein ehemann
 18,okusan,someone else's wife,ehefrau einer anderen
 19,tsuma,my wife,meine ehefrau
-20,wakarimasu,verstehen,understand
 21,arimasu,haben,besitzen,own
 22,sukoshi,a little,ein bisschen,ein wenig
 23,daitai,ungefähr,aproximately,ungefähr
