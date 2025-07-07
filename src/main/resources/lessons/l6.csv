@@ -1,0 +1,41 @@
+0,tabemasu,eat,essen
+1,nomimasu,drink,trinken
+2,suimasu,rauchen, smoke
+3,suimasu tabakowo,smoke a cigarette,eine Zigarette rauchen
+4,mimasu,see,look at,watch,sehen,(an) schauen
+5,kikimasu,hear,listen,(zu)höhren
+6,yomimasu,read,lesen
+7,kakimasu,write,draw,paint,schreiben
+8,kaimasu,buy,kaufen
+9,torimasu,torimasu (shashinwo),take (a photo),(ein Foto) machen
+10,aimasu,aimasu (tomodachi ni),meet,see (a friend),(einen Freund) treffen
+11,gohan,a meal,cooked rice,eine Mahlzeit,gekochter Reis
+12,asagohan,breakfast,Frühstück
+13,hirugohan,lunch,Mittagessen
+14,bangohan,dinner,Abendessen
+15,pan,bread,Brot
+16,tamago,egg,Ei
+17,niku,meat,Fleisch
+18,gyuniku,beef,Rindfleisch
+19,butaniku,pork,Schweinefleisch
+20,toriniku,chicken,Hühnerfleisch,Geflügelfleisch
+21,sakana,fish,Fisch
+22,yasai,vegetable,Gemüse
+23,kudamono,fruit,Obst
+24,mizu,water,Wasser
+25,ocha,tea,green tea,(grüner) Tee
+26,kocha,black tea,schwarzer Tee
+27,gyunyu,milk,Milch
+28,jusu,juice,Saft
+29,biru,beer,bier
+30,osake
+30,sake,alcohol,Alkohol
+31,ega,movie,Film
+32,shidi,CD
+33,tegami,letter,Brief
+34,shashin,photograph,Fotografie
+35,mise,store,shop,Gschäft,Laden
+36,resutoran,resturant,Resturant
+37,shukudai,homework,Hausaufgaben
+38,tenisu,tennis,Tennis
+39,sakka,soccer,Fußball

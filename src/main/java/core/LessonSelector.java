@@ -170,4 +170,53 @@ public class LessonSelector {
             return -1;
         }
     }
+
+
+    /* Template block
+    private static void getLX(List<Vocabulary> vocabularies) {
+        vocabularies.add(new Vocabulary(List.of("romanji"), List.of("eng", "ger")));
+    }
+     */
+
+    private static void getL6(List<Vocabulary> vocabularies) {
+        vocabularies.add(new Vocabulary(List.of("tabemasu"), List.of("eat", "essen")));
+        vocabularies.add(new Vocabulary(List.of("nomimasu"), List.of("drink", "trinken")));
+        vocabularies.add(new Vocabulary(List.of("suimasu", "suimasu (tabakowo)"), List.of("smoke (a cigarette)", "(eine Zigarette) rauchen)")));
+        vocabularies.add(new Vocabulary(List.of("mimasu"), List.of("see", "look at", "watch", "sehen", "(an) schauen")));
+        vocabularies.add(new Vocabulary(List.of("kikimasu"), List.of("hear", "listen", "(zu)höhren")));
+        vocabularies.add(new Vocabulary(List.of("yomimasu"), List.of("read", "lesen")));
+        vocabularies.add(new Vocabulary(List.of("kakimasu"), List.of("write", "draw", "paint", "schreiben")));
+        vocabularies.add(new Vocabulary(List.of("kaimasu"), List.of("buy", "kaufen")));
+        vocabularies.add(new Vocabulary(List.of("torimasu", "torimasu (shashinwo)"), List.of("take (a photo)", "(ein Foto) machen")));
+        vocabularies.add(new Vocabulary(List.of("aimasu", "aimasu (tomodachi ni)"), List.of("meet", "see (a friend)", "(einen Freund) treffen")));
+        vocabularies.add(new Vocabulary(List.of("gohan"), List.of("a meal", "cooked rice", "eine Mahlzeit", "gekochter Reis")));
+        vocabularies.add(new Vocabulary(List.of("asagohan"), List.of("breakfast", "Frühstück")));
+        vocabularies.add(new Vocabulary(List.of("hirugohan"), List.of("lunch", "Mittagessen")));
+        vocabularies.add(new Vocabulary(List.of("bangohan"), List.of("dinner", "Abendessen")));
+        vocabularies.add(new Vocabulary(List.of("pan"), List.of("bread", "Brot")));
+        vocabularies.add(new Vocabulary(List.of("tamago"), List.of("egg", "Ei")));
+        vocabularies.add(new Vocabulary(List.of("niku"), List.of("meat", "Fleisch")));
+        vocabularies.add(new Vocabulary(List.of("gyuniku"), List.of("beef", "Rindfleisch")));
+        vocabularies.add(new Vocabulary(List.of("butaniku"), List.of("pork", "Schweinefleisch")));
+        vocabularies.add(new Vocabulary(List.of("toriniku"), List.of("chicken", "Hühnerfleisch", "Geflügelfleisch")));
+        vocabularies.add(new Vocabulary(List.of("sakana"), List.of("fish", "Fisch")));
+        vocabularies.add(new Vocabulary(List.of("yasai"), List.of("vegetable", "Gemüse")));
+        vocabularies.add(new Vocabulary(List.of("kudamono"), List.of("fruit", "Obst")));
+        vocabularies.add(new Vocabulary(List.of("mizu"), List.of("water", "Wasser")));
+        vocabularies.add(new Vocabulary(List.of("ocha"), List.of("tea", "green tea", "(grüner) Tee")));
+        vocabularies.add(new Vocabulary(List.of("kocha"), List.of("black tea", "schwarzer Tee")));
+        vocabularies.add(new Vocabulary(List.of("gyunyu"), List.of("milk", "Milch")));
+        vocabularies.add(new Vocabulary(List.of("jusu"), List.of("juice", "Saft")));
+        vocabularies.add(new Vocabulary(List.of("biru"), List.of("beer", "bier")));
+        vocabularies.add(new Vocabulary(List.of("osake", "sake"), List.of("alcohol", "Alkohol")));
+        vocabularies.add(new Vocabulary(List.of("ega"), List.of("movie", "Film")));
+        vocabularies.add(new Vocabulary(List.of("shidi"), List.of("CD")));
+        vocabularies.add(new Vocabulary(List.of("tegami"), List.of("letter", "Brief")));
+        vocabularies.add(new Vocabulary(List.of("shashin"), List.of("photograph", "Fotografie")));
+        vocabularies.add(new Vocabulary(List.of("mise"), List.of("store", "shop", "Gschäft", "Laden")));
+        vocabularies.add(new Vocabulary(List.of("resutoran"), List.of("resturant", "Resturant")));
+        vocabularies.add(new Vocabulary(List.of("shukudai"), List.of("homework", "Hausaufgaben")));
+        vocabularies.add(new Vocabulary(List.of("tenisu"), List.of("tennis", "Tennis")));
+        vocabularies.add(new Vocabulary(List.of("sakka"), List.of("soccer", "Fußball")));
+    }
 }
