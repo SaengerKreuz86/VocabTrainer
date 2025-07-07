@@ -207,7 +207,7 @@ public class Main {
                 for (String s : x) {
                     ints.add(Integer.parseInt(s));
                 }
-                yield LessonSelector.getVocabulary(ints);
+                yield LessonSelector.getVocabularyByLessons(ints);
             }
         };
     }
