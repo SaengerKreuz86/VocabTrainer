@@ -135,7 +135,10 @@ public class LessonSelector {
                 continue;
             }
             if (idVoc.get(id)== null){
-                idVoc.put(id, getVocabulary(new ArrayList<>(Arrays.asList(values).subList(1, values.length))));
+                idVoc.put(id, new Vocabulary(
+                                new ArrayList<>(Collections.singleton(values[1])),
+                                new ArrayList<>(Arrays.asList(values).subList(2, values.length)))
+                );
             }else {
                 if (!idVoc.get(id).getJapanese().contains(values[1])){
                     List<String> mutable = new ArrayList<>(idVoc.get(id).getJapanese());
@@ -166,9 +169,5 @@ public class LessonSelector {
             Logger.getLogger("LessonSelector").warning("Malformed csv line processed.");
             return -1;
         }
-    }
-
-    private Vocabulary getVocabulary(List<String> strings){
-        return new Vocabulary(List.of(strings.getFirst()), strings.subList(1, strings.size()));
     }
 }
