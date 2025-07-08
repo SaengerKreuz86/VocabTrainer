@@ -64,6 +64,12 @@ public class Main {
         }
     }
 
+    /**
+     * User will be prompted to select a mode.
+     * Valid modes are lesson and theme which can be selected by the corresponding code word
+     * @param s mode of operation
+     * @return true if the user does not want to exit
+     */
     private static boolean selectMode(String s) throws IOException {
         return switch (s){
             case "$exit" -> false;
