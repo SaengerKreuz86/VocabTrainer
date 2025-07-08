@@ -23,7 +23,7 @@ public class Main {
             """;
     private static final String SELECT_MODE =
             """
-                Select the the mode. You can choose between lessons (type '$lesson') or themes (type '$themes')\r
+                Select the the mode. You can choose between lessons (type '$lesson') or themes (type '$theme')\r
             """;
     private static final String SELECT_THEMES =
             """
@@ -67,13 +67,13 @@ public class Main {
     private static boolean selectMode(String s) throws IOException {
         return switch (s){
             case "$exit" -> false;
-            case "$lessons"-> {
+            case "$lesson"-> {
                 System.out.println(SELECT_LESSON);
                 System.out.println(WAITING_FOR_INPUT + "\n");
                 doLessons();
                 yield true;
             }
-            case "$themes" -> {
+            case "$theme" -> {
                 System.out.println(SELECT_THEMES);
                 System.out.println(WAITING_FOR_INPUT + "\n");
                 doThemes(reader.readLine());
