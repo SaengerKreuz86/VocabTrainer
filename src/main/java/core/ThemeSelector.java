@@ -15,9 +15,9 @@ import java.util.logging.Logger;
 public class ThemeSelector {
     @Getter
     private static final List<String> COUNTER_NAMES = new ArrayList<>(List.of(
-            "book", "floor_of_building", "frequency",
+            "book", "floors_of_building", "frequency",
             "general", "glasses_cups", "long_slender",
-            "machine_vehicle", "order", "people",
+            "machines_vehicles", "order", "people",
             "small", "thin_flat"
     ));
 
