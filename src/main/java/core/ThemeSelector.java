@@ -8,9 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 @UtilityClass
@@ -36,7 +34,45 @@ public class ThemeSelector {
                 Logger.getLogger("ThemeSelector").warning("Counter for %s was skipped".formatted(counterName));
             }
         }
+        //some vocabularies are ambiguous. It's more fair to be lenient with the input
+        vocabularies = reduceListByName(vocabularies);
         return vocabularies;
+    }
+
+    /**
+     * Vocabularies that have the same exact japanese meanings will be combined to one vocabulary
+     * @param vocabularies List of vocabularies to be filtered and reduced
+     * @return new ArrayList with no ambiguity
+     */
+    public static List<Vocabulary> reduceListByName(List<Vocabulary> vocabularies) {
+        List<Vocabulary> out = new ArrayList<>();
+        // add merged doubles
+        for (int i = 0; i < vocabularies.size(); i++) {
+            Set<String> combined = new HashSet<>(vocabularies.get(i).getEnglishGerman());
+            for (int j = i+1; j < vocabularies.size(); j++) {
+                if (vocabularies.get(i).getJapanese().equals(vocabularies.get(j).getJapanese())){
+                    combined.addAll(vocabularies.get(j).getEnglishGerman());
+                    out.add(new Vocabulary(
+                            new ArrayList<>(vocabularies.get(i).getJapanese()),
+                            new ArrayList<>(combined)
+                    ));
+                }
+            }
+        }
+        // adds all words that are not yet contained in out but are in vocabularies
+        for (Vocabulary value : vocabularies) {
+            boolean canAdd = true;
+            for (Vocabulary vocabulary : out) {
+                if (vocabulary.getJapanese().equals(value.getJapanese())) {
+                    canAdd = false;
+                    break;
+                }
+            }
+            if (canAdd) {
+                out.add(value);
+            }
+        }
+        return out;
     }
 
     /**

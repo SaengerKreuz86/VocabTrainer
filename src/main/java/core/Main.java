@@ -92,6 +92,7 @@ public class Main {
      */
     private static void doThemes(String s) throws IOException {
         switch (s){
+            case "$exit" -> {}
             case "$counter" -> {
                 System.out.println(SELECT_COUNTER_MODE);
                 System.out.println(WAITING_FOR_INPUT);
@@ -104,6 +105,10 @@ public class Main {
                     }
                     questionnaire(vocabularies, limiter, "The categories are %s".formatted(ThemeSelector.getCOUNTER_NAMES()));
                 }
+            }
+            default -> {
+                System.out.println("Mode is not supported. Choose again.\r\n");
+                doThemes(reader.readLine());
             }
         }
     }
@@ -130,6 +135,7 @@ public class Main {
                 for (String name: counter){
                     vocabularies.addAll(ThemeSelector.getCounter(name));
                 }
+                vocabularies = ThemeSelector.reduceListByName(vocabularies);
                 yield vocabularies;
             }
         };
