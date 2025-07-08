@@ -13,13 +13,27 @@ public class Main {
                 Welcome to the VocabTrainer!\r
                 This trainer bases on the Japanese lessons by Mrs. Watanabe-Bussmann.\r
             """;
+    private static final String WAITING_FOR_INPUT = "Waiting for input...";
     private static final String SELECT_LESSON =
             """
                 Select the number of the lesson (-1 < x < 13). \r
                 Lesson 0 represents vocabulary mentioned outside of the general lessons.\r
                 Every other number will be ignored.\r
                 Type '$help' to display information about possible commands and inputs.\r
-                Waiting for input ...\r
+            """;
+    private static final String SELECT_MODE =
+            """
+                Select the the mode. You can choose between lessons (type '$lesson') or themes (type '$themes')\r
+            """;
+    private static final String SELECT_THEMES =
+            """
+                Select a theme. You can choose counter (type '$counter')\r
+            """;
+    private static final String SELECT_COUNTER_MODE =
+            """
+                Select all counters (type $all) or select specific ones (type 'name1, name2').\r
+                When choosing the latter note that it is necessary to part each counter name by a comma and a space ( ', ').\r
+                To see a list of all counter names type '$ls'.\r
             """;
     private static final String SELECT_LESSON_HELP =
             """
@@ -27,37 +41,116 @@ public class Main {
                 Type '$range' for a range of lessons. '$range 1 7' will yield all vocabularies from lesson 1 to 7.
                 '$range 8' will yield all vocabularies from lesson 8 to the latest lesson.\r
                 Typing '1 2 3 8' will yield the vocabularies of the lessons 1, 2, 3, and 8.\r
-                Waiting for input ...\r
             """;
     private static final String PROCEED_TO_QUESTIONNAIRE =
             """
-                In the following random vocabularies from the selected lesson will be questioned.\r
+                In the following random vocabularies that you selected beforehand will be questioned.\r
                 If it shows a Japanese word you need to answer with the corresponding English or German word.\r
                 Otherwise, answer with the corresponding Japanese word.\r
                 Typing one of the possible solutions is sufficient. However, you can type multiple.
                 They need to be separated by a comma and a space. 'a, b' is valid 'a b' or 'a,b' are not\r
-                You can exit by typing '$exit'. \r
+                You can exit by typing '$exit'.\r
             """;
     private static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     public static void main(String[] args) throws IOException {
-        System.out.println(INTRO + "\n");
+        System.out.println(INTRO);
         while (true){
-            System.out.println(SELECT_LESSON + "\n");
-            String[] lessons = formattedRead(" ");
-            List<Vocabulary> vocabularies = selectLesson(lessons);
-            if (vocabularies == null){
+            System.out.println(SELECT_MODE);
+            System.out.println(WAITING_FOR_INPUT);
+            if (!selectMode(reader.readLine())){
                 return;
             }
-            System.out.printf("Successfully selected lessons %n");
-            System.out.printf("The lesson contains %s vocabularies. %n", vocabularies.size());
-            System.out.println("Please define how many rounds you want to do. Must be a single number.");
-            int limiter = getRounds(vocabularies.size()/2);
-            if (limiter == -1){
-                return;
-            }
-            questionnaire(vocabularies, limiter);
         }
+    }
+
+    private static boolean selectMode(String s) throws IOException {
+        return switch (s){
+            case "$exit" -> false;
+            case "$lessons"-> {
+                System.out.println(SELECT_LESSON);
+                System.out.println(WAITING_FOR_INPUT + "\n");
+                doLessons();
+                yield true;
+            }
+            case "$themes" -> {
+                System.out.println(SELECT_THEMES);
+                System.out.println(WAITING_FOR_INPUT + "\n");
+                doThemes(reader.readLine());
+                yield true;
+            }
+            default -> {
+                System.out.println("Unexpected value: " + s + "\r\n");
+                yield true;
+            }
+        };
+    }
+
+    /**
+     * Selects possible themes
+     * @param s theme
+     */
+    private static void doThemes(String s) throws IOException {
+        switch (s){
+            case "$counter" -> {
+                System.out.println(SELECT_COUNTER_MODE);
+                System.out.println(WAITING_FOR_INPUT);
+                List<Vocabulary> vocabularies = getCounterMode(reader.readLine());
+                if (!vocabularies.isEmpty()){
+                    System.out.println("Please define how many rounds you want to do. Must be a single number.");
+                    int limiter = getRounds(vocabularies.size()/2);
+                    if (limiter == -1){ //exit command was triggered
+                        return;
+                    }
+                    questionnaire(vocabularies, limiter, "The categories are %s".formatted(ThemeSelector.getCOUNTER_NAMES()));
+                }
+            }
+        }
+    }
+
+    /**
+     * Selects possible counter modes. Supported are $all yielding all possible counters, and specific by name yielding the correlating counter.
+     * Typing $list will list all possible names of the counters.
+     * @param mode mode of operation
+     * @return List of the selected counter vocabularies
+     */
+    private static List<Vocabulary> getCounterMode(String mode) throws IOException {
+        return switch (mode){
+            case "$exit" -> new ArrayList<>();
+            case "$all","" -> ThemeSelector.getCounter();
+            case "$ls"-> {
+                System.out.println(ThemeSelector.getCOUNTER_NAMES());
+                System.out.println("Select a mode as mentioned above!\r");
+                System.out.println(WAITING_FOR_INPUT);
+                yield getCounterMode(reader.readLine());
+            }
+            default -> {
+                String[] counter = mode.split(" ");
+                List<Vocabulary> vocabularies = new ArrayList<>();
+                for (String name: counter){
+                    vocabularies.addAll(ThemeSelector.getCounter(name));
+                }
+                yield vocabularies;
+            }
+        };
+    }
+
+    /**
+     * Processes selecting lessons
+     */
+    private static void doLessons() throws IOException {
+        String[] lessons = formattedRead(" ");
+        List<Vocabulary> vocabularies = selectLesson(lessons);
+        if (vocabularies == null){
+            return;
+        }
+        System.out.printf("Successfully selected lessons %n");
+        System.out.println("Please define how many rounds you want to do. Must be a single number.");
+        int limiter = getRounds(vocabularies.size()/2);
+        if (limiter == -1){ //exit command was triggered
+            return;
+        }
+        questionnaire(vocabularies, limiter,"Only god can help you.\r");
     }
 
     /**
@@ -65,43 +158,74 @@ public class Main {
      * @param vocabularies List from which the questions will be drawn.
      * @param limiter Max amount of questions
      */
-    private static void questionnaire(List<Vocabulary> vocabularies, int limiter) throws IOException {
-        int correct = 0;
-        int loopCounter = 0;
+    private static void questionnaire(List<Vocabulary> vocabularies, int limiter, String info) throws IOException {
+        System.out.printf("The list of vocabularies contains %s vocabularies. %n", vocabularies.size());
         System.out.printf("Playing for %s rounds! %n%n", limiter);
         System.out.println(PROCEED_TO_QUESTIONNAIRE);
-        String[] in;
+        int correct = 0;
+        int loopCounter = 0;
         List<String> solution;
         Vocabulary vocabulary;
         do {
             System.out.println("Next vocabulary:\r");
             vocabulary = randomSelectVocabularyFrom(vocabularies);
-            if ((int)(Math.random()*2)== 1){
-                System.out.println(vocabulary.getJapanese());
-                solution = vocabulary.getEnglishGerman();
-            }else {
-                System.out.println(vocabulary.getEnglishGerman());
-                solution = vocabulary.getJapanese();
-            }
+            solution = getSolution(vocabulary);
             // norm the list. Everything is lowercase
             solution = solution.stream().map(String::toLowerCase).toList();
-            System.out.println("Waiting for input...\r\n");
-            in = formattedRead(", ");
-            if (in[0].equals("$exit")){
+            System.out.println(WAITING_FOR_INPUT);
+            // process user input
+            int answer = processQuestionsAnswer(solution, info);
+            if (answer == -1){
                 return;
-            }
-            //--- check correctness of solutions ---
-            if (solutionIsCorrect(solution, in)){
-                System.out.println("Correct!");
-                correct++;
             }else {
-                System.out.println("Incorrect!");
+                correct += answer;
             }
             System.out.printf("The solution was %s%n \r\n", solution);
             System.out.println("------------------------------------");
             loopCounter++;
         }while (loopCounter < limiter);
         System.out.printf("You got %s out of %s right! %n%n", correct, limiter);
+    }
+
+    /**
+     * randomly selects which meanings the user will have to guess (japanese or english/german)
+     * @param vocabulary Vocabulary which will be questioned
+     * @return The solutions of a vocabulary
+     */
+    private static List<String> getSolution(Vocabulary vocabulary){
+        // randomly choose english/german or japanese word to question
+        if ((int)(Math.random()*2)== 1){
+            System.out.println(vocabulary.getJapanese());
+            return vocabulary.getEnglishGerman();
+        }else {
+            System.out.println(vocabulary.getEnglishGerman());
+            return vocabulary.getJapanese();
+        }
+    }
+
+    /**
+     * Processes the input of the user after being asked a vocabulary question. If they type $exit the mode will be left.
+     * If they type $help they will get the info string displayed. Otherwise, their input will be checked for correctness.
+     * @param solution Valid solutions for a word
+     * @param info info string displayed after typing the $help
+     * @return -1 if exit was read, 1 if answer correct, 0 if answer incorrect.
+     */
+    private static int processQuestionsAnswer(List<String> solution, String info) throws IOException {
+        String[] in = formattedRead(", ");
+        //check for commands
+        if (in[0].equals("$exit")){
+            return -1;
+        }else if (in[0].equals("$help") && info != null){
+            System.out.println(info);
+            return processQuestionsAnswer(solution, info); // read new answer
+        }
+        if (solutionIsCorrect(solution, in)){ //--- check correctness of solutions ---
+            System.out.println("Correct!");
+            return 1;
+        }else {
+            System.out.println("Incorrect!");
+            return 0;
+        }
     }
 
     /**
