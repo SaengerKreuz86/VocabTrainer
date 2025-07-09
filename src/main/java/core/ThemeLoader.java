@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.util.*;
 import java.util.logging.Logger;
 
+import static core.SystemInReader.getReader;
+
 @UtilityClass
 public class ThemeLoader {
     private static final String CLASS_NAME = "ThemeSelector";
@@ -65,18 +67,6 @@ public class ThemeLoader {
         return vocabularies;
     }
 
-    /**
-     * Creates a buffered reader that reads from a file
-     * @param path that leads to the file being read.
-     * @return Buffered SystemInReader which takes the file of the specified path as input
-     */
-    private static BufferedReader getReader(String path) throws IOException {
-        InputStream is = LessonLoader.class.getClassLoader().getResourceAsStream(path);
-        if (is == null){
-            throw new IOException();
-        }
-        return new BufferedReader(new InputStreamReader(is));
-    }
 
     /**
      * Gets the vocabularies for the days of a month

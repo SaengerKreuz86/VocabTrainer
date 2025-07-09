@@ -114,16 +114,9 @@ public class LessonLoader {
      * If there are multiple japanese words within one file that have the same meaning they must have the same id.
      * @param name name of the file without the ending '.csv'
      * @return List of Vocabularies that the file contains
-     * @throws IOException
      */
     private static List<Vocabulary> getCSVVocabulary(String name) throws IOException {
-        InputStream is = LessonLoader.class.getClassLoader().getResourceAsStream("lessons/%s.csv".formatted(name));
-        BufferedReader br;
-        if (is != null) {
-            br = new BufferedReader(new InputStreamReader(is));
-        }else {
-            return new ArrayList<>();
-        }
+        BufferedReader br = SystemInReader.getReader("lessons/%s.csv".formatted(name));
         String line;
         Map<Integer, Vocabulary> idVoc= new HashMap<>();
         while ((line = br.readLine()) != null){
@@ -170,11 +163,4 @@ public class LessonLoader {
             return -1;
         }
     }
-
-
-    /* Template block
-    private static void getLX(List<Vocabulary> vocabularies) {
-        vocabularies.add(new Vocabulary(List.of("romanji"), List.of("eng", "ger")));
-    }
-     */
 }

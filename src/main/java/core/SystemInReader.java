@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -37,5 +38,18 @@ public class SystemInReader {
         }finally {
             readLock.unlock();
         }
+    }
+
+    /**
+     * Creates a buffered reader that reads from a file
+     * @param path that leads to the file being read.
+     * @return Buffered SystemInReader which takes the file of the specified path as input
+     */
+    public static BufferedReader getReader(String path) throws IOException {
+        InputStream is = LessonLoader.class.getClassLoader().getResourceAsStream(path);
+        if (is == null){
+            throw new IOException();
+        }
+        return new BufferedReader(new InputStreamReader(is));
     }
 }
