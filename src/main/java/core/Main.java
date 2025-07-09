@@ -23,7 +23,7 @@ public class Main {
         while (true){
             System.out.println(SELECT_MODE);
             System.out.println(WAITING_FOR_INPUT);
-            if (!selectMode(reader.readLine())){
+            if (!selectMode(readLine())){
                 return;
             }
         }
