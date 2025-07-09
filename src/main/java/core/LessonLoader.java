@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 @UtilityClass
-public class LessonSelector {
+public class LessonLoader {
     private static final Map<Integer, List<Vocabulary>> lessons = new HashMap<>();
     private static final String CSV_COMMA_DELIMITER = ",";
     static {
@@ -117,7 +117,7 @@ public class LessonSelector {
      * @throws IOException
      */
     private static List<Vocabulary> getCSVVocabulary(String name) throws IOException {
-        InputStream is = LessonSelector.class.getClassLoader().getResourceAsStream("lessons/%s.csv".formatted(name));
+        InputStream is = LessonLoader.class.getClassLoader().getResourceAsStream("lessons/%s.csv".formatted(name));
         BufferedReader br;
         if (is != null) {
             br = new BufferedReader(new InputStreamReader(is));

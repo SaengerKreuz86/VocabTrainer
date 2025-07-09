@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 @UtilityClass
-public class ThemeSelector {
+public class ThemeLoader {
     private static final String CLASS_NAME = "ThemeSelector";
     @Getter
     private static final List<String> COUNTER_NAMES = new ArrayList<>(List.of(
@@ -58,7 +58,7 @@ public class ThemeSelector {
     }
 
     private static BufferedReader getReader(String path) throws IOException {
-        InputStream is = LessonSelector.class.getClassLoader().getResourceAsStream(path);
+        InputStream is = LessonLoader.class.getClassLoader().getResourceAsStream(path);
         if (is == null){
             throw new IOException();
         }

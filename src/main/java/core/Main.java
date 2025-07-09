@@ -108,7 +108,7 @@ public class Main {
                 System.out.println(SELECT_COUNTER_MODE);
                 System.out.println(WAITING_FOR_INPUT);
                 List<Vocabulary> vocabularies = getCounterMode(reader.readLine());
-                processQuestioning(vocabularies, "The categories are %s".formatted(ThemeSelector.getCOUNTER_NAMES()));
+                processQuestioning(vocabularies, "The categories are %s".formatted(ThemeLoader.getCOUNTER_NAMES()));
             }
             case "$days" -> {
                 System.out.println(SELECT_DAYS_MODE);
@@ -141,17 +141,17 @@ public class Main {
         System.out.println();
         return switch (mode){
             case "$exit" -> new ArrayList<>();
-            case "$all", "" -> ThemeSelector.getDays();
+            case "$all", "" -> ThemeLoader.getDays();
             case "$weekdays" -> {
                 try {
-                    yield ThemeSelector.getWeek();
+                    yield ThemeLoader.getWeek();
                 } catch (IOException e) {
                     yield new ArrayList<>();
                 }
             }
             case "$month" -> {
                 try {
-                    yield ThemeSelector.getMonth();
+                    yield ThemeLoader.getMonth();
                 } catch (IOException e) {
                     yield new ArrayList<>();
                 }
@@ -173,9 +173,9 @@ public class Main {
         System.out.println();
         return switch (mode){
             case "$exit" -> new ArrayList<>();
-            case "$all","" -> ThemeSelector.getCounter();
+            case "$all","" -> ThemeLoader.getCounter();
             case "$ls"-> {
-                System.out.println(ThemeSelector.getCOUNTER_NAMES());
+                System.out.println(ThemeLoader.getCOUNTER_NAMES());
                 System.out.println("Select a mode as mentioned above!\r");
                 System.out.println(WAITING_FOR_INPUT);
                 yield getCounterMode(reader.readLine());
@@ -184,9 +184,9 @@ public class Main {
                 String[] counter = mode.split(" ");
                 List<Vocabulary> vocabularies = new ArrayList<>();
                 for (String name: counter){
-                    vocabularies.addAll(ThemeSelector.getCounter(name));
+                    vocabularies.addAll(ThemeLoader.getCounter(name));
                 }
-                vocabularies = ThemeSelector.reduceListByName(vocabularies);
+                vocabularies = ThemeLoader.reduceListByName(vocabularies);
                 yield vocabularies;
             }
         };
@@ -376,12 +376,12 @@ public class Main {
                 yield selectLesson(formattedRead(" "));
             }
             case "$exit" -> null;
-            case "$all", "" -> LessonSelector.getAll();
+            case "$all", "" -> LessonLoader.getAll();
             case "$range" -> {
                 if (x.length == 3){
-                    yield LessonSelector.getRange(Integer.parseInt(x[1]), Integer.parseInt(x[2]));
+                    yield LessonLoader.getRange(Integer.parseInt(x[1]), Integer.parseInt(x[2]));
                 }else if (x.length == 2){
-                    yield LessonSelector.getRange(Integer.parseInt(x[1]));
+                    yield LessonLoader.getRange(Integer.parseInt(x[1]));
                 }else {
                     System.out.println("The range was not specified.\r\n");
                     System.out.println(SELECT_LESSON);
@@ -393,7 +393,7 @@ public class Main {
                 for (String s : x) {
                     ints.add(Integer.parseInt(s));
                 }
-                yield LessonSelector.getVocabularyByLessons(ints);
+                yield LessonLoader.getVocabularyByLessons(ints);
             }
         };
     }
