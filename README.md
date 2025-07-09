@@ -1,5 +1,5 @@
 # VocabTrainer
-This trainer will ask you questions about vocabulary. German/English to Japanese. It works inside the console.
+This trainer bases on the japanese upb course. It will ask you questions about vocabulary. German/English to Japanese. It works inside the console.
 ## Building the project
 Building is done via maven. You will need Java 24
 ## Execution
