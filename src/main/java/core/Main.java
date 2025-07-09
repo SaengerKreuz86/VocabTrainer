@@ -10,11 +10,11 @@ public class Main {
                 Welcome to the VocabTrainer!\r
                 This trainer bases on the Japanese lessons by Mrs. Watanabe-Bussmann.\r
             """;
-    protected static final String WAITING_FOR_INPUT = "Waiting for input...";
     private static final String SELECT_MODE =
             """
                 Select the the mode. You can choose between lessons (type '$lesson') or themes (type '$theme')\r
             """;
+    protected static final String WAITING_FOR_INPUT = "Waiting for input...";
 
     public static void main(String[] args) throws IOException {
         System.out.println(INTRO);
