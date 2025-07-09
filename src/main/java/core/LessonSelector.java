@@ -2,13 +2,14 @@ package core;
 
 import model.Vocabulary;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static core.Main.*;
 import static core.QuestionEvaluator.processQuestioning;
-import static core.SystemInReader.formattedRead;
+import static core.ReaderUtility.formattedRead;
 
 public class LessonSelector {
 
@@ -30,16 +31,16 @@ public class LessonSelector {
     /**
      * Processes selecting lessons
      */
-    public static void doLessons() throws IOException {
+    public static void doLessons(BufferedReader br) throws IOException {
         //recurses as often as the user wants it
         System.out.println(SELECT_LESSON);
         System.out.println(WAITING_FOR_INPUT);
-        String[] lessons = formattedRead(" ");
-        List<Vocabulary> vocabularies = selectLesson(lessons);
+        String[] lessons = formattedRead(br," ");
+        List<Vocabulary> vocabularies = selectLesson(br,lessons);
         if (vocabularies != null){
             System.out.printf("Successfully selected lessons %n");
-            processQuestioning(vocabularies);
-            doLessons();
+            processQuestioning(br,vocabularies);
+            doLessons(br);
         }
     }
 
@@ -50,14 +51,14 @@ public class LessonSelector {
      * Otherwise, the user is recursively trapped until he makes a valid input.
      * In this case the corresponding vocabulary is returned.
      */
-    private static List<Vocabulary> selectLesson(String[] x) throws IOException {
+    private static List<Vocabulary> selectLesson(BufferedReader br, String[] x) throws IOException {
         try {
-            return evalTriggerForLessonSelector(x);
+            return evalTriggerForLessonSelector(br,x);
         }catch (NumberFormatException e){
             System.out.println("Did not read a number!\r\n");
         }
         System.out.println(SELECT_LESSON);
-        return selectLesson(formattedRead(" "));
+        return selectLesson(br,formattedRead(br," "));
     }
 
     /**
@@ -68,12 +69,12 @@ public class LessonSelector {
      * @param x List of the inputs
      * @return List of vocabularies
      */
-    private static List<Vocabulary> evalTriggerForLessonSelector(String[] x) throws IOException {
+    private static List<Vocabulary> evalTriggerForLessonSelector(BufferedReader br, String[] x) throws IOException {
         System.out.println();
         return switch (x[0]) {
             case "$help" -> {
                 System.out.println(SELECT_LESSON_HELP);
-                yield selectLesson(formattedRead(" "));
+                yield selectLesson(br,formattedRead(br," "));
             }
             case "$exit" -> null;
             case "$all", "" -> LessonLoader.getAll();
@@ -85,7 +86,7 @@ public class LessonSelector {
                 }else {
                     System.out.println("The range was not specified.\r\n");
                     System.out.println(SELECT_LESSON);
-                    yield selectLesson(formattedRead(" "));
+                    yield selectLesson(br,formattedRead(br," "));
                 }
             }
             default -> {

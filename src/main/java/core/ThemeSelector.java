@@ -3,13 +3,14 @@ package core;
 import lombok.experimental.UtilityClass;
 import model.Vocabulary;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static core.Main.*;
 import static core.QuestionEvaluator.processQuestioning;
-import static core.SystemInReader.readLine;
+import static core.ReaderUtility.readLine;
 
 @UtilityClass
 public class ThemeSelector {
@@ -32,28 +33,28 @@ public class ThemeSelector {
     /**
      * Selects possible themes
      */
-    public static void doThemes() throws IOException {
+    public static void doThemes(BufferedReader br) throws IOException {
         System.out.println(SELECT_THEMES);
         System.out.println(WAITING_FOR_INPUT);
-        String s = readLine();
+        String s = readLine(br);
         System.out.println();
         switch (s){
             case "$exit" -> {return;}
             case "$counter" -> {
                 System.out.println(SELECT_COUNTER_MODE);
                 System.out.println(WAITING_FOR_INPUT);
-                List<Vocabulary> vocabularies = getCounterMode(readLine());
-                processQuestioning(vocabularies, "The categories are %s".formatted(ThemeLoader.getCOUNTER_NAMES()));
+                List<Vocabulary> vocabularies = getCounterMode(br,readLine(br));
+                processQuestioning(br,vocabularies, "The categories are %s".formatted(ThemeLoader.getCOUNTER_NAMES()));
             }
             case "$days" -> {
                 System.out.println(SELECT_DAYS_MODE);
                 System.out.println(WAITING_FOR_INPUT);
-                List<Vocabulary> vocabularies = getDaysMode(readLine());
-                processQuestioning(vocabularies);
+                List<Vocabulary> vocabularies = getDaysMode(readLine(br));
+                processQuestioning(br,vocabularies);
             }
             default -> System.out.println("Mode is not supported.\r\n");
         }
-        doThemes();
+        doThemes(br);
     }
 
     private static List<Vocabulary> getDaysMode(String mode){
@@ -88,7 +89,7 @@ public class ThemeSelector {
      * @param mode mode of operation
      * @return List of the selected counter vocabularies
      */
-    private static List<Vocabulary> getCounterMode(String mode) throws IOException {
+    private static List<Vocabulary> getCounterMode(BufferedReader br,String mode) throws IOException {
         System.out.println();
         return switch (mode){
             case "$exit" -> new ArrayList<>();
@@ -97,7 +98,7 @@ public class ThemeSelector {
                 System.out.println(ThemeLoader.getCOUNTER_NAMES());
                 System.out.println("Select a mode as mentioned above!\r");
                 System.out.println(WAITING_FOR_INPUT);
-                yield getCounterMode(readLine());
+                yield getCounterMode(br,readLine(br));
             }
             default -> {
                 String[] counter = mode.split(" ");

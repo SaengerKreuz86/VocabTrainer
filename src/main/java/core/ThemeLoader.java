@@ -6,12 +6,10 @@ import model.Vocabulary;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.*;
 import java.util.logging.Logger;
 
-import static core.SystemInReader.getReader;
+import static core.ReaderUtility.getReader;
 
 @UtilityClass
 public class ThemeLoader {

@@ -1,8 +1,10 @@
 package core;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
-import static core.SystemInReader.readLine;
+import static core.ReaderUtility.readLine;
 
 public class Main {
     private static final String INTRO =
@@ -17,11 +19,12 @@ public class Main {
     protected static final String WAITING_FOR_INPUT = "Waiting for input...";
 
     public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println(INTRO);
         while (true){
             System.out.println(SELECT_MODE);
             System.out.println(WAITING_FOR_INPUT);
-            if (!selectMode(readLine())){
+            if (!selectMode(br, readLine(br))){
                 return;
             }
         }
@@ -33,16 +36,16 @@ public class Main {
      * @param s mode of operation
      * @return true if the user does not want to exit
      */
-    private static boolean selectMode(String s) throws IOException {
+    private static boolean selectMode(BufferedReader br, String s) throws IOException {
         System.out.println();
         return switch (s){
             case "$exit" -> false;
             case "$lesson"-> {
-                LessonSelector.doLessons();
+                LessonSelector.doLessons(br);
                 yield true;
             }
             case "$theme" -> {
-                ThemeSelector.doThemes();
+                ThemeSelector.doThemes(br);
                 yield true;
             }
             default -> {

@@ -9,16 +9,15 @@ import java.io.InputStreamReader;
 import java.util.concurrent.locks.ReentrantLock;
 
 @UtilityClass
-public class SystemInReader {
-    private static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+public class ReaderUtility {
     private final ReentrantLock readLock = new ReentrantLock();
 
     /**
-     * Reads a line from the console input and formats it into lowercase
+     * Reads a line from the input and formats it into lowercase
      * @param split Splits the read string by the specified regex
      * @return lowercase String array
      */
-    public static String[] formattedRead(String split) throws IOException {
+    public static String[] formattedRead(BufferedReader reader, String split) throws IOException {
         readLock.lock();
         try {
             return reader.readLine().toLowerCase().split(split);
@@ -31,7 +30,7 @@ public class SystemInReader {
      * Reads a full line and makes it lowercase
      * @return lowercase String
      */
-    public static String readLine() throws IOException {
+    public static String readLine(BufferedReader reader) throws IOException {
         readLock.lock();
         try {
             return reader.readLine().toLowerCase();

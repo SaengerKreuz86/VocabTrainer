@@ -3,12 +3,13 @@ package core;
 import lombok.experimental.UtilityClass;
 import model.Vocabulary;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
 import static core.Main.*;
-import static core.SystemInReader.formattedRead;
-import static core.SystemInReader.readLine;
+import static core.ReaderUtility.formattedRead;
+import static core.ReaderUtility.readLine;
 
 @UtilityClass
 public class QuestionEvaluator {
@@ -28,14 +29,14 @@ public class QuestionEvaluator {
      * @param vocabularies List of vocabularies to question from
      * @param info Help given for the user
      */
-    public static void processQuestioning(List<Vocabulary> vocabularies, String info) throws IOException {
+    public static void processQuestioning(BufferedReader br,List<Vocabulary> vocabularies, String info) throws IOException {
         if (!vocabularies.isEmpty()){
             System.out.println("Please define how many rounds you want to do. Must be a single number.");
-            int limiter = getRounds(vocabularies.size()/2);
+            int limiter = getRounds(br,vocabularies.size()/2);
             if (limiter == -1){ //exit command was triggered
                 return;
             }
-            questionnaire(vocabularies, limiter, info);
+            questionnaire(br,vocabularies, limiter, info);
         }
     }
 
@@ -43,8 +44,8 @@ public class QuestionEvaluator {
      * Processes the questioning. Determines how many rounds are done and questions the user. Neglects giving helpful information
      * @param vocabularies List of vocabularies to question from
      */
-    public static void processQuestioning(List<Vocabulary> vocabularies) throws IOException {
-        processQuestioning(vocabularies, "Only god can help you.\r\n");
+    public static void processQuestioning(BufferedReader br, List<Vocabulary> vocabularies) throws IOException {
+        processQuestioning(br,vocabularies, "Only god can help you.\r\n");
     }
 
     /**
@@ -52,7 +53,7 @@ public class QuestionEvaluator {
      * @param vocabularies List from which the questions will be drawn.
      * @param limiter Max amount of questions
      */
-    private static void questionnaire(List<Vocabulary> vocabularies, int limiter, String info) throws IOException {
+    private static void questionnaire(BufferedReader br,List<Vocabulary> vocabularies, int limiter, String info) throws IOException {
         System.out.printf("The list of vocabularies contains %s vocabularies. %n", vocabularies.size());
         System.out.printf("Playing for %s rounds! %n%n", limiter);
         System.out.println(PROCEED_TO_QUESTIONNAIRE);
@@ -68,7 +69,7 @@ public class QuestionEvaluator {
             solution = solution.stream().map(String::toLowerCase).toList();
             System.out.println(WAITING_FOR_INPUT);
             // process user input
-            int answer = processQuestionsAnswer(solution, info);
+            int answer = processQuestionsAnswer(br, solution, info);
             if (answer == -1){
                 return;
             }else {
@@ -88,14 +89,14 @@ public class QuestionEvaluator {
      * @param info info string displayed after typing the $help
      * @return -1 if exit was read, 1 if answer correct, 0 if answer incorrect.
      */
-    private static int processQuestionsAnswer(List<String> solution, String info) throws IOException {
-        String[] in = formattedRead(", ");
+    private static int processQuestionsAnswer(BufferedReader br, List<String> solution, String info) throws IOException {
+        String[] in = formattedRead(br, ", ");
         //check for commands
         if (in[0].equals("$exit")){
             return -1;
         }else if (in[0].equals("$help") && info != null){
             System.out.println(info);
-            return processQuestionsAnswer(solution, info); // read new answer
+            return processQuestionsAnswer(br, solution, info); // read new answer
         }
         if (solutionIsCorrect(solution, in)){ //--- check correctness of solutions ---
             System.out.println("Correct!");
@@ -111,8 +112,8 @@ public class QuestionEvaluator {
      * @param pDefault default value for number of rounds
      * @return -1 if exit was read else number of rounds
      */
-    private static int getRounds(int pDefault) throws IOException {
-        String str = readLine();
+    private static int getRounds(BufferedReader br,int pDefault) throws IOException {
+        String str = readLine(br);
         if (str.isEmpty()){
             return pDefault;
         }else if (str.equals("$exit")){
@@ -124,7 +125,7 @@ public class QuestionEvaluator {
             } catch (NumberFormatException e) {
                 System.out.printf("Invalid value for %s%n", str);
                 System.out.println("Write the number again!");
-                return getRounds(pDefault);
+                return getRounds(br, pDefault);
             }
         }
     }
