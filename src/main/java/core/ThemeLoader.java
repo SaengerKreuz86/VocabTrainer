@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 @UtilityClass
 public class ThemeLoader {
     private static final String CLASS_NAME = "ThemeSelector";
-    @Getter
+    @Getter // categories for the counter
     private static final List<String> COUNTER_NAMES = new ArrayList<>(List.of(
             "book", "floors_of_buildings", "frequency",
             "general", "glasses_cups", "long_slender",
@@ -22,6 +22,10 @@ public class ThemeLoader {
             "small", "thin_flat"
     ));
 
+    /**
+     * Gets a list for the vocabularies of the days directory, week days and the days of a month.
+     * @return List of vocabularies
+     */
     public static List<Vocabulary> getDays(){
         List<Vocabulary> vocabularies = new ArrayList<>();
         try {
@@ -37,6 +41,10 @@ public class ThemeLoader {
         return vocabularies;
     }
 
+    /**
+     * Collects the vocabularies for week days
+     * @return List of vocabularies
+     */
     public static List<Vocabulary> getWeek() throws IOException {
         BufferedReader br = getReader("themes/days/week.csv");
         List<Vocabulary> vocabularies = new ArrayList<>();
@@ -57,6 +65,11 @@ public class ThemeLoader {
         return vocabularies;
     }
 
+    /**
+     * Creates a buffered reader that reads from a file
+     * @param path that leads to the file being read.
+     * @return Buffered Reader which takes the file of the specified path as input
+     */
     private static BufferedReader getReader(String path) throws IOException {
         InputStream is = LessonLoader.class.getClassLoader().getResourceAsStream(path);
         if (is == null){
@@ -65,6 +78,10 @@ public class ThemeLoader {
         return new BufferedReader(new InputStreamReader(is));
     }
 
+    /**
+     * Gets the vocabularies for the days of a month
+     * @return List of vocabularies
+     */
     public static List<Vocabulary> getMonth() throws IOException {
         BufferedReader br = getReader("themes/days/month.csv");
         List<Vocabulary> vocabularies = new ArrayList<>();
