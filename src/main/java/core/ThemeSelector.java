@@ -1,0 +1,110 @@
+package core;
+
+import model.Vocabulary;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static core.Main.*;
+import static core.QuestionEvaluator.processQuestioning;
+
+public class ThemeSelector {
+
+    private static final String SELECT_THEMES =
+            """
+                Select a theme. You can choose counter (type '$counter') or days (type '$days')\r
+            """;
+    private static final String SELECT_DAYS_MODE =
+            """
+                You can choose between weekdays (type '$weekdays'), days of the month (type '$month'), or all (type '$all')\r
+            """;
+    private static final String SELECT_COUNTER_MODE =
+            """
+                Select all counters (type $all) or select specific ones (type 'name1, name2').\r
+                When choosing the latter note that it is necessary to part each counter name by a comma and a space ( ', ').\r
+                To see a list of all counter names type '$ls'.\r
+            """;
+
+    /**
+     * Selects possible themes
+     */
+    public static void doThemes() throws IOException {
+        System.out.println(SELECT_THEMES);
+        System.out.println(WAITING_FOR_INPUT);
+        String s = readLine();
+        System.out.println();
+        switch (s){
+            case "$exit" -> {return;}
+            case "$counter" -> {
+                System.out.println(SELECT_COUNTER_MODE);
+                System.out.println(WAITING_FOR_INPUT);
+                List<Vocabulary> vocabularies = getCounterMode(readLine());
+                processQuestioning(vocabularies, "The categories are %s".formatted(ThemeLoader.getCOUNTER_NAMES()));
+            }
+            case "$days" -> {
+                System.out.println(SELECT_DAYS_MODE);
+                System.out.println(WAITING_FOR_INPUT);
+                List<Vocabulary> vocabularies = getDaysMode(readLine());
+                processQuestioning(vocabularies);
+            }
+            default -> System.out.println("Mode is not supported.\r\n");
+        }
+        doThemes();
+    }
+
+    private static List<Vocabulary> getDaysMode(String mode){
+        System.out.println();
+        return switch (mode){
+            case "$exit" -> new ArrayList<>();
+            case "$all", "" -> ThemeLoader.getDays();
+            case "$weekdays" -> {
+                try {
+                    yield ThemeLoader.getWeek();
+                } catch (IOException e) {
+                    yield new ArrayList<>();
+                }
+            }
+            case "$month" -> {
+                try {
+                    yield ThemeLoader.getMonth();
+                } catch (IOException e) {
+                    yield new ArrayList<>();
+                }
+            }
+            default -> {
+                System.out.printf("Unknown mode %s. Type a valid mode%n", mode);
+                yield new ArrayList<>();
+            }
+        };
+    }
+
+    /**
+     * Selects possible counter modes. Supported are $all yielding all possible counters, and specific by name yielding the correlating counter.
+     * Typing $list will list all possible names of the counters.
+     * @param mode mode of operation
+     * @return List of the selected counter vocabularies
+     */
+    private static List<Vocabulary> getCounterMode(String mode) throws IOException {
+        System.out.println();
+        return switch (mode){
+            case "$exit" -> new ArrayList<>();
+            case "$all","" -> ThemeLoader.getCounter();
+            case "$ls"-> {
+                System.out.println(ThemeLoader.getCOUNTER_NAMES());
+                System.out.println("Select a mode as mentioned above!\r");
+                System.out.println(WAITING_FOR_INPUT);
+                yield getCounterMode(readLine());
+            }
+            default -> {
+                String[] counter = mode.split(" ");
+                List<Vocabulary> vocabularies = new ArrayList<>();
+                for (String name: counter){
+                    vocabularies.addAll(ThemeLoader.getCounter(name));
+                }
+                vocabularies = ThemeLoader.reduceListByName(vocabularies);
+                yield vocabularies;
+            }
+        };
+    }
+}
