@@ -1,8 +1,8 @@
 package core;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+
+import static core.SystemInReader.readLine;
 
 public class Main {
     private static final String INTRO =
@@ -15,8 +15,6 @@ public class Main {
             """
                 Select the the mode. You can choose between lessons (type '$lesson') or themes (type '$theme')\r
             """;
-
-    private static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     public static void main(String[] args) throws IOException {
         System.out.println(INTRO);
@@ -52,17 +50,5 @@ public class Main {
                 yield true;
             }
         };
-    }
-
-    /**
-     * Reads a line from the console input and formats it into lowercase
-     * @return lowercase String
-     */
-    protected static String[] formattedRead(String split) throws IOException {
-        return reader.readLine().toLowerCase().split(split);
-    }
-
-    protected static String readLine() throws IOException {
-        return reader.readLine().toLowerCase();
     }
 }

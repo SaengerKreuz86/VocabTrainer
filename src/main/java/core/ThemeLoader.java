@@ -68,7 +68,7 @@ public class ThemeLoader {
     /**
      * Creates a buffered reader that reads from a file
      * @param path that leads to the file being read.
-     * @return Buffered Reader which takes the file of the specified path as input
+     * @return Buffered SystemInReader which takes the file of the specified path as input
      */
     private static BufferedReader getReader(String path) throws IOException {
         InputStream is = LessonLoader.class.getClassLoader().getResourceAsStream(path);

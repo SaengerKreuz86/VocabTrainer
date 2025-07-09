@@ -8,6 +8,7 @@ import java.util.List;
 
 import static core.Main.*;
 import static core.QuestionEvaluator.processQuestioning;
+import static core.SystemInReader.formattedRead;
 
 public class LessonSelector {
 

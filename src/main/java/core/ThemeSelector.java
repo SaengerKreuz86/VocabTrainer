@@ -9,6 +9,8 @@ import java.util.List;
 
 import static core.Main.*;
 import static core.QuestionEvaluator.processQuestioning;
+import static core.SystemInReader.readLine;
+
 @UtilityClass
 public class ThemeSelector {
 

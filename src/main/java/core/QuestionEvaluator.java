@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.List;
 
 import static core.Main.*;
+import static core.SystemInReader.formattedRead;
+import static core.SystemInReader.readLine;
 
 @UtilityClass
 public class QuestionEvaluator {
