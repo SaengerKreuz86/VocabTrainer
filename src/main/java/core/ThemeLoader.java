@@ -105,7 +105,7 @@ public class ThemeLoader {
      * @param vocabularies List of vocabularies to be filtered and reduced
      * @return new ArrayList with no ambiguity
      */
-    public static List<Vocabulary> reduceListByName(List<Vocabulary> vocabularies) {
+    static List<Vocabulary> reduceListByName(List<Vocabulary> vocabularies) {
         List<Vocabulary> out = new ArrayList<>();
         // add merged doubles
         for (int i = 0; i < vocabularies.size(); i++) {

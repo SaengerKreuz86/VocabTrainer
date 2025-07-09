@@ -1,5 +1,6 @@
 package core;
 
+import lombok.experimental.UtilityClass;
 import model.Vocabulary;
 
 import java.io.IOException;
@@ -8,7 +9,7 @@ import java.util.List;
 
 import static core.Main.*;
 import static core.QuestionEvaluator.processQuestioning;
-
+@UtilityClass
 public class ThemeSelector {
 
     private static final String SELECT_THEMES =

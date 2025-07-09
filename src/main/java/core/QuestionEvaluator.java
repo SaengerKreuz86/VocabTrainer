@@ -1,5 +1,6 @@
 package core;
 
+import lombok.experimental.UtilityClass;
 import model.Vocabulary;
 
 import java.io.IOException;
@@ -7,6 +8,7 @@ import java.util.List;
 
 import static core.Main.*;
 
+@UtilityClass
 public class QuestionEvaluator {
 
     private static final String PROCEED_TO_QUESTIONNAIRE =
@@ -24,7 +26,7 @@ public class QuestionEvaluator {
      * @param vocabularies List of vocabularies to question from
      * @param info Help given for the user
      */
-    protected static void processQuestioning(List<Vocabulary> vocabularies, String info) throws IOException {
+    public static void processQuestioning(List<Vocabulary> vocabularies, String info) throws IOException {
         if (!vocabularies.isEmpty()){
             System.out.println("Please define how many rounds you want to do. Must be a single number.");
             int limiter = getRounds(vocabularies.size()/2);
@@ -39,7 +41,7 @@ public class QuestionEvaluator {
      * Processes the questioning. Determines how many rounds are done and questions the user. Neglects giving helpful information
      * @param vocabularies List of vocabularies to question from
      */
-    protected static void processQuestioning(List<Vocabulary> vocabularies) throws IOException {
+    public static void processQuestioning(List<Vocabulary> vocabularies) throws IOException {
         processQuestioning(vocabularies, "Only god can help you.\r\n");
     }
 
