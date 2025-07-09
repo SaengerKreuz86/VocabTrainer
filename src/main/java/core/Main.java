@@ -27,7 +27,11 @@ public class Main {
             """;
     private static final String SELECT_THEMES =
             """
-                Select a theme. You can choose counter (type '$counter')\r
+                Select a theme. You can choose counter (type '$counter') or days (type '$days')\r
+            """;
+    private static final String SELECT_DAYS_MODE =
+            """
+                You can choose between weekdays (type '$weekdays'), days of the month (type '$month'), or all (type '$all')\r
             """;
     private static final String SELECT_COUNTER_MODE =
             """
@@ -71,18 +75,15 @@ public class Main {
      * @return true if the user does not want to exit
      */
     private static boolean selectMode(String s) throws IOException {
+        System.out.println();
         return switch (s){
             case "$exit" -> false;
             case "$lesson"-> {
-                System.out.println(SELECT_LESSON);
-                System.out.println(WAITING_FOR_INPUT + "\n");
                 doLessons();
                 yield true;
             }
             case "$theme" -> {
-                System.out.println(SELECT_THEMES);
-                System.out.println(WAITING_FOR_INPUT + "\n");
-                doThemes(reader.readLine());
+                doThemes();
                 yield true;
             }
             default -> {
@@ -94,29 +95,72 @@ public class Main {
 
     /**
      * Selects possible themes
-     * @param s theme
      */
-    private static void doThemes(String s) throws IOException {
+    private static void doThemes() throws IOException {
+        System.out.println();
+        System.out.println(SELECT_THEMES);
+        System.out.println(WAITING_FOR_INPUT);
+        String s = formattedRead(" ")[0];
+        System.out.println();
         switch (s){
-            case "$exit" -> {}
+            case "$exit" -> {return;}
             case "$counter" -> {
                 System.out.println(SELECT_COUNTER_MODE);
                 System.out.println(WAITING_FOR_INPUT);
                 List<Vocabulary> vocabularies = getCounterMode(reader.readLine());
-                if (!vocabularies.isEmpty()){
-                    System.out.println("Please define how many rounds you want to do. Must be a single number.");
-                    int limiter = getRounds(vocabularies.size()/2);
-                    if (limiter == -1){ //exit command was triggered
-                        return;
-                    }
-                    questionnaire(vocabularies, limiter, "The categories are %s".formatted(ThemeSelector.getCOUNTER_NAMES()));
+                processQuestioning(vocabularies, "The categories are %s".formatted(ThemeSelector.getCOUNTER_NAMES()));
+            }
+            case "$days" -> {
+                System.out.println(SELECT_DAYS_MODE);
+                System.out.println(WAITING_FOR_INPUT);
+                List<Vocabulary> vocabularies = getDaysMode(reader.readLine());
+                processQuestioning(vocabularies, "You are on your own");
+            }
+            default -> System.out.println("Mode is not supported.\r\n");
+        }
+        doThemes();
+    }
+
+    /**
+     * Processes the questioning. Determines how many rounds are done and questions the user.
+     * @param vocabularies List of vocabularies to question from
+     * @param info Help given for the user
+     */
+    private static void processQuestioning(List<Vocabulary> vocabularies, String info) throws IOException {
+        if (!vocabularies.isEmpty()){
+            System.out.println("Please define how many rounds you want to do. Must be a single number.");
+            int limiter = getRounds(vocabularies.size()/2);
+            if (limiter == -1){ //exit command was triggered
+                return;
+            }
+            questionnaire(vocabularies, limiter, info);
+        }
+    }
+
+    private static List<Vocabulary> getDaysMode(String mode){
+        System.out.println();
+        return switch (mode){
+            case "$exit" -> new ArrayList<>();
+            case "$all", "" -> ThemeSelector.getDays();
+            case "$weekdays" -> {
+                try {
+                    yield ThemeSelector.getWeek();
+                } catch (IOException e) {
+                    yield new ArrayList<>();
+                }
+            }
+            case "$month" -> {
+                try {
+                    yield ThemeSelector.getMonth();
+                } catch (IOException e) {
+                    yield new ArrayList<>();
                 }
             }
             default -> {
-                System.out.println("Mode is not supported. Choose again.\r\n");
-                doThemes(reader.readLine());
+                System.out.printf("Unknown mode %s. Type a valid mode%n", mode);
+                yield new ArrayList<>();
             }
-        }
+        };
     }
 
     /**
@@ -126,6 +170,7 @@ public class Main {
      * @return List of the selected counter vocabularies
      */
     private static List<Vocabulary> getCounterMode(String mode) throws IOException {
+        System.out.println();
         return switch (mode){
             case "$exit" -> new ArrayList<>();
             case "$all","" -> ThemeSelector.getCounter();
@@ -151,6 +196,8 @@ public class Main {
      * Processes selecting lessons
      */
     private static void doLessons() throws IOException {
+        System.out.println(SELECT_LESSON);
+        System.out.println(WAITING_FOR_INPUT);
         String[] lessons = formattedRead(" ");
         List<Vocabulary> vocabularies = selectLesson(lessons);
         if (vocabularies == null){
@@ -322,6 +369,7 @@ public class Main {
      * @return List of vocabularies
      */
     private static List<Vocabulary> evalTriggerForLessonSelector(String[] x) throws IOException {
+        System.out.println();
         return switch (x[0]) {
             case "$help" -> {
                 System.out.println(SELECT_LESSON_HELP);

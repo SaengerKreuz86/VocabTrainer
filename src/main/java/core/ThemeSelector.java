@@ -13,13 +13,74 @@ import java.util.logging.Logger;
 
 @UtilityClass
 public class ThemeSelector {
+    private static final String CLASS_NAME = "ThemeSelector";
     @Getter
     private static final List<String> COUNTER_NAMES = new ArrayList<>(List.of(
-            "book", "floors_of_building", "frequency",
+            "book", "floors_of_buildings", "frequency",
             "general", "glasses_cups", "long_slender",
             "machines_vehicles", "order", "people",
             "small", "thin_flat"
     ));
+
+    public static List<Vocabulary> getDays(){
+        List<Vocabulary> vocabularies = new ArrayList<>();
+        try {
+            vocabularies = new ArrayList<>(getMonth());
+        } catch (IOException e) {
+            Logger.getLogger(CLASS_NAME).warning("Months were skipped");
+        }
+        try {
+            vocabularies.addAll(getWeek());
+        } catch (IOException e) {
+            Logger.getLogger(CLASS_NAME).warning("week days were skipped");
+        }
+        return vocabularies;
+    }
+
+    public static List<Vocabulary> getWeek() throws IOException {
+        BufferedReader br = getReader("themes/days/week.csv");
+        List<Vocabulary> vocabularies = new ArrayList<>();
+        String line;
+        //add week days
+        for (int i = 1; i < 8 && (line = br.readLine())!=null; i++) {
+            vocabularies.add(new Vocabulary(
+                    new ArrayList<>(List.of(line)),
+                    new ArrayList<>(List.of(String.valueOf(i)))
+            ));
+        }
+        //add question
+        String[] question = br.readLine().split(":");
+        vocabularies.add(new Vocabulary(
+                new ArrayList<>(List.of(question[0])),
+                new ArrayList<>(List.of(question[1].split(",")))
+        ));
+        return vocabularies;
+    }
+
+    private static BufferedReader getReader(String path) throws IOException {
+        InputStream is = LessonSelector.class.getClassLoader().getResourceAsStream(path);
+        if (is == null){
+            throw new IOException();
+        }
+        return new BufferedReader(new InputStreamReader(is));
+    }
+
+    public static List<Vocabulary> getMonth() throws IOException {
+        BufferedReader br = getReader("themes/days/month.csv");
+        List<Vocabulary> vocabularies = new ArrayList<>();
+        String line;
+        //add days
+        for (int i = 1; i < 32 && (line = br.readLine())!=null; i++){
+            vocabularies.add(new Vocabulary(new ArrayList<>(List.of(line)), new ArrayList<>(List.of(String.valueOf(i)))));
+        }
+        //add question at 33th position
+        String[] string = br.readLine().split(":");
+        vocabularies.add(new Vocabulary(
+                new ArrayList<>(List.of(string[0])),
+                new ArrayList<>(List.of(string[1].split(",")))
+        ));
+        return vocabularies;
+    }
 
     /**
      *
@@ -31,7 +92,7 @@ public class ThemeSelector {
             try {
                 vocabularies.addAll(getCounterByName(counterName));
             } catch (IOException e) {
-                Logger.getLogger("ThemeSelector").warning("Counter for %s was skipped".formatted(counterName));
+                Logger.getLogger(CLASS_NAME).warning("Counter for %s was skipped".formatted(counterName));
             }
         }
         //some vocabularies are ambiguous. It's more fair to be lenient with the input
@@ -84,7 +145,7 @@ public class ThemeSelector {
         try {
             return new ArrayList<>(getCounterByName(counterName));
         } catch (IOException e) {
-            Logger.getLogger("ThemeSelector").warning("Counter for %s was skipped".formatted(counterName));
+            Logger.getLogger(CLASS_NAME).warning("Counter for %s was skipped".formatted(counterName));
         }
         return new ArrayList<>();
     }
@@ -95,25 +156,20 @@ public class ThemeSelector {
      * @return List of corresponding vocabularies
      */
     private static List<Vocabulary> getCounterByName(String name) throws IOException {
-        InputStream is = LessonSelector.class.getClassLoader().getResourceAsStream("themes/counter/%s.csv".formatted(name));
-        BufferedReader br;
+        BufferedReader br = getReader("themes/counter/%s.csv".formatted(name));
         List<Vocabulary> vocabularies = new ArrayList<>();
-        if (is != null) {
-            br = new BufferedReader(new InputStreamReader(is));
-            String line;
-            // add ten counter words
-            for (int i = 1; i < 11 && (line = br.readLine())!=null; i++) {
-                vocabularies.add(new Vocabulary(
-                        new ArrayList<>(Collections.singleton(line)),
-                        new ArrayList<>(Collections.singleton(i + " " + name))));
-            }
-            // add question word
-            line = br.readLine();
+        String line;
+        // add ten counter words
+        for (int i = 1; i < 11 && (line = br.readLine())!=null; i++) {
             vocabularies.add(new Vocabulary(
-                    new ArrayList<>(Collections.singleton(line)),
-                    new ArrayList<>(List.of("question %s".formatted(name), "frage %s".formatted(name)))));
+                    new ArrayList<>(List.of(line)),
+                    new ArrayList<>(List.of(i + " " + name))));
         }
+        // add question word
+        line = br.readLine();
+        vocabularies.add(new Vocabulary(
+                new ArrayList<>(List.of(line)),
+                new ArrayList<>(List.of("question %s".formatted(name), "frage %s".formatted(name)))));
         return vocabularies;
-
     }
 }
