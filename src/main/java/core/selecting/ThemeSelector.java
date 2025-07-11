@@ -27,7 +27,7 @@ public class ThemeSelector {
             """;
     private static final String SELECT_COUNTER_MODE =
             """
-                Select all counters (type $all) or select specific ones (type 'name1, name2').\r
+                Select all counters (type $all) or select specific ones (type 'name1 name2 ...').\r
                 When choosing the latter note that it is necessary to part each counter name by a comma and a space ( ', ').\r
                 To see a list of all counter names type '$ls'.\r
             """;
