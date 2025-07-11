@@ -1,10 +1,10 @@
-sofu:grandfather,großvater
-sobo:granmother,großmutter
-oji:uncle,onkel
-oba:aunt,tante
-chichi:father,vater
-haha:mother,mutter
-oto-to:younger brother,jüngerer bruder
-imo-to:younger sister,jüngere schwester
-ani:older brother,älterer bruder
-ane:older sister,ältere schwester
+sofu:grandfather own,großvater eigene
+sobo:granmother own,großmutter eigene
+oji:uncle own,onkel eigene
+oba:aunt own,tante eigene
+chichi:father own,vater eigene
+haha:mother own,mutter eigene
+oto-to:younger brother own,jüngerer bruder eigene
+imo-to:younger sister own,jüngere schwester eigene
+ani:older brother own,älterer bruder eigene
+ane:older sister own,ältere schwester eigene
