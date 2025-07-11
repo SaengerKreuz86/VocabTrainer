@@ -45,23 +45,20 @@ public class ThemeSelector {
             case "$counter" -> {
                 System.out.println(SELECT_COUNTER_MODE);
                 System.out.println(getWAITING_FOR_INPUT());
-                List<Vocabulary> vocabularies = getCounterMode(br,readLine(br));
-                processQuestioning(br,vocabularies, "The categories are %s".formatted(ThemeLoader.getCOUNTER_NAMES()));
+                processQuestioning(
+                        br,
+                        getCounterMode(br,readLine(br)),
+                        "The categories are %s".formatted(ThemeLoader.getCOUNTER_NAMES())
+                );
             }
             case "$days" -> {
                 System.out.println(SELECT_DAYS_MODE);
                 System.out.println(getWAITING_FOR_INPUT());
-                List<Vocabulary> vocabularies = getDaysMode(readLine(br));
-                processQuestioning(br,vocabularies);
+                processQuestioning(br,getDaysMode(readLine(br)));
             }
-            case "$positions" -> {
-                List<Vocabulary> vocabularies = ThemeLoader.getPositions();
-                processQuestioning(br,vocabularies);
-            }
-            case "$directions" -> {
-                List<Vocabulary> vocabularies = ThemeLoader.getDirections();
-                processQuestioning(br,vocabularies);
-            }
+            case "$positions" -> processQuestioning(br,ThemeLoader.getPositions());
+            case "$directions" -> processQuestioning(br,ThemeLoader.getDirections());
+            case "$families" -> processQuestioning(br, ThemeLoader.getFamilies());
             default -> System.out.println("Mode is not supported.\r\n");
         }
         doThemes(br);

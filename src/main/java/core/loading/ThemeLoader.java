@@ -21,17 +21,32 @@ public class ThemeLoader {
     ));
 
     /**
+     * Gets a list of all vocabularies that are in relationship to titles of family members (e.g. brother, sister, faather, ...)
+     * @return List of vocabularies
+     */
+    public static List<Vocabulary> getFamilies(){
+        List<Vocabulary> vocabularies = new ArrayList<>(
+                getVocabulariesFromPath(
+                        "vocabularies/themes/social_relations/ownFamily.csv",
+                        "own families were skipped")
+        );
+        vocabularies.addAll(
+                getVocabulariesFromPath(
+                        "vocabularies/themes/social_relations/otherFamily.csv",
+                        "other families were skipped")
+        );
+        return vocabularies;
+    }
+
+    /**
      * Gets a list of all positional vocabularies
      * @return List of vocabularies
      */
     public static List<Vocabulary> getPositions() {
-        try {
-            String path = "vocabularies/themes/positions/positions.csv";
-            return new VocabularyLoader(path).loadStandardFormat();
-        } catch (IOException e) {
-            logger.warning("positions were skipped");
-        }
-        return new ArrayList<>();
+        return getVocabulariesFromPath(
+                "vocabularies/themes/positions/positions.csv",
+                "positions were skipped"
+        );
     }
 
     /**
@@ -39,13 +54,10 @@ public class ThemeLoader {
      * @return List of vocabularies
      */
     public static List<Vocabulary> getDirections() {
-        try {
-            String path = "vocabularies/themes/positions/directions.csv";
-            return new VocabularyLoader(path).loadStandardFormat();
-        } catch (IOException e) {
-            logger.warning("directions were skipped");
-        }
-        return new ArrayList<>();
+        return getVocabulariesFromPath(
+                "vocabularies/themes/positions/directions.csv",
+                "directions were skipped"
+        );
     }
 
     /**
@@ -63,13 +75,10 @@ public class ThemeLoader {
      * @return List of vocabularies
      */
     public static List<Vocabulary> getWeek() {
-        try {
-            String path = "vocabularies/themes/days/week.csv";
-            return new VocabularyLoader(path).loadStandardFormat();
-        } catch (IOException e) {
-            logger.warning("week was skipped");
-        }
-        return new ArrayList<>();
+        return getVocabulariesFromPath(
+                "vocabularies/themes/days/week.csv",
+                "week was skipped"
+        );
     }
 
 
@@ -155,5 +164,20 @@ public class ThemeLoader {
             }
         }
         return out;
+    }
+
+    /**
+     * Collects the vocabularies that can be found under the specified path. To collect these the standard format is used.
+     * @param path Path to where the vocabularies lie.
+     * @param messageOnIOError If an io error occurs this message will be displayed
+     * @return List of vocabularies
+     */
+    private List<Vocabulary> getVocabulariesFromPath(String path, String messageOnIOError){
+        try {
+            return new VocabularyLoader(path).loadStandardFormat();
+        } catch (IOException e) {
+            logger.warning(messageOnIOError);
+        }
+        return new ArrayList<>();
     }
 }
