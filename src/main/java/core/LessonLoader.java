@@ -116,7 +116,7 @@ public class LessonLoader {
      * @return List of Vocabularies that the file contains
      */
     private static List<Vocabulary> getCSVVocabulary(String name) throws IOException {
-        BufferedReader br = ReaderUtility.getReader("lessons/%s.csv".formatted(name));
+        BufferedReader br = ReaderUtility.getReader("vocabularies/lessons/%s.csv".formatted(name));
         String line;
         Map<Integer, Vocabulary> idVoc= new HashMap<>();
         while ((line = br.readLine()) != null){

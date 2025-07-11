@@ -46,7 +46,7 @@ public class ThemeLoader {
      * @return List of vocabularies
      */
     public static List<Vocabulary> getWeek() throws IOException {
-        BufferedReader br = getReader("themes/days/week.csv");
+        BufferedReader br = getReader("vocabularies/themes/days/week.csv");
         List<Vocabulary> vocabularies = new ArrayList<>();
         String line;
         //add week days
@@ -71,7 +71,7 @@ public class ThemeLoader {
      * @return List of vocabularies
      */
     public static List<Vocabulary> getMonth() throws IOException {
-        BufferedReader br = getReader("themes/days/month.csv");
+        BufferedReader br = getReader("vocabularies/themes/days/month.csv");
         List<Vocabulary> vocabularies = new ArrayList<>();
         String line;
         //add days
@@ -161,7 +161,7 @@ public class ThemeLoader {
      * @return List of corresponding vocabularies
      */
     private static List<Vocabulary> getCounterByName(String name) throws IOException {
-        BufferedReader br = getReader("themes/counter/%s.csv".formatted(name));
+        BufferedReader br = getReader("vocabularies/themes/counter/%s.csv".formatted(name));
         List<Vocabulary> vocabularies = new ArrayList<>();
         String line;
         // add ten counter words
