@@ -19,6 +19,16 @@ public class ThemeLoader {
             "small", "thin_flat"
     ));
 
+    public static List<Vocabulary> getPositions() throws IOException {
+        String path = "vocabularies/themes/positions/positions.csv";
+        return new VocabularyLoader(path).loadStandardFormat();
+    }
+
+    public static List<Vocabulary> getDirections() throws IOException {
+        String path = "vocabularies/themes/positions/directions.csv";
+        return new VocabularyLoader(path).loadStandardFormat();
+    }
+
     /**
      * Gets a list for the vocabularies of the days directory, week days and the days of a month.
      * @return List of vocabularies

@@ -17,7 +17,8 @@ public class ThemeSelector {
 
     private static final String SELECT_THEMES =
             """
-                Select a theme. You can choose counter (type '$counter') or days (type '$days')\r
+                Select a theme. You can choose counter (type '$counter'), days (type '$days'),
+                positions (type '$positions'), or directions (type '$directions')\r
             """;
     private static final String SELECT_DAYS_MODE =
             """
@@ -50,6 +51,14 @@ public class ThemeSelector {
                 System.out.println(SELECT_DAYS_MODE);
                 System.out.println(WAITING_FOR_INPUT);
                 List<Vocabulary> vocabularies = getDaysMode(readLine(br));
+                processQuestioning(br,vocabularies);
+            }
+            case "$positions" -> {
+                List<Vocabulary> vocabularies = ThemeLoader.getPositions();
+                processQuestioning(br,vocabularies);
+            }
+            case "$directions" -> {
+                List<Vocabulary> vocabularies = ThemeLoader.getDirections();
                 processQuestioning(br,vocabularies);
             }
             default -> System.out.println("Mode is not supported.\r\n");
