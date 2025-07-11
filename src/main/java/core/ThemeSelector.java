@@ -32,7 +32,7 @@ public class ThemeSelector {
             """;
 
     /**
-     * Selects possible themes
+     * Selects possible themes.
      */
     public static void doThemes(BufferedReader br) throws IOException {
         System.out.println(SELECT_THEMES);
@@ -66,6 +66,13 @@ public class ThemeSelector {
         doThemes(br);
     }
 
+    /**
+     * If $days was selected then processes the following modes.
+     * @param mode mode which will be selected by the user.
+     *             $all for all vocabularies, $weekdays for week days only,
+     *             and $month for names of the days of a month only.
+     * @return List of vocabularies depending on the mode
+     */
     private static List<Vocabulary> getDaysMode(String mode){
         System.out.println();
         return switch (mode){
@@ -103,7 +110,7 @@ public class ThemeSelector {
                 for (String name: counter){
                     vocabularies.addAll(ThemeLoader.getCounterByName(name));
                 }
-                vocabularies = ThemeLoader.reduceListByName(vocabularies);
+                vocabularies = ThemeLoader.squashSameJapaneseMeanings(vocabularies);
                 yield vocabularies;
             }
         };

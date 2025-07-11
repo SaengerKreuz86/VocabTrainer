@@ -20,6 +20,10 @@ public class ThemeLoader {
             "small", "thin_flat"
     ));
 
+    /**
+     * Gets a list of all positional vocabularies
+     * @return List of vocabularies
+     */
     public static List<Vocabulary> getPositions() {
         try {
             String path = "vocabularies/themes/positions/positions.csv";
@@ -30,6 +34,10 @@ public class ThemeLoader {
         return new ArrayList<>();
     }
 
+    /**
+     * Gets a list of all hemispherical directions
+     * @return List of vocabularies
+     */
     public static List<Vocabulary> getDirections() {
         try {
             String path = "vocabularies/themes/positions/directions.csv";
@@ -93,7 +101,7 @@ public class ThemeLoader {
             }
         }
         //some vocabularies are ambiguous. It's more fair to be lenient with the input
-        vocabularies = reduceListByName(vocabularies);
+        vocabularies = squashSameJapaneseMeanings(vocabularies);
         return vocabularies;
     }
 
@@ -117,7 +125,7 @@ public class ThemeLoader {
      * @param vocabularies List of vocabularies to be filtered and reduced
      * @return new ArrayList with no ambiguity
      */
-    static List<Vocabulary> reduceListByName(List<Vocabulary> vocabularies) {
+    static List<Vocabulary> squashSameJapaneseMeanings(List<Vocabulary> vocabularies) {
         List<Vocabulary> out = new ArrayList<>();
         // add merged doubles
         for (int i = 0; i < vocabularies.size(); i++) {
