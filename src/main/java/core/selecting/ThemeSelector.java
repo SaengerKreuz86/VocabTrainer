@@ -19,7 +19,7 @@ public class ThemeSelector {
     private static final String SELECT_THEMES =
             """
                 Select a theme. You can choose counter (type '$counter'), days (type '$days'),
-                positions (type '$positions'), or directions (type '$directions')\r
+                positions (type '$positions'), directions (type '$directions'), or families (type '$families')\r
             """;
     private static final String SELECT_DAYS_MODE =
             """
