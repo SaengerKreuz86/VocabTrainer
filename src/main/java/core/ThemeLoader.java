@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 @UtilityClass
 public class ThemeLoader {
     private static final String CLASS_NAME = "ThemeSelector";
+    private static final Logger logger = Logger.getLogger("ThemeLoader");
     @Getter // categories for the counter
     private static final List<String> COUNTER_NAMES = new ArrayList<>(List.of(
             "book", "floors_of_buildings", "frequency",
@@ -19,14 +20,24 @@ public class ThemeLoader {
             "small", "thin_flat"
     ));
 
-    public static List<Vocabulary> getPositions() throws IOException {
-        String path = "vocabularies/themes/positions/positions.csv";
-        return new VocabularyLoader(path).loadStandardFormat();
+    public static List<Vocabulary> getPositions() {
+        try {
+            String path = "vocabularies/themes/positions/positions.csv";
+            return new VocabularyLoader(path).loadStandardFormat();
+        } catch (IOException e) {
+            logger.warning("positions were skipped");
+        }
+        return new ArrayList<>();
     }
 
-    public static List<Vocabulary> getDirections() throws IOException {
-        String path = "vocabularies/themes/positions/directions.csv";
-        return new VocabularyLoader(path).loadStandardFormat();
+    public static List<Vocabulary> getDirections() {
+        try {
+            String path = "vocabularies/themes/positions/directions.csv";
+            return new VocabularyLoader(path).loadStandardFormat();
+        } catch (IOException e) {
+            logger.warning("directions were skipped");
+        }
+        return new ArrayList<>();
     }
 
     /**
@@ -34,17 +45,8 @@ public class ThemeLoader {
      * @return List of vocabularies
      */
     public static List<Vocabulary> getDays(){
-        List<Vocabulary> vocabularies = new ArrayList<>();
-        try {
-            vocabularies = new ArrayList<>(getMonth());
-        } catch (IOException e) {
-            Logger.getLogger(CLASS_NAME).warning("Months were skipped");
-        }
-        try {
-            vocabularies.addAll(getWeek());
-        } catch (IOException e) {
-            Logger.getLogger(CLASS_NAME).warning("week days were skipped");
-        }
+        List<Vocabulary> vocabularies = new ArrayList<>(getMonth());
+        vocabularies.addAll(getWeek());
         return vocabularies;
     }
 
@@ -52,9 +54,14 @@ public class ThemeLoader {
      * Collects the vocabularies for week days
      * @return List of vocabularies
      */
-    public static List<Vocabulary> getWeek() throws IOException {
-        String path = "vocabularies/themes/days/week.csv";
-        return new VocabularyLoader(path).loadStandardFormat();
+    public static List<Vocabulary> getWeek() {
+        try {
+            String path = "vocabularies/themes/days/week.csv";
+            return new VocabularyLoader(path).loadStandardFormat();
+        } catch (IOException e) {
+            logger.warning("week was skipped");
+        }
+        return new ArrayList<>();
     }
 
 
@@ -62,9 +69,14 @@ public class ThemeLoader {
      * Gets the vocabularies for the days of a month
      * @return List of vocabularies
      */
-    public static List<Vocabulary> getMonth() throws IOException {
-        String path = "vocabularies/themes/days/month.csv";
-        return new VocabularyLoader(path).loadNumberFormat(32, true, "");
+    public static List<Vocabulary> getMonth() {
+        try {
+            String path = "vocabularies/themes/days/month.csv";
+            return new VocabularyLoader(path).loadNumberFormat(32, true, "");
+        } catch (IOException e) {
+            logger.warning("month was skipped");
+        }
+        return new ArrayList<>();
     }
 
     /**
@@ -91,8 +103,13 @@ public class ThemeLoader {
      * @return List of corresponding vocabularies
      */
     public static List<Vocabulary> getCounterByName(String name) throws IOException {
-        String path = "vocabularies/themes/counter/%s.csv".formatted(name);
-        return new VocabularyLoader(path).loadNumberFormat(11, true, name);
+        try {
+            String path = "vocabularies/themes/counter/%s.csv".formatted(name);
+            return new VocabularyLoader(path).loadNumberFormat(11, true, name);
+        } catch (IOException e) {
+            logger.warning("counter '%s' was skipped".formatted(name));
+        }
+        return new ArrayList<>();
     }
 
     /**

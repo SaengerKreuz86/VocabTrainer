@@ -18,6 +18,7 @@ public class LessonLoader {
         lessons.put(3,null);
         lessons.put(4,null);
         lessons.put(5,null);
+        //TODO cursed csv structure
         wrappedPut(6, "l6");
         wrappedPut(7, "l7");
         wrappedPut(8, "l8");

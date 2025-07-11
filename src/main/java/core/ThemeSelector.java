@@ -71,20 +71,8 @@ public class ThemeSelector {
         return switch (mode){
             case "$exit" -> new ArrayList<>();
             case "$all", "" -> ThemeLoader.getDays();
-            case "$weekdays" -> {
-                try {
-                    yield ThemeLoader.getWeek();
-                } catch (IOException e) {
-                    yield new ArrayList<>();
-                }
-            }
-            case "$month" -> {
-                try {
-                    yield ThemeLoader.getMonth();
-                } catch (IOException e) {
-                    yield new ArrayList<>();
-                }
-            }
+            case "$weekdays" -> ThemeLoader.getWeek();
+            case "$month" -> ThemeLoader.getMonth();
             default -> {
                 System.out.printf("Unknown mode %s. Type a valid mode%n", mode);
                 yield new ArrayList<>();
