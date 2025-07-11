@@ -1,4 +1,4 @@
-package core;
+package core.loading;
 
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
@@ -126,7 +126,7 @@ public class ThemeLoader {
      * @param vocabularies List of vocabularies to be filtered and reduced
      * @return new ArrayList with no ambiguity
      */
-    static List<Vocabulary> squashSameJapaneseMeanings(List<Vocabulary> vocabularies) {
+    public static List<Vocabulary> squashSameJapaneseMeanings(List<Vocabulary> vocabularies) {
         List<Vocabulary> out = new ArrayList<>();
         // merge words that have the same exact japanese meaning so that their english/japanese meanings are combined
         for (int i = 0; i < vocabularies.size(); i++) {

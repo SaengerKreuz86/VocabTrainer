@@ -1,5 +1,6 @@
-package core;
+package core.selecting;
 
+import core.loading.ThemeLoader;
 import lombok.experimental.UtilityClass;
 import model.Vocabulary;
 
@@ -36,20 +37,20 @@ public class ThemeSelector {
      */
     public static void doThemes(BufferedReader br) throws IOException {
         System.out.println(SELECT_THEMES);
-        System.out.println(WAITING_FOR_INPUT);
+        System.out.println(getWAITING_FOR_INPUT());
         String s = readLine(br);
         System.out.println();
         switch (s){
             case "$exit" -> {return;}
             case "$counter" -> {
                 System.out.println(SELECT_COUNTER_MODE);
-                System.out.println(WAITING_FOR_INPUT);
+                System.out.println(getWAITING_FOR_INPUT());
                 List<Vocabulary> vocabularies = getCounterMode(br,readLine(br));
                 processQuestioning(br,vocabularies, "The categories are %s".formatted(ThemeLoader.getCOUNTER_NAMES()));
             }
             case "$days" -> {
                 System.out.println(SELECT_DAYS_MODE);
-                System.out.println(WAITING_FOR_INPUT);
+                System.out.println(getWAITING_FOR_INPUT());
                 List<Vocabulary> vocabularies = getDaysMode(readLine(br));
                 processQuestioning(br,vocabularies);
             }
@@ -101,7 +102,7 @@ public class ThemeSelector {
             case "$ls"-> {
                 System.out.println(ThemeLoader.getCOUNTER_NAMES());
                 System.out.println("Select a mode as mentioned above!\r");
-                System.out.println(WAITING_FOR_INPUT);
+                System.out.println(getWAITING_FOR_INPUT());
                 yield getCounterMode(br,readLine(br));
             }
             default -> {

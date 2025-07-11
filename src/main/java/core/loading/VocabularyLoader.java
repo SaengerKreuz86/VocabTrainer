@@ -1,5 +1,6 @@
-package core;
+package core.loading;
 
+import core.ReaderUtility;
 import model.Vocabulary;
 
 import java.io.BufferedReader;

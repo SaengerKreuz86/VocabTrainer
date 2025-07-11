@@ -1,5 +1,6 @@
-package core;
+package core.selecting;
 
+import core.loading.LessonLoader;
 import model.Vocabulary;
 
 import java.io.BufferedReader;
@@ -34,7 +35,7 @@ public class LessonSelector {
     public static void doLessons(BufferedReader br) throws IOException {
         //recurses as often as the user wants it
         System.out.println(SELECT_LESSON);
-        System.out.println(WAITING_FOR_INPUT);
+        System.out.println(getWAITING_FOR_INPUT());
         String[] lessons = formattedRead(br," ");
         List<Vocabulary> vocabularies = selectLesson(br,lessons);
         if (vocabularies != null){

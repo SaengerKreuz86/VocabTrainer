@@ -67,7 +67,7 @@ public class QuestionEvaluator {
             solution = getSolution(vocabulary);
             // norm the list. Everything is lowercase
             solution = solution.stream().map(String::toLowerCase).toList();
-            System.out.println(WAITING_FOR_INPUT);
+            System.out.println(getWAITING_FOR_INPUT());
             // process user input
             int answer = processQuestionsAnswer(br, solution, info);
             if (answer == -1){

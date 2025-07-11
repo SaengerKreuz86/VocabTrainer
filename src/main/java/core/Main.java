@@ -1,5 +1,9 @@
 package core;
 
+import core.selecting.LessonSelector;
+import core.selecting.ThemeSelector;
+import lombok.Getter;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,7 +20,8 @@ public class Main {
             """
                 Select the the mode. You can choose between lessons (type '$lesson') or themes (type '$theme')\r
             """;
-    protected static final String WAITING_FOR_INPUT = "Waiting for input...";
+    @Getter
+    private static final String WAITING_FOR_INPUT = "Waiting for input...";
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

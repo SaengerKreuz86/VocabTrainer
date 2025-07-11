@@ -1,5 +1,6 @@
 package core;
 
+import core.loading.LessonLoader;
 import lombok.experimental.UtilityClass;
 
 import java.io.BufferedReader;
