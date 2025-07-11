@@ -21,7 +21,7 @@ public class ThemeLoader {
     ));
 
     /**
-     * Gets a list of all vocabularies that are in relationship to titles of family members (e.g. brother, sister, faather, ...)
+     * Gets a list of all vocabularies that are in relationship to titles of family members (e.g. brother, sister, father, ...)
      * @return List of vocabularies
      */
     public static List<Vocabulary> getFamilies(){
@@ -35,7 +35,7 @@ public class ThemeLoader {
                         "vocabularies/themes/social_relations/otherFamily.csv",
                         "other families were skipped")
         );
-        return vocabularies;
+        return squashSameJapaneseMeanings(vocabularies);
     }
 
     /**
