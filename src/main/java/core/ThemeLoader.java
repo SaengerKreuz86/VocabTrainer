@@ -4,12 +4,9 @@ import lombok.Getter;
 import lombok.experimental.UtilityClass;
 import model.Vocabulary;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
-
-import static core.ReaderUtility.getReader;
 
 @UtilityClass
 public class ThemeLoader {
@@ -46,23 +43,8 @@ public class ThemeLoader {
      * @return List of vocabularies
      */
     public static List<Vocabulary> getWeek() throws IOException {
-        BufferedReader br = getReader("vocabularies/themes/days/week.csv");
-        List<Vocabulary> vocabularies = new ArrayList<>();
-        String line;
-        //add week days
-        for (int i = 1; i < 8 && (line = br.readLine())!=null; i++) {
-            vocabularies.add(new Vocabulary(
-                    new ArrayList<>(List.of(line)),
-                    new ArrayList<>(List.of(String.valueOf(i)))
-            ));
-        }
-        //add question
-        String[] question = br.readLine().split(":");
-        vocabularies.add(new Vocabulary(
-                new ArrayList<>(List.of(question[0])),
-                new ArrayList<>(List.of(question[1].split(",")))
-        ));
-        return vocabularies;
+        String path = "vocabularies/themes/days/week.csv";
+        return new VocabularyLoader(path).loadStandardFormat();
     }
 
 
@@ -71,27 +53,15 @@ public class ThemeLoader {
      * @return List of vocabularies
      */
     public static List<Vocabulary> getMonth() throws IOException {
-        BufferedReader br = getReader("vocabularies/themes/days/month.csv");
-        List<Vocabulary> vocabularies = new ArrayList<>();
-        String line;
-        //add days
-        for (int i = 1; i < 32 && (line = br.readLine())!=null; i++){
-            vocabularies.add(new Vocabulary(new ArrayList<>(List.of(line)), new ArrayList<>(List.of(String.valueOf(i)))));
-        }
-        //add question at 33th position
-        String[] string = br.readLine().split(":");
-        vocabularies.add(new Vocabulary(
-                new ArrayList<>(List.of(string[0])),
-                new ArrayList<>(List.of(string[1].split(",")))
-        ));
-        return vocabularies;
+        String path = "vocabularies/themes/days/month.csv";
+        return new VocabularyLoader(path).loadNumberFormat(32, true, "");
     }
 
     /**
      *
      * @return List of all counter vocabularies
      */
-    public static List<Vocabulary> getCounter(){
+    public static List<Vocabulary> getCounters(){
         List<Vocabulary> vocabularies = new ArrayList<>();
         for (String counterName : COUNTER_NAMES){
             try {
@@ -103,6 +73,16 @@ public class ThemeLoader {
         //some vocabularies are ambiguous. It's more fair to be lenient with the input
         vocabularies = reduceListByName(vocabularies);
         return vocabularies;
+    }
+
+    /**
+     * Gets counter vocabularies by name
+     * @param name criteria
+     * @return List of corresponding vocabularies
+     */
+    public static List<Vocabulary> getCounterByName(String name) throws IOException {
+        String path = "vocabularies/themes/counter/%s.csv".formatted(name);
+        return new VocabularyLoader(path).loadNumberFormat(11, true, name);
     }
 
     /**
@@ -139,42 +119,5 @@ public class ThemeLoader {
             }
         }
         return out;
-    }
-
-    /**
-     * Gets counter vocabularies by name specified
-     * @param counterName Name of the counterName file
-     * @return List of vocabularies that correlate to the counterName
-     */
-    public static List<Vocabulary> getCounter(String counterName){
-        try {
-            return new ArrayList<>(getCounterByName(counterName));
-        } catch (IOException e) {
-            Logger.getLogger(CLASS_NAME).warning("Counter for %s was skipped".formatted(counterName));
-        }
-        return new ArrayList<>();
-    }
-
-    /**
-     * Gets counter vocabularies by name
-     * @param name criteria
-     * @return List of corresponding vocabularies
-     */
-    private static List<Vocabulary> getCounterByName(String name) throws IOException {
-        BufferedReader br = getReader("vocabularies/themes/counter/%s.csv".formatted(name));
-        List<Vocabulary> vocabularies = new ArrayList<>();
-        String line;
-        // add ten counter words
-        for (int i = 1; i < 11 && (line = br.readLine())!=null; i++) {
-            vocabularies.add(new Vocabulary(
-                    new ArrayList<>(List.of(line)),
-                    new ArrayList<>(List.of(i + " " + name))));
-        }
-        // add question word
-        line = br.readLine();
-        vocabularies.add(new Vocabulary(
-                new ArrayList<>(List.of(line)),
-                new ArrayList<>(List.of("question %s".formatted(name), "frage %s".formatted(name)))));
-        return vocabularies;
     }
 }

@@ -93,7 +93,7 @@ public class ThemeSelector {
         System.out.println();
         return switch (mode){
             case "$exit" -> new ArrayList<>();
-            case "$all","" -> ThemeLoader.getCounter();
+            case "$all","" -> ThemeLoader.getCounters();
             case "$ls"-> {
                 System.out.println(ThemeLoader.getCOUNTER_NAMES());
                 System.out.println("Select a mode as mentioned above!\r");
@@ -104,7 +104,7 @@ public class ThemeSelector {
                 String[] counter = mode.split(" ");
                 List<Vocabulary> vocabularies = new ArrayList<>();
                 for (String name: counter){
-                    vocabularies.addAll(ThemeLoader.getCounter(name));
+                    vocabularies.addAll(ThemeLoader.getCounterByName(name));
                 }
                 vocabularies = ThemeLoader.reduceListByName(vocabularies);
                 yield vocabularies;
