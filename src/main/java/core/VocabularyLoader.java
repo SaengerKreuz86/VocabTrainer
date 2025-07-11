@@ -12,8 +12,10 @@ import java.util.regex.Pattern;
 public class VocabularyLoader {
     private static final String LANGUAGE_SPLIT = ":";
     private static final String MEANINGS_SPLIT = ",";
-    private static final Pattern STANDARD_FORMAT = Pattern.compile("([a-zA-Z](-[a-zA-Z])*,)*[a-zA-Z](-[a-zA-Z])*:([a-zäöüßA-ZÖÄÜ],)*[a-zäöüßA-ZÖÄÜ]");
-    private static final Pattern NUMBER_FORMAT = Pattern.compile("([a-zA-Z](-[a-zA-Z])*,)*[a-zA-Z](-[a-zA-Z])*");
+    private static final Pattern STANDARD_FORMAT
+            = Pattern.compile("([a-zA-Z](-[a-zA-Z])*,)*[a-zA-Z](-[a-zA-Z])*:([a-zäöüßA-ZÖÄÜ],)*[a-zäöüßA-ZÖÄÜ]");
+    private static final Pattern NUMBER_FORMAT
+            = Pattern.compile("([a-zA-Z](-[a-zA-Z])*,)*[a-zA-Z](-[a-zA-Z])*");
     private final BufferedReader br;
 
     public VocabularyLoader(String path) throws IOException {
@@ -106,7 +108,7 @@ public class VocabularyLoader {
             }
         }
         line = ReaderUtility.readLine(br);
-        if (includeEndQuestion){
+        if (includeEndQuestion && !line.isEmpty()){
             vocabularies.add(getNext(line));
         }
         return vocabularies;
