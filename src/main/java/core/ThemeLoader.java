@@ -100,7 +100,8 @@ public class ThemeLoader {
                 Logger.getLogger(CLASS_NAME).warning("Counter for %s was skipped".formatted(counterName));
             }
         }
-        //some vocabularies are ambiguous. It's more fair to be lenient with the input
+        //some vocabularies are ambiguous.
+        // It's more fair to be lenient with the input (frequency and floors_of_buildings are mostly the same)
         vocabularies = squashSameJapaneseMeanings(vocabularies);
         return vocabularies;
     }
@@ -127,7 +128,7 @@ public class ThemeLoader {
      */
     static List<Vocabulary> squashSameJapaneseMeanings(List<Vocabulary> vocabularies) {
         List<Vocabulary> out = new ArrayList<>();
-        // add merged doubles
+        // merge words that have the same exact japanese meaning so that their english/japanese meanings are combined
         for (int i = 0; i < vocabularies.size(); i++) {
             Set<String> combined = new HashSet<>(vocabularies.get(i).getEnglishGerman());
             for (int j = i+1; j < vocabularies.size(); j++) {
