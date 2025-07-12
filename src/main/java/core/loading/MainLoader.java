@@ -10,10 +10,19 @@ import java.util.List;
 public class MainLoader {
     private final List<Vocabulary> vocabularies = new ArrayList<>();
 
+    /**
+     *
+     * @return current state of the list
+     */
     public List<Vocabulary> collect(){
         return vocabularies;
     }
 
+    /**
+     * Removes the specified vocabularies from the whole list
+     * @param cut These will be removed
+     * @return List that does not include the vocabularies of cut
+     */
     public MainLoader cut(List<Vocabulary> cut){
         cut.forEach(this.vocabularies::remove);
         return this;
