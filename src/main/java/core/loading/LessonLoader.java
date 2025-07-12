@@ -11,12 +11,12 @@ public class LessonLoader {
     private static final Map<Integer, List<Vocabulary>> lessons = new HashMap<>();
     private static final String CSV_COMMA_DELIMITER = ",";
     static {
-        lessons.put(0,null);
-        lessons.put(1,null);
-        lessons.put(2,null);
-        lessons.put(3,null);
-        lessons.put(4,null);
-        lessons.put(5,null);
+        lessons.put(0,new ArrayList<>());
+        lessons.put(1,new ArrayList<>());
+        lessons.put(2,new ArrayList<>());
+        lessons.put(3,new ArrayList<>());
+        lessons.put(4,new ArrayList<>());
+        lessons.put(5,new ArrayList<>());
         //TODO cursed csv structure
         wrappedPut(6, "l6");
         wrappedPut(7, "l7");
