@@ -1,4 +1,4 @@
-package core;
+package core.util;
 
 import core.loading.LessonLoader;
 import lombok.experimental.UtilityClass;

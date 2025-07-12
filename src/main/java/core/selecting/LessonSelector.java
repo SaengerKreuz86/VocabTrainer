@@ -9,8 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static core.Main.*;
-import static core.QuestionEvaluator.processQuestioning;
-import static core.ReaderUtility.formattedRead;
+import static core.util.QuestionEvaluator.processQuestioning;
+import static core.util.ReaderUtility.formattedRead;
 import static core.loading.MainLoader.runAndCollect;
 
 public class LessonSelector {

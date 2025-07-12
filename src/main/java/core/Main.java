@@ -8,7 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import static core.ReaderUtility.readLine;
+import static core.util.ReaderUtility.readLine;
 
 public class Main {
     private static final String INTRO =

@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static core.Main.*;
-import static core.QuestionEvaluator.processQuestioning;
-import static core.ReaderUtility.readLine;
+import static core.util.QuestionEvaluator.processQuestioning;
+import static core.util.ReaderUtility.readLine;
 import static core.loading.MainLoader.runAndCollect;
 
 @UtilityClass

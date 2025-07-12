@@ -1,4 +1,4 @@
-package core;
+package core.util;
 
 import lombok.experimental.UtilityClass;
 import model.Vocabulary;
@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.util.List;
 
 import static core.Main.*;
-import static core.ReaderUtility.formattedRead;
-import static core.ReaderUtility.readLine;
+import static core.util.ReaderUtility.formattedRead;
+import static core.util.ReaderUtility.readLine;
 
 @UtilityClass
 public class QuestionEvaluator {
