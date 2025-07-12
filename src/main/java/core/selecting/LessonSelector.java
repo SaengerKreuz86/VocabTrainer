@@ -1,16 +1,19 @@
 package core.selecting;
 
 import core.loading.LessonLoader;
+import core.loading.MainLoader;
 import model.Vocabulary;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static core.Main.*;
 import static core.QuestionEvaluator.processQuestioning;
 import static core.ReaderUtility.formattedRead;
+import static core.loading.MainLoader.runAndCollect;
 
 public class LessonSelector {
 
@@ -78,12 +81,15 @@ public class LessonSelector {
                 yield selectLesson(br,formattedRead(br," "));
             }
             case "$exit" -> null;
-            case "$all", "" -> LessonLoader.getAll();
+            case "$all", "" -> runAndCollect(new MainLoader()::loadAllLessons);
             case "$range" -> {
-                if (x.length == 3){
-                    yield LessonLoader.getRange(Integer.parseInt(x[1]), Integer.parseInt(x[2]));
-                }else if (x.length == 2){
-                    yield LessonLoader.getRange(Integer.parseInt(x[1]));
+                if (x.length > 1){
+                    yield new MainLoader().loadRangeLessons(
+                            (Integer[]) Arrays.stream(x)
+                                    .sequential()
+                                    .map(Integer::parseInt)
+                                    .toArray())
+                            .collect();
                 }else {
                     System.out.println("The range was not specified.\r\n");
                     System.out.println(SELECT_LESSON);
@@ -91,11 +97,11 @@ public class LessonSelector {
                 }
             }
             default -> {
-                List<Integer> ints = new ArrayList<>();
+                MainLoader ml = new MainLoader();
                 for (String s : x) {
-                    ints.add(Integer.parseInt(s));
+                    ml.loadLesson(Integer.parseInt(s));
                 }
-                yield LessonLoader.getVocabularyByLessons(ints);
+                yield ml.collect();
             }
         };
     }

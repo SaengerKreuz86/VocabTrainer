@@ -1,5 +1,6 @@
 package core.selecting;
 
+import core.loading.MainLoader;
 import core.loading.ThemeLoader;
 import lombok.experimental.UtilityClass;
 import model.Vocabulary;
@@ -12,6 +13,7 @@ import java.util.List;
 import static core.Main.*;
 import static core.QuestionEvaluator.processQuestioning;
 import static core.ReaderUtility.readLine;
+import static core.loading.MainLoader.runAndCollect;
 
 @UtilityClass
 public class ThemeSelector {
@@ -56,9 +58,9 @@ public class ThemeSelector {
                 System.out.println(getWAITING_FOR_INPUT());
                 processQuestioning(br,getDaysMode(readLine(br)));
             }
-            case "$positions" -> processQuestioning(br,ThemeLoader.getPositions());
-            case "$directions" -> processQuestioning(br,ThemeLoader.getDirections());
-            case "$families" -> processQuestioning(br, ThemeLoader.getFamilies());
+            case "$positions" -> processQuestioning(br, runAndCollect(new MainLoader()::loadPositions));
+            case "$directions" -> processQuestioning(br, runAndCollect(new MainLoader()::loadDirections));
+            case "$families" -> processQuestioning(br, runAndCollect(new MainLoader()::loadFamilies));
             default -> System.out.println("Mode is not supported.\r\n");
         }
         doThemes(br);
@@ -75,9 +77,9 @@ public class ThemeSelector {
         System.out.println();
         return switch (mode){
             case "$exit" -> new ArrayList<>();
-            case "$all", "" -> ThemeLoader.getDays();
-            case "$weekdays" -> ThemeLoader.getWeek();
-            case "$month" -> ThemeLoader.getMonth();
+            case "$all", "" -> runAndCollect(new MainLoader()::loadDays);
+            case "$weekdays" -> runAndCollect(new MainLoader()::loadWeekDays);
+            case "$month" -> runAndCollect(new MainLoader()::loadMonthDays);
             default -> {
                 System.out.printf("Unknown mode %s. Type a valid mode%n", mode);
                 yield new ArrayList<>();
@@ -95,7 +97,7 @@ public class ThemeSelector {
         System.out.println();
         return switch (mode){
             case "$exit" -> new ArrayList<>();
-            case "$all","" -> ThemeLoader.getCounters();
+            case "$all","" -> runAndCollect(new MainLoader()::loadAllCounter);
             case "$ls"-> {
                 System.out.println(ThemeLoader.getCOUNTER_NAMES());
                 System.out.println("Select a mode as mentioned above!\r");
@@ -103,13 +105,11 @@ public class ThemeSelector {
                 yield getCounterMode(br,readLine(br));
             }
             default -> {
-                String[] counter = mode.split(" ");
-                List<Vocabulary> vocabularies = new ArrayList<>();
-                for (String name: counter){
-                    vocabularies.addAll(ThemeLoader.getCounterByName(name));
+                MainLoader ml = new MainLoader();
+                for (String s : mode.split(" ")) {
+                    ml.loadCounterByName(s);
                 }
-                vocabularies = ThemeLoader.squashSameJapaneseMeanings(vocabularies);
-                yield vocabularies;
+                yield ml.collect();
             }
         };
     }
