@@ -15,7 +15,7 @@ public class VocabularyLoader {
     private static final String MEANINGS_SPLIT = ",";
     private static final Pattern STANDARD_FORMAT
             = Pattern.compile("([a-zA-Z](-[a-zA-Z])*,)*[a-zA-Z](-[a-zA-Z])*:([a-zäöüßA-ZÖÄÜ],)*[a-zäöüßA-ZÖÄÜ]");
-    private static final Pattern NUMBER_FORMAT
+    private static final Pattern COUNTER_FORMAT
             = Pattern.compile("([a-zA-Z](-[a-zA-Z])*,)*[a-zA-Z](-[a-zA-Z])*");
     private final BufferedReader br;
 
@@ -44,24 +44,24 @@ public class VocabularyLoader {
      * @param maxIterExclusive numbers will be treated as a range from 1, 2, ..., maxIterExclusive -1
      * @return vocabularies with the format 'List of Japanese meanings', number
      */
-    public List<Vocabulary> loadNumberFormat(int maxIterExclusive) throws IOException {
-        return loadNumberFormat(maxIterExclusive, false, "");
+    public List<Vocabulary> loadCounterFormat(int maxIterExclusive) throws IOException {
+        return loadCounterFormat(maxIterExclusive, false, "");
     }
 
     /**
      *
-     * @param line String that has the NUMBER_FORMAT
+     * @param line String that has the COUNTER_FORMAT
      * @param i string/number the word will be associated with. eg. kokonotsu and "9"
      * @return Vocabulary
      */
     public Vocabulary getNextNumber(String line, String i) {
-        if (NUMBER_FORMAT.matcher(line).find()){
+        if (COUNTER_FORMAT.matcher(line).find()){
             return new Vocabulary(
                     getMeanings(line),
                     new ArrayList<>(List.of(String.valueOf(i)))
             );
         }else {
-            Logger.getLogger("VocabularyLoader").warning("String '%s' didn't match pattern '%s' so it was ignored".formatted(line, NUMBER_FORMAT.pattern()));
+            Logger.getLogger("VocabularyLoader").warning("String '%s' didn't match pattern '%s' so it was ignored".formatted(line, COUNTER_FORMAT.pattern()));
             return null;
         }
     }
@@ -98,7 +98,7 @@ public class VocabularyLoader {
      * @param numberSuffix appends additional text after the number (already divided by a space).
      * @return List of vocabularies with the format List of japanese meanings, number + suffix and at last a question
      */
-    public List<Vocabulary> loadNumberFormat(int maxIterExclusive, boolean includeEndQuestion, String numberSuffix) throws IOException {
+    public List<Vocabulary> loadCounterFormat(int maxIterExclusive, boolean includeEndQuestion, String numberSuffix) throws IOException {
         List<Vocabulary> vocabularies =  new ArrayList<>();
         String line;
         for (int i = 1; i < maxIterExclusive; i++) {
