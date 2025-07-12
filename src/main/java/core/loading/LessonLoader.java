@@ -1,14 +1,12 @@
 package core.loading;
 
 import core.ReaderUtility;
-import lombok.experimental.UtilityClass;
 import model.Vocabulary;
 
 import java.io.*;
 import java.util.*;
 import java.util.logging.Logger;
 
-@UtilityClass
 public class LessonLoader {
     private static final Map<Integer, List<Vocabulary>> lessons = new HashMap<>();
     private static final String CSV_COMMA_DELIMITER = ",";
@@ -46,7 +44,7 @@ public class LessonLoader {
      * Gets all vocabularies defined in the lessons Map
      * @return a List of all vocabularies
      */
-    public static List<Vocabulary> getAll(){
+    protected static List<Vocabulary> getAll(){
         List<Vocabulary> vocabularies = new ArrayList<>();
         for (Map.Entry<Integer, List<Vocabulary>> entry: lessons.entrySet()){
             if (entry.getValue() != null){
@@ -56,13 +54,24 @@ public class LessonLoader {
         return vocabularies;
     }
 
+    protected static List<Vocabulary> getRange(Integer[] range){
+        if (range.length >= 2){
+            return getRange(range[0], range[1]);
+        }else if (range.length == 1){
+            return getRange(range[0]);
+        }else {
+            Logger.getLogger("LessonLoader").warning("Invalid Range. Added empty list");
+            return new ArrayList<>();
+        }
+    }
+
     /**
      * Gets all vocabularies of the lessons within the range
      * @param lower lower bound of the lessons
      * @param upper upper bound of the lessons
      * @return List of vocabularies
      */
-    public static List<Vocabulary> getRange(int lower, int upper){
+    protected static List<Vocabulary> getRange(int lower, int upper){
         List<Vocabulary> vocabularies = new ArrayList<>();
         for (int i = lower; i < upper+1; i++) {
             if (lessons.get(i)!=null){
@@ -77,7 +86,7 @@ public class LessonLoader {
      * @param lower lower bound of the lessons
      * @return List of vocabularies
      */
-    public static List<Vocabulary> getRange(int lower){
+    protected static List<Vocabulary> getRange(int lower){
         List<Vocabulary> vocabularies = new ArrayList<>();
         for (int i = lower; i < lessons.size()+1; i++) {
             if (lessons.get(i)!=null){
@@ -92,7 +101,7 @@ public class LessonLoader {
      * @param lesson number of the lesson
      * @return null if lesson does not exist
      */
-    public static List<Vocabulary> getVocabulary(int lesson){
+    protected static List<Vocabulary> getVocabulary(int lesson){
         return lessons.get(lesson);
     }
 
@@ -101,7 +110,7 @@ public class LessonLoader {
      * @param queriedLessons List of lessons
      * @return List of all vocabularies
      */
-    public static List<Vocabulary> getVocabularyByLessons(List<Integer> queriedLessons){
+    protected static List<Vocabulary> getVocabularyByLessons(List<Integer> queriedLessons){
         List<Vocabulary> vocabularies = new ArrayList<>();
         for (int i : queriedLessons){
             if (lessons.get(i)!= null){
@@ -157,7 +166,7 @@ public class LessonLoader {
      * @param s String that will be parsed
      * @return the specified id in the csv. Returns -1 if the id was malformed
      */
-    private int getId(String s){
+    private static int getId(String s){
         try {
             return Integer.parseInt(s);
         } catch (NumberFormatException e) {

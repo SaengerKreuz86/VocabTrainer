@@ -1,14 +1,12 @@
 package core.loading;
 
 import lombok.Getter;
-import lombok.experimental.UtilityClass;
 import model.Vocabulary;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 
-@UtilityClass
 public class ThemeLoader {
     private static final String CLASS_NAME = "ThemeSelector";
     private static final Logger logger = Logger.getLogger("ThemeLoader");
@@ -24,25 +22,32 @@ public class ThemeLoader {
      * Gets a list of all vocabularies that are in relationship to titles of family members (e.g. brother, sister, father, ...)
      * @return List of vocabularies
      */
-    public static List<Vocabulary> getFamilies(){
-        List<Vocabulary> vocabularies = new ArrayList<>(
-                getVocabulariesFromPath(
-                        "vocabularies/themes/social_relations/ownFamily.csv",
-                        "own families were skipped")
-        );
-        vocabularies.addAll(
-                getVocabulariesFromPath(
-                        "vocabularies/themes/social_relations/otherFamily.csv",
-                        "other families were skipped")
-        );
+    protected static List<Vocabulary> getFamilies(){
+        List<Vocabulary> vocabularies = new ArrayList<>(getOwnFamily());
+        vocabularies.addAll(getOtherFamily());
         return squashSameJapaneseMeanings(vocabularies);
+    }
+
+    protected static List<Vocabulary> getOwnFamily(){
+        return new ArrayList<>(
+                getVocabulariesFromPath(
+                "vocabularies/themes/social_relations/ownFamily.csv",
+                "own families were skipped")
+        );
+    }
+
+    protected static List<Vocabulary> getOtherFamily(){
+        return new ArrayList<>(getVocabulariesFromPath(
+                "vocabularies/themes/social_relations/otherFamily.csv",
+                "other families were skipped")
+        );
     }
 
     /**
      * Gets a list of all positional vocabularies
      * @return List of vocabularies
      */
-    public static List<Vocabulary> getPositions() {
+    protected static List<Vocabulary> getPositions() {
         return getVocabulariesFromPath(
                 "vocabularies/themes/positions/positions.csv",
                 "positions were skipped"
@@ -53,7 +58,7 @@ public class ThemeLoader {
      * Gets a list of all hemispherical directions
      * @return List of vocabularies
      */
-    public static List<Vocabulary> getDirections() {
+    protected static List<Vocabulary> getDirections() {
         return getVocabulariesFromPath(
                 "vocabularies/themes/positions/directions.csv",
                 "directions were skipped"
@@ -64,7 +69,7 @@ public class ThemeLoader {
      * Gets a list for the vocabularies of the days directory, week days and the days of a month.
      * @return List of vocabularies
      */
-    public static List<Vocabulary> getDays(){
+    protected static List<Vocabulary> getDays(){
         List<Vocabulary> vocabularies = new ArrayList<>(getMonth());
         vocabularies.addAll(getWeek());
         return vocabularies;
@@ -74,7 +79,7 @@ public class ThemeLoader {
      * Collects the vocabularies for week days
      * @return List of vocabularies
      */
-    public static List<Vocabulary> getWeek() {
+    protected static List<Vocabulary> getWeek() {
         return getVocabulariesFromPath(
                 "vocabularies/themes/days/week.csv",
                 "week was skipped"
@@ -86,10 +91,10 @@ public class ThemeLoader {
      * Gets the vocabularies for the days of a month
      * @return List of vocabularies
      */
-    public static List<Vocabulary> getMonth() {
+    protected static List<Vocabulary> getMonth() {
         try {
             String path = "vocabularies/themes/days/month.csv";
-            return new VocabularyLoader(path).loadNumberFormat(32, true, "");
+            return new VocabularyLoader(path).loadCounterFormat(32, true, "");
         } catch (IOException e) {
             logger.warning("month was skipped");
         }
@@ -100,14 +105,10 @@ public class ThemeLoader {
      *
      * @return List of all counter vocabularies
      */
-    public static List<Vocabulary> getCounters(){
+    protected static List<Vocabulary> getCounters(){
         List<Vocabulary> vocabularies = new ArrayList<>();
         for (String counterName : COUNTER_NAMES){
-            try {
-                vocabularies.addAll(getCounterByName(counterName));
-            } catch (IOException e) {
-                Logger.getLogger(CLASS_NAME).warning("Counter for %s was skipped".formatted(counterName));
-            }
+            vocabularies.addAll(getCounterByName(counterName));
         }
         //some vocabularies are ambiguous.
         // It's more fair to be lenient with the input (frequency and floors_of_buildings are mostly the same)
@@ -120,10 +121,10 @@ public class ThemeLoader {
      * @param name criteria
      * @return List of corresponding vocabularies
      */
-    public static List<Vocabulary> getCounterByName(String name) throws IOException {
+    protected static List<Vocabulary> getCounterByName(String name) {
         try {
             String path = "vocabularies/themes/counter/%s.csv".formatted(name);
-            return new VocabularyLoader(path).loadNumberFormat(11, true, name);
+            return new VocabularyLoader(path).loadCounterFormat(11, true, name);
         } catch (IOException e) {
             logger.warning("counter '%s' was skipped".formatted(name));
         }
@@ -172,7 +173,7 @@ public class ThemeLoader {
      * @param messageOnIOError If an io error occurs this message will be displayed
      * @return List of vocabularies
      */
-    private List<Vocabulary> getVocabulariesFromPath(String path, String messageOnIOError){
+    private static List<Vocabulary> getVocabulariesFromPath(String path, String messageOnIOError){
         try {
             return new VocabularyLoader(path).loadStandardFormat();
         } catch (IOException e) {
