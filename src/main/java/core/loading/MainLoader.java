@@ -28,6 +28,15 @@ public class MainLoader {
         return this;
     }
 
+    /**
+     * Empties the vocabulary list
+     * @return this instance with empty vocabulary list
+     */
+    public MainLoader clear(){
+        vocabularies.clear();
+        return this;
+    }
+
     //-------------- INSTANT LISTS ------------------//
 
     /**
