@@ -1,12 +1,10 @@
 package core.selecting;
 
-import core.loading.LessonLoader;
 import core.loading.MainLoader;
 import model.Vocabulary;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
