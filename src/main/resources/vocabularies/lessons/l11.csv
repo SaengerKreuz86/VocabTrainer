@@ -1,21 +1,21 @@
-1,imasu kodomoga,have a child,kind haben
-2,imasu nihonni,stay in japan,in japan bleiben
-3,kakarimasu okanega,take money,geld nehmen
-4,kakarimasu jikanga,take time,zeit nehmen,zeit brauchen
-5,yasumimasu kaishawo,take a day off,einen tag frei nehmen
-6,ringo,apple,apfel
-7,mikan,orange
-8,karei raisu,curry and rice,curry und reis
-9,kitte,postage stamp,briefmarke
-10,hagaki,post card,postkarte
-11,futoo,envelope,briefumschlag
-12,sokutatsu,special delivery,sonderlieferung
-13,kakitome,registered mail,einschreiben
-14,kookuubin,airmail,luftpost
-15,funabin,sea mail,seepost
-16,ryooshin,parents,eltern
-17,kyoodai,brothers and sisters,brüder und schwestern
-18,oniisan,someone else's older brother,älterer bruder einer anderen person
-19,oneisan,someone else's older sister,ältere schwester einer anderen person
-20,otootosan,someone else's younger brother,jüngerer bruder einer anderen person
-21,imootosan,someone else's younger sister,jüngere schwester einer anderen person
+imasu kodomoga:have a child,kind haben
+imasu nihonni:stay in japan,in japan bleiben
+kakarimasu okanega:take money,geld nehmen
+kakarimasu jikanga:take time,zeit nehmen,zeit brauchen
+yasumimasu kaishawo:take a day off,einen tag frei nehmen
+ringo:apple,apfel
+mikan:orange
+karei raisu:curry and rice,curry und reis
+kitte:postage stamp,briefmarke
+hagaki:post card,postkarte
+futoo:envelope,briefumschlag
+sokutatsu:special delivery,sonderlieferung
+kakitome:registered mail,einschreiben
+kookuubin:airmail,luftpost
+funabin:sea mail,seepost
+ryooshin:parents,eltern
+kyoodai:brothers and sisters,brüder und schwestern
+oniisan:someone else's older brother,älterer bruder einer anderen person
+oneisan:someone else's older sister,ältere schwester einer anderen person
+otootosan:someone else's younger brother,jüngerer bruder einer anderen person
+imootosan:someone else's younger sister,jüngere schwester einer anderen person

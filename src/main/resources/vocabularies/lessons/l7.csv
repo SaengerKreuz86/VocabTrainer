@@ -1,33 +1,32 @@
-1,kirimasu,cut,slice,schneiden,
-2,okurimasu,send,senden,
-3,agemasu,give,geben,
-4,moraimasu,receive,erhalten,
-5,kashimasu,lend,ausleihen
-6,karimasu,borrow,borgen
-7,oshiemasu,teach,lehren
-8,naraimasu,learn,lernen
-9,kakemasu denwa,make a phone call,einen anruf machen
-10,te,hand,arm
-11,hashi,chopsticks,essstäbchen
-12,supuun,spoon,löffel
-13,naihu,knife,Messer
-14,fooku,fork,gabel
-15,hasami,scissors,schere
-16,pasokon,personal computer,pc,computer
-17,panchi,punch,locher
-18,hocchikisu,stapler,tacker
-19,seroteipu,scotch tape,paket band
-20,keshigomu,eraser,radiergummi
-21,kami,paper,papier
-22,hana,flower,blume
-23,shatsu,shirt,hemd
-24,purezento,present,gift,geschenk
-25,nimotsu,baggage,parcel,paket
-26,okane,money,geld
-27,kippu,ticket,fahrkarte
-28,otoosan,someone else's father,vater einer anderen person
-29,okaasan,someone else's mother,mutter einer anderen person
-30,itadakimasu,thank you (before eat/drink guten appetit
-31,ryoko,trip,tour,reise
-32,miyage
-32,omiyage,souvenir,present,mitbringsel
+kirimasu:cut,slice,schneiden,
+okurimasu:send,senden,
+agemasu:give,geben,
+moraimasu:receive,erhalten,
+kashimasu:lend,ausleihen
+karimasu:borrow,borgen
+oshiemasu:teach,lehren
+naraimasu:learn,lernen
+kakemasu denwa:make a phone call,einen anruf machen
+te:hand,arm
+hashi:chopsticks,essstäbchen
+supuun:spoon,löffel
+naihu:knife,Messer
+fooku:fork,gabel
+hasami:scissors,schere
+pasokon:personal computer,pc,computer
+panchi:punch,locher
+hocchikisu:stapler,tacker
+seroteipu:scotch tape,paket band
+keshigomu:eraser,radiergummi
+kami:paper,papier
+hana:flower,blume
+shatsu:shirt,hemd
+purezento:present,gift,geschenk
+nimotsu:baggage,parcel,paket
+okane:money,geld
+kippu:ticket,fahrkarte
+otoosan:someone else's father,vater einer anderen person
+okaasan:someone else's mother,mutter einer anderen person
+itadakimasu:thank you (before eat/drink), guten appetit
+ryoko:trip,tour,reise
+miyage,omiyage:souvenir,present,mitbringsel

@@ -1,31 +1,27 @@
-1,wakarimasu,understand,verstehen
-2,suki
-2,suki na,like,mögen
-3,kirai
-3,kirai na,dislike,nicht mögen
-4,joozu
-4,joozu na,good at,gut in etwas sein
-5,heta
-5,heta na,bad at,schlecht in etwas sein
-6,ryori,cooking,cooked food,kochen,gekochtes essen
-7,nomimono,drinks,getränke
-8,supootsu,sport
-9,yakyuu,baseball
-10,ongaku,music
-11,uta,song
-12,karaoke,karaoke
-13,e,picture,drawing,bild,malen
-14,komakai okane,small change,kleingeld
-15,chiketto,ticket
-16,goshujin,someone else's husband,ehemann einer anderen
-17,shujin,my husband,mein ehemann
-18,okusan,someone else's wife,ehefrau einer anderen
-19,tsuma,my wife,meine ehefrau
-21,arimasu,haben,besitzen,own
-22,sukoshi,a little,ein bisschen,ein wenig
-23,daitai,ungefähr,aproximately,ungefähr
-24,yoku,often,oft,frequently
-25,sukoshi,a little,ein bisschen,ein wenig
-26,takusan,viel,lots,plenty
-27,amari,nicht so viel,not so much
-28,zenzen,gar nicht,not at all
+wakarimasu:understand,verstehen
+suki,suki na:like,mögen
+kirai,kirai na:dislike,nicht mögen
+joozu,joozu na:good at,gut in etwas sein
+heta,heta na:bad at,schlecht in etwas sein
+ryori:cooking,cooked food,kochen,gekochtes essen
+nomimono:drinks,getränke
+supootsu:sport
+yakyuu:baseball
+ongaku:music
+uta:song
+karaoke:karaoke
+e:picture,drawing,bild,malen
+komakai okane:small change,kleingeld
+chiketto:ticket
+goshujin:someone else's husband,ehemann einer anderen
+shujin:my husband,mein ehemann
+okusan:someone else's wife,ehefrau einer anderen
+tsuma:my wife,meine ehefrau
+arimasu:haben,besitzen,own
+sukoshi:a little,ein bisschen,ein wenig
+daitai:ungefähr,aproximately,ungefähr
+yoku:often,oft,frequently
+sukoshi:a little,ein bisschen,ein wenig
+takusan:viel,lots,plenty
+amari:nicht so viel,not so much
+zenzen:gar nicht,not at all

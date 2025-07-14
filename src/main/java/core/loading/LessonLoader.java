@@ -1,6 +1,5 @@
 package core.loading;
 
-import core.util.ReaderUtility;
 import model.Vocabulary;
 
 import java.io.*;
@@ -9,7 +8,6 @@ import java.util.logging.Logger;
 
 public class LessonLoader {
     private static final Map<Integer, List<Vocabulary>> lessons = new HashMap<>();
-    private static final String CSV_COMMA_DELIMITER = ",";
     static {
         lessons.put(0,new ArrayList<>());
         lessons.put(1,new ArrayList<>());
@@ -18,25 +16,25 @@ public class LessonLoader {
         lessons.put(4,new ArrayList<>());
         lessons.put(5,new ArrayList<>());
         //TODO cursed csv structure
-        wrappedPut(6, "l6");
-        wrappedPut(7, "l7");
-        wrappedPut(8, "l8");
-        wrappedPut(9, "l9");
-        wrappedPut(10, "l10");
-        wrappedPut(11, "l11");
-        wrappedPut(12, "l12");
+        loadLesson(6);
+        loadLesson(7);
+        loadLesson(8);
+        loadLesson(9);
+        loadLesson(10);
+        loadLesson(11);
+        loadLesson(12);
     }
 
     /**
-     * Adds another entry to the map but skips it if it produces an error
-     * @param id id of the lesson
-     * @param csvName name of the file. the ending '.csv' must be excluded
+     * Loads lessons into the map
+     * @param i number of the lesson
      */
-    private static void wrappedPut(int id, String csvName){
+    private static void loadLesson(int i){
+        String path = "vocabularies/lessons/l%s.csv".formatted(i);
         try {
-            lessons.put(id, getCSVVocabulary(csvName));
+            lessons.put(i, new VocabularyLoader(path).loadStandardFormat());
         } catch (IOException e) {
-            Logger.getLogger("LessonSelector").warning("Error putting lesson %s with csv name %s".formatted(id, csvName));
+            Logger.getLogger("LessonSelector").warning("Error loading lesson '%s'.".formatted(i));
         }
     }
 
@@ -46,10 +44,8 @@ public class LessonLoader {
      */
     protected static List<Vocabulary> getAll(){
         List<Vocabulary> vocabularies = new ArrayList<>();
-        for (Map.Entry<Integer, List<Vocabulary>> entry: lessons.entrySet()){
-            if (entry.getValue() != null){
-                vocabularies.addAll(entry.getValue());
-            }
+        for (int i = 0; i < lessons.size(); i++) {
+            vocabularies.addAll(getVocabulary(i));
         }
         return vocabularies;
     }
@@ -105,76 +101,5 @@ public class LessonLoader {
             return new ArrayList<>();
         }
         return lessons.get(lesson);
-    }
-
-    /**
-     * Gets vocabulary of multiple lessons specified in the list
-     * @param queriedLessons List of lessons
-     * @return List of all vocabularies
-     */
-    protected static List<Vocabulary> getVocabularyByLessons(List<Integer> queriedLessons){
-        List<Vocabulary> vocabularies = new ArrayList<>();
-        for (int i : queriedLessons){
-            List<Vocabulary> tmp = getVocabulary(i);
-            if (!tmp.isEmpty()){
-                vocabularies.addAll(tmp);
-            }
-        }
-        return vocabularies;
-    }
-
-    /**
-     * The format of a line in the csv is: id,japaneseWord,meaning1,meaning2,...
-     * If there are multiple japanese words within one file that have the same meaning they must have the same id.
-     * @param name name of the file without the ending '.csv'
-     * @return List of Vocabularies that the file contains
-     */
-    private static List<Vocabulary> getCSVVocabulary(String name) throws IOException {
-        BufferedReader br = ReaderUtility.getReader("vocabularies/lessons/%s.csv".formatted(name));
-        String line;
-        Map<Integer, Vocabulary> idVoc= new HashMap<>();
-        while ((line = br.readLine()) != null){
-            // csv format:
-            // id,jap,meaning1,meaning2,...
-            String[] values = line.split(CSV_COMMA_DELIMITER);
-            int id = getId(values[0]);
-            if (id <= -1){
-                continue;
-            }
-            if (idVoc.get(id)== null){
-                idVoc.put(id, new Vocabulary(
-                                new ArrayList<>(Collections.singleton(values[1])),
-                                new ArrayList<>(Arrays.asList(values).subList(2, values.length)))
-                );
-            }else {
-                if (!idVoc.get(id).getJapanese().contains(values[1])){
-                    List<String> mutable = new ArrayList<>(idVoc.get(id).getJapanese());
-                    mutable.add(values[1]);
-                    idVoc.get(id).setJapanese(mutable);
-                }
-                List<String> englishGerman = idVoc.get(id).getEnglishGerman();
-                for (int i = 2; i < values.length; i++) {
-                    if (!englishGerman.contains(values[i])){
-                        englishGerman.add(values[i]);
-                    }
-                }
-                idVoc.get(id).setEnglishGerman(englishGerman);
-            }
-        }
-        return idVoc.values().stream().toList();
-    }
-
-    /**
-     *
-     * @param s String that will be parsed
-     * @return the specified id in the csv. Returns -1 if the id was malformed
-     */
-    private static int getId(String s){
-        try {
-            return Integer.parseInt(s);
-        } catch (NumberFormatException e) {
-            Logger.getLogger("LessonSelector").warning("Malformed csv line processed.");
-            return -1;
-        }
     }
 }
