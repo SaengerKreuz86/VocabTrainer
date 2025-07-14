@@ -54,7 +54,7 @@ public class LessonLoader {
         return vocabularies;
     }
 
-    protected static List<Vocabulary> getRange(Integer[] range){
+    protected static List<Vocabulary> getRange(int[] range){
         if (range.length >= 2){
             return getRange(range[0], range[1]);
         }else if (range.length == 1){
@@ -75,7 +75,11 @@ public class LessonLoader {
         List<Vocabulary> vocabularies = new ArrayList<>();
         for (int i = lower; i < upper+1; i++) {
             if (lessons.get(i)!=null){
-                vocabularies.addAll(lessons.get(i));
+                List<Vocabulary> tmp = getVocabulary(i);
+                if (!tmp.isEmpty()){
+                    vocabularies.addAll(getVocabulary(i));
+                    Logger.getLogger("LessonLoader").info("Lesson %s selected".formatted(i));
+                }
             }
         }
         return vocabularies;
@@ -87,13 +91,7 @@ public class LessonLoader {
      * @return List of vocabularies
      */
     protected static List<Vocabulary> getRange(int lower){
-        List<Vocabulary> vocabularies = new ArrayList<>();
-        for (int i = lower; i < lessons.size()+1; i++) {
-            if (lessons.get(i)!=null){
-                vocabularies.addAll(lessons.get(i));
-            }
-        }
-        return vocabularies;
+        return getRange(lower, lessons.size());
     }
 
     /**
@@ -102,6 +100,10 @@ public class LessonLoader {
      * @return null if lesson does not exist
      */
     protected static List<Vocabulary> getVocabulary(int lesson){
+        if (lessons.size() < lesson){
+            Logger.getLogger("LessonLoader").warning("Lesson '%s' does not exist. It was skipped.".formatted(lesson));
+            return new ArrayList<>();
+        }
         return lessons.get(lesson);
     }
 
@@ -113,8 +115,9 @@ public class LessonLoader {
     protected static List<Vocabulary> getVocabularyByLessons(List<Integer> queriedLessons){
         List<Vocabulary> vocabularies = new ArrayList<>();
         for (int i : queriedLessons){
-            if (lessons.get(i)!= null){
-                vocabularies.addAll(lessons.get(i));
+            List<Vocabulary> tmp = getVocabulary(i);
+            if (!tmp.isEmpty()){
+                vocabularies.addAll(tmp);
             }
         }
         return vocabularies;

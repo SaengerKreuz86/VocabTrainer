@@ -56,10 +56,11 @@ public class MainLoader {
 
     public MainLoader loadLesson(int i){
         vocabularies.addAll(LessonLoader.getVocabulary(i));
+
         return this;
     }
 
-    public MainLoader loadRangeLessons(Integer[] range){
+    public MainLoader loadRangeLessons(int[] range){
         vocabularies.addAll(LessonLoader.getRange(range));
         return this;
     }

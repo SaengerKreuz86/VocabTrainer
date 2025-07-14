@@ -1,11 +1,11 @@
 package core.selecting;
 
 import core.loading.MainLoader;
+import core.util.ArrayUtil;
 import model.Vocabulary;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import static core.Main.*;
@@ -82,12 +82,7 @@ public class LessonSelector {
             case "$all", "" -> runAndCollect(new MainLoader()::loadAllLessons);
             case "$range" -> {
                 if (x.length > 1){
-                    yield new MainLoader().loadRangeLessons(
-                            (Integer[]) Arrays.stream(x)
-                                    .sequential()
-                                    .map(Integer::parseInt)
-                                    .toArray())
-                            .collect();
+                    yield new MainLoader().loadRangeLessons(ArrayUtil.toIntArray(x)).collect();
                 }else {
                     System.out.println("The range was not specified.\r\n");
                     System.out.println(SELECT_LESSON);
@@ -96,8 +91,12 @@ public class LessonSelector {
             }
             default -> {
                 MainLoader ml = new MainLoader();
-                for (String s : x) {
-                    ml.loadLesson(Integer.parseInt(s));
+                int[] intArrayExtract = ArrayUtil.toIntArray(x);
+                if (intArrayExtract.length < x.length){
+                    System.out.println("Not all");
+                }
+                for (int i : intArrayExtract) {
+                    ml.loadLesson(i);
                 }
                 yield ml.collect();
             }
