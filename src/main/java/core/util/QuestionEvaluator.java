@@ -79,7 +79,7 @@ public class QuestionEvaluator {
             System.out.println("------------------------------------");
             loopCounter++;
         }while (loopCounter < limiter);
-        System.out.printf("You got %s out of %s right! %n%n", correct, limiter);
+        System.out.printf("You got %s out of %s right. That's %s percent! %n%n", correct, limiter, (float) correct/limiter*100);
     }
 
     /**
