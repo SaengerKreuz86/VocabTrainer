@@ -92,9 +92,6 @@ public class LessonSelector {
             default -> {
                 MainLoader ml = new MainLoader();
                 int[] intArrayExtract = ArrayUtil.toIntArray(x);
-                if (intArrayExtract.length < x.length){
-                    System.out.println("Not all");
-                }
                 for (int i : intArrayExtract) {
                     ml.loadLesson(i);
                 }
