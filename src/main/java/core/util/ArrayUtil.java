@@ -20,7 +20,7 @@ public class ArrayUtil {
                 Integer.parseInt(sa[i]);
                 counter++;
             } catch (NumberFormatException e) {
-                Logger.getLogger("ArraysUtil").info("Couldn't parse %s".formatted(sa[i]));
+                Logger.getLogger("ArraysUtil").info("Couldn't parse %s%n".formatted(sa[i]));
                 saCopy[i] = null;
             }
         }

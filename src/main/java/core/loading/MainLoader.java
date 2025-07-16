@@ -37,17 +37,6 @@ public class MainLoader {
         return this;
     }
 
-    //-------------- INSTANT LISTS ------------------//
-
-    /**
-     * Immediately gets the list
-     * @param mlep defines how the vocabularies are selected
-     * @return List of vocabularies
-     */
-    public static List<Vocabulary> runAndCollect(MainLoaderEmptyParams mlep){
-        return mlep.run().collect();
-    }
-
     //----------------- LESSONS ------------------------//
     public MainLoader loadAllLessons(){
         vocabularies.addAll(LessonLoader.getAll());

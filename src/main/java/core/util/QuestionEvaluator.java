@@ -4,12 +4,11 @@ import lombok.experimental.UtilityClass;
 import model.Vocabulary;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.List;
 
-import static core.Main.*;
-import static core.util.ReaderUtility.formattedRead;
-import static core.util.ReaderUtility.readLine;
+import static core.util.ReaderWriterUtility.*;
 
 @UtilityClass
 public class QuestionEvaluator {
@@ -22,6 +21,7 @@ public class QuestionEvaluator {
                 Typing one of the possible solutions is sufficient. However, you can type multiple.
                 They need to be separated by a comma and a space. 'a, b' is valid 'a b' or 'a,b' are not\r
                 You can exit by typing '$exit'.\r
+            
             """;
 
     /**
@@ -29,14 +29,14 @@ public class QuestionEvaluator {
      * @param vocabularies List of vocabularies to question from
      * @param info Help given for the user
      */
-    public static void processQuestioning(BufferedReader br,List<Vocabulary> vocabularies, String info) throws IOException {
+    public static void processQuestioning(BufferedReader br, BufferedWriter bw, List<Vocabulary> vocabularies, String info) throws IOException {
         if (!vocabularies.isEmpty()){
-            System.out.println("Please define how many rounds you want to do. Must be a single number.");
-            int limiter = getRounds(br,vocabularies.size()/2);
+            writeAndFlush(bw, "Please define how many rounds you want to do. Must be a single number.");
+            int limiter = getRounds(br, bw,vocabularies.size());
             if (limiter == -1){ //exit command was triggered
                 return;
             }
-            questionnaire(br,vocabularies, limiter, info);
+            questionnaire(br, bw, vocabularies, limiter, info);
         }
     }
 
@@ -44,8 +44,8 @@ public class QuestionEvaluator {
      * Processes the questioning. Determines how many rounds are done and questions the user. Neglects giving helpful information
      * @param vocabularies List of vocabularies to question from
      */
-    public static void processQuestioning(BufferedReader br, List<Vocabulary> vocabularies) throws IOException {
-        processQuestioning(br,vocabularies, "Only god can help you.\r\n");
+    public static void processQuestioning(BufferedReader br, BufferedWriter bw, List<Vocabulary> vocabularies) throws IOException {
+        processQuestioning(br, bw, vocabularies, "Only god can help you.\r\n");
     }
 
     /**
@@ -53,33 +53,34 @@ public class QuestionEvaluator {
      * @param vocabularies List from which the questions will be drawn.
      * @param limiter Max amount of questions
      */
-    private static void questionnaire(BufferedReader br,List<Vocabulary> vocabularies, int limiter, String info) throws IOException {
-        System.out.printf("The list of vocabularies contains %s vocabularies. %n", vocabularies.size());
-        System.out.printf("Playing for %s rounds! %n%n", limiter);
-        System.out.println(PROCEED_TO_QUESTIONNAIRE);
+    private static void questionnaire(BufferedReader br, BufferedWriter bw, List<Vocabulary> vocabularies, int limiter, String info) throws IOException {
+        bw.write(
+                "The list of vocabularies contains %s vocabularies.%nPlaying for %s rounds! %n%n"
+                        .formatted(vocabularies.size(), limiter)
+        );
+        writeAndFlush(bw, PROCEED_TO_QUESTIONNAIRE);
         int correct = 0;
         int loopCounter = 0;
         List<String> solution;
         Vocabulary vocabulary;
         do {
-            System.out.println("Next vocabulary:\r");
+            writeAndFlush(bw, "Next vocabulary:\r\n");
             vocabulary = randomSelectVocabularyFrom(vocabularies);
-            solution = getSolution(vocabulary);
+            solution = getSolution(bw, vocabulary);
             // norm the list. Everything is lowercase
             solution = solution.stream().map(String::toLowerCase).toList();
-            System.out.println(getWAITING_FOR_INPUT());
             // process user input
-            int answer = processQuestionsAnswer(br, solution, info);
+            int answer = processQuestionsAnswer(br, bw, solution, info);
             if (answer == -1){
                 return;
             }else {
                 correct += answer;
             }
-            System.out.printf("The solution was %s%n \r\n", solution);
-            System.out.println("------------------------------------");
+            writeAndFlush(bw, "The solution was %s%n".formatted(solution));
+            writeAndFlush(bw, "------------------------------------\r\n\n");
             loopCounter++;
         }while (loopCounter < limiter);
-        System.out.printf("You got %s out of %s right. That's %s percent! %n%n", correct, limiter, (float) correct/limiter*100);
+        writeAndFlush(bw, "You got %s out of %s right. That's %s percent! %n%n".formatted(correct, limiter, (float) correct/limiter*100));
     }
 
     /**
@@ -89,20 +90,20 @@ public class QuestionEvaluator {
      * @param info info string displayed after typing the $help
      * @return -1 if exit was read, 1 if answer correct, 0 if answer incorrect.
      */
-    private static int processQuestionsAnswer(BufferedReader br, List<String> solution, String info) throws IOException {
+    private static int processQuestionsAnswer(BufferedReader br, BufferedWriter bw, List<String> solution, String info) throws IOException {
         String[] in = formattedRead(br, ", ");
         //check for commands
         if (in[0].equals("$exit")){
             return -1;
         }else if (in[0].equals("$help") && info != null){
-            System.out.println(info);
-            return processQuestionsAnswer(br, solution, info); // read new answer
+            writeAndFlush(bw, info);
+            return processQuestionsAnswer(br, bw, solution, info); // read new answer
         }
         if (solutionIsCorrect(solution, in)){ //--- check correctness of solutions ---
-            System.out.println("Correct!");
+            writeAndFlush(bw, "Correct!\r\n");
             return 1;
         }else {
-            System.out.println("Incorrect!");
+            writeAndFlush(bw, "Incorrect!\r\n");
             return 0;
         }
     }
@@ -112,7 +113,7 @@ public class QuestionEvaluator {
      * @param pDefault default value for number of rounds
      * @return -1 if exit was read else number of rounds
      */
-    private static int getRounds(BufferedReader br,int pDefault) throws IOException {
+    private static int getRounds(BufferedReader br, BufferedWriter bw, int pDefault) throws IOException {
         String str = readLine(br);
         if (str.isEmpty()){
             return pDefault;
@@ -123,9 +124,8 @@ public class QuestionEvaluator {
             try {
                 return Integer.parseInt(str);
             } catch (NumberFormatException e) {
-                System.out.printf("Invalid value for %s%n", str);
-                System.out.println("Write the number again!");
-                return getRounds(br, pDefault);
+                writeAndFlush(bw, "Invalid value for %s%n. Write the number again!%n".formatted(str));
+                return getRounds(br, bw, pDefault);
             }
         }
     }
@@ -160,14 +160,18 @@ public class QuestionEvaluator {
      * @param vocabulary Vocabulary which will be questioned
      * @return The solutions of a vocabulary
      */
-    private static List<String> getSolution(Vocabulary vocabulary){
+    private static List<String> getSolution(BufferedWriter bw, Vocabulary vocabulary) throws IOException {
+        String message;
+        List<String> solution;
         // randomly choose english/german or japanese word to question
         if ((int)(Math.random()*2)== 1){
-            System.out.println(vocabulary.getJapanese());
-            return vocabulary.getEnglishGerman();
+            message = vocabulary.getJapanese().toString();
+            solution = vocabulary.getEnglishGerman();
         }else {
-            System.out.println(vocabulary.getEnglishGerman());
-            return vocabulary.getJapanese();
+            message = vocabulary.getEnglishGerman().toString();
+            solution = vocabulary.getJapanese();
         }
+        writeFlushWait(bw, message);
+        return solution;
     }
 }

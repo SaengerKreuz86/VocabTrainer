@@ -3,15 +3,13 @@ package core.util;
 import core.loading.LessonLoader;
 import lombok.experimental.UtilityClass;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 @UtilityClass
-public class ReaderUtility {
+public class ReaderWriterUtility {
     private final ReentrantLock readLock = new ReentrantLock();
+    private static final String WAITING_FOR_INPUT = "\r\nWaiting for input...\r\n";
 
     /**
      * Reads a line from the input and formats it into lowercase
@@ -51,5 +49,15 @@ public class ReaderUtility {
             throw new IOException();
         }
         return new BufferedReader(new InputStreamReader(is));
+    }
+
+    public static void writeAndFlush(BufferedWriter bw, String s) throws IOException {
+        bw.write(s);
+        bw.flush();
+    }
+
+    public static void writeFlushWait(BufferedWriter bw, String s) throws IOException {
+        writeAndFlush(bw, s);
+        writeAndFlush(bw, WAITING_FOR_INPUT);
     }
 }

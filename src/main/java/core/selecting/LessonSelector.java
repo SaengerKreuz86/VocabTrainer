@@ -5,13 +5,13 @@ import core.util.ArrayUtil;
 import model.Vocabulary;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-import static core.Main.*;
 import static core.util.QuestionEvaluator.processQuestioning;
-import static core.util.ReaderUtility.formattedRead;
-import static core.loading.MainLoader.runAndCollect;
+import static core.util.ReaderWriterUtility.*;
 
 public class LessonSelector {
 
@@ -33,34 +33,20 @@ public class LessonSelector {
     /**
      * Processes selecting lessons
      */
-    public static void doLessons(BufferedReader br) throws IOException {
+    public static void doLessons(BufferedReader br, BufferedWriter bw, MainLoader mainLoader) throws IOException {
         //recurses as often as the user wants it
-        System.out.println(SELECT_LESSON);
-        System.out.println(getWAITING_FOR_INPUT());
-        String[] lessons = formattedRead(br," ");
-        List<Vocabulary> vocabularies = selectLesson(br,lessons);
+        writeFlushWait(bw, SELECT_LESSON);
+        String[] mode = formattedRead(br, " ");
+        List<Vocabulary> vocabularies = selectLesson(bw, mainLoader, mode);
         if (vocabularies != null){
-            System.out.printf("Successfully selected lessons %n");
-            processQuestioning(br,vocabularies);
-            doLessons(br);
+            if (vocabularies.isEmpty()) {
+                doLessons(br, bw, mainLoader);
+            }else {
+                writeAndFlush(bw, "Successfully selected lessons!\r\n");
+                processQuestioning(br, bw, vocabularies);
+                doLessons(br, bw, mainLoader);
+            }
         }
-    }
-
-    /**
-     * Selects the vocabulary of a lesson.
-     * @param x current read string on which the lesson will be evaluated
-     * @return null if the user wants to exit.
-     * Otherwise, the user is recursively trapped until he makes a valid input.
-     * In this case the corresponding vocabulary is returned.
-     */
-    private static List<Vocabulary> selectLesson(BufferedReader br, String[] x) throws IOException {
-        try {
-            return evalTriggerForLessonSelector(br,x);
-        }catch (NumberFormatException e){
-            System.out.println("Did not read a number!\r\n");
-        }
-        System.out.println(SELECT_LESSON);
-        return selectLesson(br,formattedRead(br," "));
     }
 
     /**
@@ -68,34 +54,35 @@ public class LessonSelector {
      * $exit closes the program later on
      * $all yields all possible vocabularies
      * $range yields the vocabularies within the range of the lessons
-     * @param x List of the inputs
      * @return List of vocabularies
      */
-    private static List<Vocabulary> evalTriggerForLessonSelector(BufferedReader br, String[] x) throws IOException {
+    private static List<Vocabulary> selectLesson(BufferedWriter bw, MainLoader mainLoader, String[] mode) throws IOException {
         System.out.println();
-        return switch (x[0]) {
+        return switch (mode[0]) {
             case "$help" -> {
-                System.out.println(SELECT_LESSON_HELP);
-                yield selectLesson(br,formattedRead(br," "));
+                writeAndFlush(bw, SELECT_LESSON_HELP);
+                yield new ArrayList<>();
             }
             case "$exit" -> null;
-            case "$all", "" -> runAndCollect(new MainLoader()::loadAllLessons);
+            case "$all", "" -> mainLoader.loadAllLessons().collect();
             case "$range" -> {
-                if (x.length > 1){
-                    yield new MainLoader().loadRangeLessons(ArrayUtil.toIntArray(x)).collect();
+                if (mode.length > 1){
+                    yield mainLoader.loadRangeLessons(ArrayUtil.toIntArray(mode)).collect();
                 }else {
-                    System.out.println("The range was not specified.\r\n");
-                    System.out.println(SELECT_LESSON);
-                    yield selectLesson(br,formattedRead(br," "));
+                    writeAndFlush(bw, "The range was not specified.\r\n");
+                    yield new ArrayList<>();
                 }
             }
             default -> {
-                MainLoader ml = new MainLoader();
-                int[] intArrayExtract = ArrayUtil.toIntArray(x);
-                for (int i : intArrayExtract) {
-                    ml.loadLesson(i);
+                int[] intArrayExtract = ArrayUtil.toIntArray(mode);
+                if (intArrayExtract.length == 0){
+                    writeAndFlush(bw,"There weren't any valid numbers.\r\n");
+                }else {
+                    for (int i : intArrayExtract) {
+                        mainLoader.loadLesson(i);
+                    }
                 }
-                yield ml.collect();
+                yield mainLoader.collect();
             }
         };
     }

@@ -1,6 +1,6 @@
 package core.loading;
 
-import core.util.ReaderUtility;
+import core.util.ReaderWriterUtility;
 import model.Vocabulary;
 
 import java.io.BufferedReader;
@@ -20,7 +20,7 @@ public class VocabularyLoader {
     private final BufferedReader br;
 
     public VocabularyLoader(String path) throws IOException {
-        br = ReaderUtility.getReader(path);
+        br = ReaderWriterUtility.getReader(path);
     }
 
     /**
@@ -102,13 +102,13 @@ public class VocabularyLoader {
         List<Vocabulary> vocabularies =  new ArrayList<>();
         String line;
         for (int i = 1; i < maxIterExclusive; i++) {
-            line = ReaderUtility.readLine(br);
+            line = ReaderWriterUtility.readLine(br);
             Vocabulary vocabulary = getNextNumber(line, i + " " + numberSuffix);
             if (vocabulary != null){
                 vocabularies.add(vocabulary);
             }
         }
-        line = ReaderUtility.readLine(br);
+        line = ReaderWriterUtility.readLine(br);
         if (includeEndQuestion && !line.isEmpty()){
             vocabularies.add(getNext(line));
         }
