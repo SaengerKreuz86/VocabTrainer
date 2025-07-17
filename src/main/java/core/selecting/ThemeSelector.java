@@ -39,12 +39,12 @@ public class ThemeSelector {
             case "$exit" -> {}
             case "$counter" -> {
                 writeFlushWait(bw, SELECT_COUNTER_MODE);
-                getCounterMode(br, bw, questionnaireLoader);
+                selectCounterMode(br, bw, questionnaireLoader);
                 questionnaireLoader.setInfo("Counters: The categories are %s%n".formatted(ThemeLoader.getCOUNTER_NAMES()));
             }
             case "$days" -> {
                 writeFlushWait(bw, SELECT_DAYS_MODE);
-                getDaysMode(br, bw, questionnaireLoader);
+                selectDaysMode(br, bw, questionnaireLoader);
             }
             case "$positions" -> questionnaireLoader.loadPositions();
             case "$directions" -> questionnaireLoader.loadDirections();
@@ -56,7 +56,7 @@ public class ThemeSelector {
     /**
      * If $days was selected then processes the following modes.
      */
-    private static void getDaysMode(BufferedReader br, BufferedWriter bw, QuestionnaireLoader questionnaireLoader) throws IOException {
+    private static void selectDaysMode(BufferedReader br, BufferedWriter bw, QuestionnaireLoader questionnaireLoader) throws IOException {
         String mode = readLine(br);
         switch (mode){
             case "$exit" -> {}
@@ -74,14 +74,14 @@ public class ThemeSelector {
      * Selects possible counter modes. Supported are $all yielding all possible counters, and specific by name yielding the correlating counter.
      * Typing $list will list all possible names of the counters.
      */
-    private static void getCounterMode(BufferedReader br, BufferedWriter bw, QuestionnaireLoader questionnaireLoader) throws IOException {
+    private static void selectCounterMode(BufferedReader br, BufferedWriter bw, QuestionnaireLoader questionnaireLoader) throws IOException {
         String mode = readLine(br);
         switch (mode){
             case "$exit" -> {}
             case "$all","" -> questionnaireLoader.loadAllCounter();
             case "$ls"-> {
                 writeFlushWait(bw, "These are the categories:%n%s%nSelect a mode as mentioned above.%n".formatted(ThemeLoader.getCOUNTER_NAMES()));
-                getCounterMode(br, bw, questionnaireLoader);
+                selectCounterMode(br, bw, questionnaireLoader);
             }
             default -> {
                 for (String s : mode.split(" ")) {
