@@ -1,16 +1,12 @@
 package core.selecting;
 
-import core.loading.MainLoader;
+import core.loading.QuestionnaireLoader;
 import core.util.ArrayUtil;
-import model.Vocabulary;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import static core.util.QuestionEvaluator.processQuestioning;
 import static core.util.ReaderWriterUtility.*;
 
 public class LessonSelector {
@@ -33,20 +29,13 @@ public class LessonSelector {
     /**
      * Processes selecting lessons
      */
-    public static void doLessons(BufferedReader br, BufferedWriter bw, MainLoader mainLoader) throws IOException {
+    public static void selectLessons(BufferedReader br, BufferedWriter bw, QuestionnaireLoader questionnaireLoader) throws IOException {
         //recurses as often as the user wants it
         writeFlushWait(bw, SELECT_LESSON);
-        String[] mode = formattedRead(br, " ");
-        List<Vocabulary> vocabularies = selectLesson(bw, mainLoader, mode);
-        if (vocabularies != null){
-            if (vocabularies.isEmpty()) {
-                doLessons(br, bw, mainLoader);
-            }else {
-                writeAndFlush(bw, "Successfully selected lessons!\r\n");
-                processQuestioning(br, bw, vocabularies);
-                doLessons(br, bw, mainLoader);
-            }
-        }
+        String[] mode;
+        do {
+             mode = formattedRead(br, " ");
+        }while (selectLesson(bw, questionnaireLoader, mode));
     }
 
     /**
@@ -54,36 +43,38 @@ public class LessonSelector {
      * $exit closes the program later on
      * $all yields all possible vocabularies
      * $range yields the vocabularies within the range of the lessons
-     * @return List of vocabularies
+     * @return true if method must loop
      */
-    private static List<Vocabulary> selectLesson(BufferedWriter bw, MainLoader mainLoader, String[] mode) throws IOException {
-        System.out.println();
-        return switch (mode[0]) {
+    private static boolean selectLesson(BufferedWriter bw, QuestionnaireLoader questionnaireLoader, String[] mode) throws IOException {
+        boolean loop = false;
+        switch (mode[0]) {
+            case "$exit" -> {}
             case "$help" -> {
                 writeAndFlush(bw, SELECT_LESSON_HELP);
-                yield new ArrayList<>();
+                loop = true;
             }
-            case "$exit" -> null;
-            case "$all", "" -> mainLoader.loadAllLessons().collect();
+            case "$all", "" -> questionnaireLoader.loadAllLessons();
             case "$range" -> {
-                if (mode.length > 1){
-                    yield mainLoader.loadRangeLessons(ArrayUtil.toIntArray(mode)).collect();
+                int[] extractedInts = ArrayUtil.toIntArray(mode);
+                if (extractedInts.length > 0){
+                    questionnaireLoader.loadRangeLessons(extractedInts);
                 }else {
-                    writeAndFlush(bw, "The range was not specified.\r\n");
-                    yield new ArrayList<>();
+                    writeAndFlush(bw,"There weren't any valid numbers.\r\n");
+                    loop = true;
                 }
             }
             default -> {
-                int[] intArrayExtract = ArrayUtil.toIntArray(mode);
-                if (intArrayExtract.length == 0){
-                    writeAndFlush(bw,"There weren't any valid numbers.\r\n");
-                }else {
-                    for (int i : intArrayExtract) {
-                        mainLoader.loadLesson(i);
+                int[] extractedInts = ArrayUtil.toIntArray(mode);
+                if (extractedInts.length > 0){
+                    for (int i : extractedInts) {
+                        questionnaireLoader.loadLesson(i);
                     }
+                }else {
+                    writeAndFlush(bw,"There weren't any valid numbers.\r\n");
+                    loop = true;
                 }
-                yield mainLoader.collect();
             }
-        };
+        }
+        return loop;
     }
 }

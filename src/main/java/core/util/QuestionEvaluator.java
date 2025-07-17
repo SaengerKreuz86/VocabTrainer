@@ -29,23 +29,15 @@ public class QuestionEvaluator {
      * @param vocabularies List of vocabularies to question from
      * @param info Help given for the user
      */
-    public static void processQuestioning(BufferedReader br, BufferedWriter bw, List<Vocabulary> vocabularies, String info) throws IOException {
+    public static void eval(BufferedReader br, BufferedWriter bw, List<Vocabulary> vocabularies, String info) throws IOException {
         if (!vocabularies.isEmpty()){
-            writeAndFlush(bw, "Please define how many rounds you want to do. Must be a single number.");
+            writeAndFlush(bw, "Please define how many rounds you want to do. Must be a single number.\r\n");
             int limiter = getRounds(br, bw,vocabularies.size());
             if (limiter == -1){ //exit command was triggered
                 return;
             }
             questionnaire(br, bw, vocabularies, limiter, info);
         }
-    }
-
-    /**
-     * Processes the questioning. Determines how many rounds are done and questions the user. Neglects giving helpful information
-     * @param vocabularies List of vocabularies to question from
-     */
-    public static void processQuestioning(BufferedReader br, BufferedWriter bw, List<Vocabulary> vocabularies) throws IOException {
-        processQuestioning(br, bw, vocabularies, "Only god can help you.\r\n");
     }
 
     /**
@@ -59,6 +51,7 @@ public class QuestionEvaluator {
                         .formatted(vocabularies.size(), limiter)
         );
         writeAndFlush(bw, PROCEED_TO_QUESTIONNAIRE);
+        writeAndFlush(bw, "You can type '$help' to get additional info.\r\n\n");
         int correct = 0;
         int loopCounter = 0;
         List<String> solution;
@@ -124,7 +117,7 @@ public class QuestionEvaluator {
             try {
                 return Integer.parseInt(str);
             } catch (NumberFormatException e) {
-                writeAndFlush(bw, "Invalid value for %s%n. Write the number again!%n".formatted(str));
+                writeAndFlush(bw, "Invalid value for '%s'.%nWrite the number again!%n".formatted(str));
                 return getRounds(br, bw, pDefault);
             }
         }

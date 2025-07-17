@@ -1,16 +1,13 @@
 package core.selecting;
 
-import core.loading.MainLoader;
+import core.loading.QuestionnaireLoader;
 import core.loading.ThemeLoader;
 import lombok.experimental.UtilityClass;
-import model.Vocabulary;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import static core.util.QuestionEvaluator.processQuestioning;
+
 import static core.util.ReaderWriterUtility.*;
 
 @UtilityClass
@@ -35,72 +32,62 @@ public class ThemeSelector {
     /**
      * Selects possible themes.
      */
-    public static void doThemes(BufferedReader br, BufferedWriter bw, MainLoader mainLoader) throws IOException {
+    public static void selectTheme(BufferedReader br, BufferedWriter bw, QuestionnaireLoader questionnaireLoader) throws IOException {
         writeFlushWait(bw, SELECT_THEMES);
         String s = readLine(br);
         switch (s){
-            case "$exit" -> {return;}
+            case "$exit" -> {}
             case "$counter" -> {
                 writeFlushWait(bw, SELECT_COUNTER_MODE);
-                processQuestioning(
-                        br, bw,
-                        getCounterMode(br, bw, mainLoader),
-                        "The categories are %s".formatted(ThemeLoader.getCOUNTER_NAMES())
-                );
+                getCounterMode(br, bw, questionnaireLoader);
+                questionnaireLoader.setInfo("Counters: The categories are %s%n".formatted(ThemeLoader.getCOUNTER_NAMES()));
             }
             case "$days" -> {
                 writeFlushWait(bw, SELECT_DAYS_MODE);
-                processQuestioning(br, bw, getDaysMode(br, bw, mainLoader));
+                getDaysMode(br, bw, questionnaireLoader);
             }
-            case "$positions" -> processQuestioning(br, bw, mainLoader.loadPositions().collect());
-            case "$directions" -> processQuestioning(br, bw, mainLoader.loadDirections().collect());
-            case "$families" -> processQuestioning(br, bw, mainLoader.loadFamilies().collect());
+            case "$positions" -> questionnaireLoader.loadPositions();
+            case "$directions" -> questionnaireLoader.loadDirections();
+            case "$families" -> questionnaireLoader.loadFamilies();
             default -> writeAndFlush(bw, "Mode is not supported.\r\n");
         }
-        doThemes(br, bw, mainLoader);
     }
 
     /**
      * If $days was selected then processes the following modes.
-     * @return List of vocabularies depending on the mode
      */
-    private static List<Vocabulary> getDaysMode(BufferedReader br, BufferedWriter bw, MainLoader mainLoader) throws IOException {
+    private static void getDaysMode(BufferedReader br, BufferedWriter bw, QuestionnaireLoader questionnaireLoader) throws IOException {
         String mode = readLine(br);
-        return switch (mode){
-            case "$exit" -> new ArrayList<>();
-            case "$all", "" -> mainLoader.loadDays().collect();
-            case "$weekdays" -> mainLoader.loadWeekDays().collect();
-            case "$month" -> mainLoader.loadMonthDays().collect();
-            default -> {
-                writeAndFlush(bw, "Unknown mode %s. Type a valid mode.%n".formatted(mode));
-                yield new ArrayList<>();
+        switch (mode){
+            case "$exit" -> {}
+            case "$all", "" -> {
+                questionnaireLoader.loadDays();
+                questionnaireLoader.setInfo("If a number is displayed you have to answer with the name of the day of a month.\r\n");
             }
-        };
+            case "$weekdays" -> questionnaireLoader.loadWeekDays();
+            case "$month" -> questionnaireLoader.loadMonthDays();
+            default -> writeAndFlush(bw, "Unknown mode %s. Type a valid mode.%n".formatted(mode));
+        }
     }
 
     /**
      * Selects possible counter modes. Supported are $all yielding all possible counters, and specific by name yielding the correlating counter.
      * Typing $list will list all possible names of the counters.
-     * @return List of the selected counter vocabularies
      */
-    private static List<Vocabulary> getCounterMode(BufferedReader br, BufferedWriter bw, MainLoader mainLoader) throws IOException {
+    private static void getCounterMode(BufferedReader br, BufferedWriter bw, QuestionnaireLoader questionnaireLoader) throws IOException {
         String mode = readLine(br);
-        return switch (mode){
-            case "$exit" -> new ArrayList<>();
-            case "$all","" -> mainLoader.loadAllCounter().collect();
+        switch (mode){
+            case "$exit" -> {}
+            case "$all","" -> questionnaireLoader.loadAllCounter();
             case "$ls"-> {
-                writeFlushWait(bw,
-                        "These are the categories:%n%s%nSelect a mode as mentioned above.%n"
-                                .formatted(ThemeLoader.getCOUNTER_NAMES())
-                );
-                yield getCounterMode(br, bw, mainLoader);
+                writeFlushWait(bw, "These are the categories:%n%s%nSelect a mode as mentioned above.%n".formatted(ThemeLoader.getCOUNTER_NAMES()));
+                getCounterMode(br, bw, questionnaireLoader);
             }
             default -> {
                 for (String s : mode.split(" ")) {
-                    mainLoader.loadCounterByName(s);
+                    questionnaireLoader.loadCounterByName(s);
                 }
-                yield mainLoader.collect();
             }
-        };
+        }
     }
 }

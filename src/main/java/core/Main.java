@@ -1,8 +1,10 @@
 package core;
 
-import core.loading.MainLoader;
+import core.loading.QuestionnaireLoader;
 import core.selecting.LessonSelector;
 import core.selecting.ThemeSelector;
+import core.util.QuestionEvaluator;
+import model.Questionnaire;
 
 import java.io.*;
 
@@ -22,10 +24,19 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new PrintWriter(System.out));
+        QuestionnaireLoader questionnaireLoader = new QuestionnaireLoader();
         writeAndFlush(bw, INTRO);
         while (true){
             writeFlushWait(bw, SELECT_MODE);
-            if (!selectMode(br, bw)){
+            questionnaireLoader.clear();
+            if (selectedMode(br, bw, questionnaireLoader)){
+                Questionnaire questionnaire = questionnaireLoader.collect();
+                QuestionEvaluator.eval(
+                        br, bw,
+                        questionnaire.getVocabularies(),
+                        questionnaire.getInfoText()
+                );
+            }else {
                 return;
             }
         }
@@ -36,17 +47,16 @@ public class Main {
      * Valid modes are lesson and theme which can be selected by the corresponding code word
      * @return true if the user does not want to exit
      */
-    private static boolean selectMode(BufferedReader br, BufferedWriter bw) throws IOException {
+    private static boolean selectedMode(BufferedReader br, BufferedWriter bw, QuestionnaireLoader questionnaireLoader) throws IOException {
         String s = readLine(br);
-        MainLoader mainLoader = new MainLoader();
         return switch (s){
             case "$exit" -> false;
             case "$lessons"-> {
-                LessonSelector.doLessons(br, bw, mainLoader);
+                LessonSelector.selectLessons(br, bw, questionnaireLoader);
                 yield true;
             }
             case "$theme" -> {
-                ThemeSelector.doThemes(br, bw, mainLoader);
+                ThemeSelector.selectTheme(br, bw, questionnaireLoader);
                 yield true;
             }
             default -> {
