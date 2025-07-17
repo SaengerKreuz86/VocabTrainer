@@ -16,7 +16,7 @@ public class VocabularyLoader {
     private static final Pattern STANDARD_FORMAT
             = Pattern.compile("([a-zA-Z](-[a-zA-Z])*,)*[a-zA-Z](-[a-zA-Z])*:([a-zäöüßA-ZÖÄÜ],)*[a-zäöüßA-ZÖÄÜ]");
     private static final Pattern COUNTER_FORMAT
-            = Pattern.compile("([a-zA-Z](-[a-zA-Z])*,)*[a-zA-Z](-[a-zA-Z])*");
+            = Pattern.compile("(([a-zA-Z](-[a-zA-Z])*,)*[a-zA-Z](-[a-zA-Z])*)");
     private final BufferedReader br;
 
     public VocabularyLoader(String path) throws IOException {

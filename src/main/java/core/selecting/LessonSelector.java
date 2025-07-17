@@ -65,7 +65,7 @@ public class LessonSelector {
                         }
                     }
                 }else {
-                    writeAndFlush(bw,"There weren't any valid numbers.\r\n");
+                    writeAndFlush(bw,"There weren't any valid numbers. Try again!\r\n");
                     loop = true;
                 }
             }
