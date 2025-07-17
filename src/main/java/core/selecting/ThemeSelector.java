@@ -7,8 +7,6 @@ import lombok.experimental.UtilityClass;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import static core.util.ReaderWriterUtility.*;
 
@@ -86,12 +84,8 @@ public class ThemeSelector {
                 selectCounterMode(br, bw, questionnaireLoader);
             }
             default -> {
-                List<String> counters = Arrays.stream(mode.split(" "))
-                        .map(String::toLowerCase)
-                        .filter(s -> ThemeLoader.getCOUNTER_NAMES().contains(s))
-                        .toList();
-                for (String counter : counters) {
-                    questionnaireLoader.loadCounterByName(counter);
+                for (String s : mode.split(" ")) {
+                    questionnaireLoader.loadCounterByName(s);
                 }
             }
         }
