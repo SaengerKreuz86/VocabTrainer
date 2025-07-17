@@ -35,7 +35,7 @@ public class LessonSelector {
         String[] mode;
         do {
              mode = formattedRead(br, " ");
-        }while (selectLesson(bw, questionnaireLoader, mode));
+        }while (processMode(bw, questionnaireLoader, mode));
     }
 
     /**
@@ -45,7 +45,7 @@ public class LessonSelector {
      * $range yields the vocabularies within the range of the lessons
      * @return true if method must loop
      */
-    private static boolean selectLesson(BufferedWriter bw, QuestionnaireLoader questionnaireLoader, String[] mode) throws IOException {
+    private static boolean processMode(BufferedWriter bw, QuestionnaireLoader questionnaireLoader, String[] mode) throws IOException {
         boolean loop = false;
         switch (mode[0]) {
             case "$exit" -> {}
