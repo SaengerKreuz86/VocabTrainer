@@ -54,20 +54,15 @@ public class LessonSelector {
                 loop = true;
             }
             case "$all", "" -> questionnaireLoader.loadAllLessons();
-            case "$range" -> {
-                int[] extractedInts = ArrayUtil.toIntArray(mode);
-                if (extractedInts.length > 0){
-                    questionnaireLoader.loadRangeLessons(extractedInts);
-                }else {
-                    writeAndFlush(bw,"There weren't any valid numbers.\r\n");
-                    loop = true;
-                }
-            }
             default -> {
                 int[] extractedInts = ArrayUtil.toIntArray(mode);
                 if (extractedInts.length > 0){
-                    for (int i : extractedInts) {
-                        questionnaireLoader.loadLesson(i);
+                    if ("$range".equals(mode[0])){
+                        questionnaireLoader.loadRangeLessons(extractedInts);
+                    }else { // load specified lessons
+                        for (int i : extractedInts) {
+                            questionnaireLoader.loadLesson(i);
+                        }
                     }
                 }else {
                     writeAndFlush(bw,"There weren't any valid numbers.\r\n");
